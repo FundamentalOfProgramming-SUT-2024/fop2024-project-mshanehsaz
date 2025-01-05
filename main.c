@@ -9,10 +9,6 @@ int main()
     {
         printw("salam");
     }
-    //salam
-
-
-
     refresh();
     endwin();
     return 0;
