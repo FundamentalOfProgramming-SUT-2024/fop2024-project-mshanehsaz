@@ -7,21 +7,19 @@
 #include "menu.c"
 
 
-
 int main()
 {
+
     srand(time(0));
     initscr();
+    curs_set(false);
+    keypad(stdscr, TRUE);
+    noecho();
 
     while (1)
     {
-        drawing_menu();
+        drawing_first_menu();
         refresh();
-        if (getch() == 'q')
-        {
-            break;
-        }
-        sleep(10);
         break;
     }
     refresh();
