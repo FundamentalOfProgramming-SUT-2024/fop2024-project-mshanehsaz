@@ -8,6 +8,11 @@ int main()
     while(1)
     {
         printw("salam");
+        char c = getch();
+        if (c != 's')
+        {
+            break;
+        }
     }
 
 
