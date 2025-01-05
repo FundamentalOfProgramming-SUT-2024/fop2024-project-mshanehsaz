@@ -9,6 +9,7 @@ int main()
     {
         printw("salam");
     }
+    //salam
 
 
 
