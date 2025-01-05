@@ -1,13 +1,28 @@
 #include <stdio.h>
 #include <ncurses.h>
+#include <time.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include "menu.c"
+
+
 
 int main()
 {
+    srand(time(0));
     initscr();
 
-    while(1)
+    while (1)
     {
-        printw("salam");
+        drawing_menu();
+        refresh();
+        if (getch() == 'q')
+        {
+            break;
+        }
+        sleep(10);
+        break;
     }
     refresh();
     endwin();
