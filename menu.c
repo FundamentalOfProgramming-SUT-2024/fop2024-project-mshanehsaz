@@ -3,14 +3,20 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+void clear_and_border();
+int drawing_first_menu();
+void sign_up_menu();
+void sign_in_menu();
+void score_table();
 
-void drawing_first_menu()
+
+void clear_and_border()
 {
     if (has_colors())
     {
         start_color();
         init_color(5, 0, 200, 0);
-        init_color(6, 0, 300, 300);
+        init_color(6, 304, 355, 202);
         init_pair(1, COLOR_GREEN, COLOR_BLACK);
         init_pair(2, COLOR_WHITE, 5);
         init_pair(3, COLOR_WHITE, COLOR_BLACK);
@@ -40,6 +46,12 @@ void drawing_first_menu()
     {
         mvprintw(3*(LINES/4), i, "*");   
     }
+    refresh();
+}
+
+int drawing_first_menu()
+{
+    clear_and_border();
     attron(COLOR_PAIR(2));
     mvprintw(((LINES/2) - 6), ((COLS/2) - 13) ," HELLO, ENJOY THE GAME! ");
     attroff(COLOR_PAIR(2));
@@ -102,6 +114,28 @@ void drawing_first_menu()
             break;
         }
     }
+    return which_case;
 
 }
 
+void sign_up_menu()
+{
+    clear_and_border();
+    
+
+
+
+}
+
+void sign_in_menu()
+{
+    clear_and_border();
+
+}
+
+
+void score_table()
+{
+    clear_and_border();
+
+}

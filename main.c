@@ -18,7 +18,22 @@ int main()
 
     while (1)
     {
-        drawing_first_menu();
+        int which_case = drawing_first_menu();
+        switch (which_case)
+        {
+        case 1:
+            sign_up_menu();
+            break;
+        
+        case 2:
+            sign_in_menu();
+            break;
+
+        case 3:
+            score_table();
+            break;
+        }
+
         refresh();
         break;
     }
