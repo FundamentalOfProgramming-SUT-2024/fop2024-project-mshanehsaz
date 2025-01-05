@@ -63,7 +63,7 @@ int drawing_first_menu()
 
     int which_case = 1;
 
-    for(int c; c != 10; c = getch())
+    for(int c = getch(); c != 10; c = getch())
     {
         if (c == KEY_UP)
         {
@@ -121,10 +121,58 @@ int drawing_first_menu()
 void sign_up_menu()
 {
     clear_and_border();
+    attron(COLOR_PAIR(2));
+    mvprintw(((LINES/2) - 6), ((COLS/2) - 13) ," LET'S CREATE AN ACCOUNT! ");
+    attroff(COLOR_PAIR(2));
+    attron(COLOR_PAIR(3));
+    mvprintw(((LINES/2) - 2), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+    mvprintw(((LINES/2) + 2), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+    attroff(COLOR_PAIR(3));
+
+    int which_case = 1;
+    refresh();
+    for(int ch = getch(); ch != 10; ch = getch())
+    {
+        if (ch == KEY_UP)
+        {
+            which_case --;
+            if (which_case == 0)
+            {
+                which_case = 2;
+            }
+        }
+        if ((ch == KEY_DOWN))
+        {
+            which_case ++;
+            if (which_case == 3)
+            {
+                which_case = 1;
+            }
+        }
+        switch (which_case)
+        {
+        
+        case 1:
+            attron(COLOR_PAIR(4));
+            mvprintw(((LINES/2) - 2), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+            attroff(COLOR_PAIR(4));
+            attron(COLOR_PAIR(3));
+            mvprintw(((LINES/2) + 2), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+            attroff(COLOR_PAIR(3));
+            break;
+
+        case 2:
+            attron(COLOR_PAIR(4));
+            mvprintw(((LINES/2) + 2), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+            attroff(COLOR_PAIR(4));
+            attron(COLOR_PAIR(3));
+            mvprintw(((LINES/2) - 2), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+            attroff(COLOR_PAIR(3));
+            break;
+        }
+    }
+    refresh();
     
-
-
-
 }
 
 void sign_in_menu()

@@ -33,9 +33,8 @@ int main()
             score_table();
             break;
         }
-
-        refresh();
         break;
+
     }
     refresh();
     endwin();
