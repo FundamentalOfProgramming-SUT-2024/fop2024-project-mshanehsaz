@@ -10,7 +10,6 @@
 int main()
 {
 
-    srand(time(0));
     initscr();
     curs_set(false);
     keypad(stdscr, TRUE);
