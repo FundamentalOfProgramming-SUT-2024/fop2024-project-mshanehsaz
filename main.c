@@ -30,12 +30,12 @@ int main()
             break;
 
         case 3:
-            score_table();
-            break;
+            goto exitLoop;
         }
         break;
 
     }
+exitLoop:
     refresh();
     endwin();
     return 0;
