@@ -4,9 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
+int email_is_correct(char *);
 void clear_and_border();
 int drawing_first_menu();
+int is_exist(char *, char *, char *);
+void write_on_file();
 int sign_up_menu();
 void sign_in_menu();
 void score_table();
@@ -124,7 +126,6 @@ int drawing_first_menu()
 int sign_up_menu()
 {
     srand(time(0));
-    rewrite:
     clear_and_border();
     attron(COLOR_PAIR(2));
     mvprintw(((LINES/2) - 9), ((COLS/2) - 13) ," LET'S CREATE AN ACCOUNT! ");
@@ -137,10 +138,11 @@ int sign_up_menu()
     mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
     mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
     attroff(COLOR_PAIR(3));
-    menu:
     char name[100];
     char password[100];
     char email[100];
+
+    menu:
     int which_case = 1;
     
     refresh();
@@ -260,6 +262,7 @@ int sign_up_menu()
     switch (which_case)
     {
         case 1:
+            rewrite_user:
             move(((LINES/2) - 6), (COLS/2) + 12);
             curs_set(true);
             echo();
@@ -268,17 +271,64 @@ int sign_up_menu()
             {
                 scanw("%s", name);
                 move(0, 0);
-                if (strlen(name) > 20)
+                if (strlen(name) > 30)
                 {
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
-                    mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR NAME IS TOO LONG!" );
+                    mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR NAME IS TOO LONG! " );
                     attroff(COLOR_PAIR(5));
                     refresh();
                     sleep(2);
-                    goto rewrite;
+                    mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
+                    goto rewrite_user;
                 }
+                else
+                {
+                    curs_set(false);
+                    noecho();
+                    goto menu;
+                }
+            }    char name[100];
+    char password[100];
+    char email[100];
+            break;
+        
+        case 2:
+            rewrite_email:
+            move((LINES/2) - 3, (COLS/2) + 20);
+            curs_set(true);
+            echo();
+            refresh();
+            while (1)
+            {
+                scanw("%s", email);
+                move(0, 0);
+                if (strlen(name) > 40)
+                {
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR EMAIL IS TOO LONG! " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
+                    goto rewrite_email;
+                }
+                else if (email_is_correct(email) == 0)
+                {
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8)), (COLS/2 - 21), " YOUR EMAIL DOES NOT MATCH THE PATTERN! " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
+                    goto rewrite_email;
+                }
+
                 else
                 {
                     curs_set(false);
@@ -297,6 +347,84 @@ int sign_up_menu()
         case 6:
             return 0;
     }
+}
+
+int is_exist(char *user , char *pass , char *mail)
+{
+    FILE * file_account_password;
+    file_account_password = fopen("account&password.txt", "r");
+    char user_name[100], password[100], email[100];
+
+    while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
+    {
+        if (strcmp(user, user_name) == 0)
+        {
+            fclose(file_account_password);
+            return 1;
+        }
+    }
+    fclose(file_account_password);
+    return 0;
+}
+
+int is_correct(char *user , char *pass , char *mail)
+{
+    FILE * file_account_password;
+    file_account_password = fopen("account&password.txt", "r");
+    char user_name[100], password[100], email[100];
+
+    while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
+    {
+        if (strcmp(user, user_name) == 0 && strcmp(pass, password) == 0)
+        {
+            fclose(file_account_password);
+            return 1;
+        }
+    }
+    fclose(file_account_password);
+    return 0;
+}
+
+void write_on_file()
+{
+
+} 
+
+int email_is_correct(char *email)
+{
+
+    int at_count = 0;
+    int dot_count = 0;
+    char *at;
+    char *dot;
+
+    for (int i = 0; email[i] != '\0'; i++) {
+        if (email[i] == '@') {
+            at_count++;
+            at = &email[i];
+        }
+        else if (email[i] == '.') {
+            dot_count++;
+            dot = &email[i];
+        }
+    }
+
+    if (at_count != 1)
+        return 0;
+
+    if (dot_count == 0 || dot < at)
+        return 0;
+
+    if (at - email < 1)
+        return 0;
+
+    if (at[1] == '\0')
+        return 0;
+
+    if (dot[1] == '\0')
+        return 0;
+
+    return 1;
 }
 
 void sign_in_menu()

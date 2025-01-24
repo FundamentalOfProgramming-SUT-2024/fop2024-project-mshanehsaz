@@ -9,12 +9,11 @@
 
 int main()
 {
-
     initscr();
     curs_set(false);
     keypad(stdscr, TRUE);
     noecho();
-    int which_menu = 1;
+    int which_menu = 0;
     /*
     which_menu = 0   main & first menu
     which_menu = 1   sign up menu
