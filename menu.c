@@ -125,6 +125,13 @@ int drawing_first_menu()
 
 int sign_up_menu()
 {
+    char name[100];
+    char password[100];
+    char email[100];
+    int user = 0;
+    int pass = 0;
+    int mail = 0;
+    rewrite:
     srand(time(0));
     clear_and_border();
     attron(COLOR_PAIR(2));
@@ -138,9 +145,22 @@ int sign_up_menu()
     mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
     mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
     attroff(COLOR_PAIR(3));
-    char name[100];
-    char password[100];
-    char email[100];
+    refresh();
+    if (user == 1)
+    {
+       mvprintw(((LINES/2) - 6), (COLS/2) + 12, "%s", name); 
+       refresh();
+    }
+    if (pass == 1)
+    {
+       mvprintw(((LINES/2) - 6), (COLS/2) + 12, "%s", password); 
+       refresh();
+    }
+    if (mail == 1)
+    {
+       mvprintw((LINES/2) - 3, (COLS/2) + 20, "%s", email); 
+       refresh();
+    }
 
     menu:
     int which_case = 1;
@@ -262,7 +282,6 @@ int sign_up_menu()
     switch (which_case)
     {
         case 1:
-            rewrite_user:
             move(((LINES/2) - 6), (COLS/2) + 12);
             curs_set(true);
             echo();
@@ -273,6 +292,7 @@ int sign_up_menu()
                 move(0, 0);
                 if (strlen(name) > 30)
                 {
+                    user = 0;
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
@@ -281,21 +301,19 @@ int sign_up_menu()
                     refresh();
                     sleep(2);
                     mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
-                    goto rewrite_user;
+                    goto rewrite;
                 }
                 else
                 {
+                    user = 1;
                     curs_set(false);
                     noecho();
                     goto menu;
                 }
-            }    char name[100];
-    char password[100];
-    char email[100];
+            }    
             break;
         
         case 2:
-            rewrite_email:
             move((LINES/2) - 3, (COLS/2) + 20);
             curs_set(true);
             echo();
@@ -304,8 +322,9 @@ int sign_up_menu()
             {
                 scanw("%s", email);
                 move(0, 0);
-                if (strlen(name) > 40)
+                if (strlen(email) > 40)
                 {
+                    mail = 0;
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
@@ -314,10 +333,11 @@ int sign_up_menu()
                     refresh();
                     sleep(2);
                     mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
-                    goto rewrite_email;
+                    goto rewrite;
                 }
                 else if (email_is_correct(email) == 0)
                 {
+                    mail = 0;
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
@@ -326,11 +346,12 @@ int sign_up_menu()
                     refresh();
                     sleep(2);
                     mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
-                    goto rewrite_email;
+                    goto rewrite;
                 }
 
                 else
                 {
+                    mail = 1;
                     curs_set(false);
                     noecho();
                     goto menu;
