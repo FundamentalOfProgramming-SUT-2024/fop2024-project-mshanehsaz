@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
+int pass_is_correct(char *);
 int email_is_correct(char *);
 void clear_and_border();
 int drawing_first_menu();
@@ -153,7 +155,7 @@ int sign_up_menu()
     }
     if (pass == 1)
     {
-       mvprintw(((LINES/2) - 6), (COLS/2) + 12, "%s", password); 
+       mvprintw(((LINES/2)), (COLS/2) + 25, "%s", password); 
        refresh();
     }
     if (mail == 1)
@@ -300,7 +302,6 @@ int sign_up_menu()
                     attroff(COLOR_PAIR(5));
                     refresh();
                     sleep(2);
-                    mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
                     goto rewrite;
                 }
                 else
@@ -332,7 +333,6 @@ int sign_up_menu()
                     attroff(COLOR_PAIR(5));
                     refresh();
                     sleep(2);
-                    mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
                     goto rewrite;
                 }
                 else if (email_is_correct(email) == 0)
@@ -345,7 +345,6 @@ int sign_up_menu()
                     attroff(COLOR_PAIR(5));
                     refresh();
                     sleep(2);
-                    mvprintw(((LINES/8)), (COLS/2 - 21), "                                               " );
                     goto rewrite;
                 }
 
@@ -358,13 +357,59 @@ int sign_up_menu()
                 }
             }
             break;
-        
+
+        case 3:
+            move(LINES/2, (COLS/2) + 25);
+            curs_set(true);
+            echo();
+            refresh();
+            while (1)
+            {
+                scanw("%s", password);
+                move(0, 0);
+                if (strlen(password) > 40)
+                {
+                    pass = 0;
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8)), (COLS/2 - 15), " YOUR PASSWORD IS TOO LONG! " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    goto rewrite;
+                }
+                else if (pass_is_correct(password) == 0)
+                {
+                    pass = 0;
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8)), (COLS/2 - 22), " YOUR PASSWORD DOES NOT MATCH THE PATTERN! " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    goto rewrite;
+                }
+
+                else
+                {
+                    pass = 1;
+                    curs_set(false);
+                    noecho();
+                    goto menu;
+                }
+            }
+            break;
         case 5:
             // اولا فایل ها رو بساز و در فایل نام و ایمیل و رمز را بزار
-            printw("%s", name);
+            mvprintw(0, 0,"%s", name);
+            mvprintw(10, 0,"%s", password);
+            mvprintw(20, 0,"%s", email);
             refresh();
             sleep(3);
-            break;
+            return 4;
+
         case 6:
             return 0;
     }
@@ -446,6 +491,37 @@ int email_is_correct(char *email)
         return 0;
 
     return 1;
+}
+
+int pass_is_correct(char * pass)
+{
+    int number = 0;
+    int lower = 0;
+    int upper = 0;
+    for (int i = 0; pass[i] != '\0'; i++)
+    {
+        if (isdigit(pass[i]))
+        {
+            number ++;
+        }
+        if (isupper(pass[i]))
+        {
+            upper ++;
+        }
+        if (islower(pass[i]))
+        {
+            lower ++;
+        }
+    }
+
+    if (number > 0 && upper > 0 && lower > 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void sign_in_menu()
