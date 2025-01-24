@@ -7,7 +7,7 @@
 
 void clear_and_border();
 int drawing_first_menu();
-void sign_up_menu();
+int sign_up_menu();
 void sign_in_menu();
 void score_table();
 
@@ -121,7 +121,7 @@ int drawing_first_menu()
 
 }
 
-void sign_up_menu()
+int sign_up_menu()
 {
     srand(time(0));
     rewrite:
@@ -144,7 +144,7 @@ void sign_up_menu()
     int which_case = 1;
     
     refresh();
-    
+
     for(int ch = getch(); ch != 10; ch = getch())
     {
         if (ch == KEY_UP)
@@ -259,42 +259,43 @@ void sign_up_menu()
 
     switch (which_case)
     {
-    case 1:
-        move(((LINES/2) - 6), (COLS/2) + 12);
-        curs_set(true);
-        echo();
-        refresh();
-        while (1)
-        {
-            scanw("%s", name);
-            move(0, 0);
-            if (strlen(name) > 20)
+        case 1:
+            move(((LINES/2) - 6), (COLS/2) + 12);
+            curs_set(true);
+            echo();
+            refresh();
+            while (1)
             {
-                curs_set(false);
-                noecho(); 
-                attron(COLOR_PAIR(5));
-                mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR NAME IS TOO LONG!" );
-                attroff(COLOR_PAIR(5));
-                refresh();
-                sleep(2);
-                goto rewrite;
+                scanw("%s", name);
+                move(0, 0);
+                if (strlen(name) > 20)
+                {
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR NAME IS TOO LONG!" );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    goto rewrite;
+                }
+                else
+                {
+                    curs_set(false);
+                    noecho();
+                    goto menu;
+                }
             }
-            else
-            {
-                curs_set(false);
-                noecho();
-                goto menu;
-            }
-        }
-        break;
-    
-    case 5:
-        curs_set(true);
-        echo();
-        printw("%s", name);
-        refresh();
-        sleep(3);
-        break;
+            break;
+        
+        case 5:
+            // اولا فایل ها رو بساز و در فایل نام و ایمیل و رمز را بزار
+            printw("%s", name);
+            refresh();
+            sleep(3);
+            break;
+        case 6:
+            return 0;
     }
 }
 
@@ -304,9 +305,3 @@ void sign_in_menu()
 
 }
 
-
-void score_table()
-{
-    clear_and_border();
-
-}
