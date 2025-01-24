@@ -9,8 +9,8 @@ int pass_is_correct(char *);
 int email_is_correct(char *);
 void clear_and_border();
 int drawing_first_menu();
-int is_exist(char *, char *, char *);
-void write_on_file();
+int is_exist(char *);
+void write_on_file(char * , char * , char *);
 int sign_up_menu();
 void sign_in_menu();
 void score_table();
@@ -127,13 +127,14 @@ int drawing_first_menu()
 
 int sign_up_menu()
 {
-    char name[100];
-    char password[100];
-    char email[100];
+    char name[1000] = "";
+    char password[1000] = "";
+    char email[1000] = "";
     int user = 0;
     int pass = 0;
     int mail = 0;
     rewrite:
+
     srand(time(0));
     clear_and_border();
     attron(COLOR_PAIR(2));
@@ -367,6 +368,19 @@ int sign_up_menu()
             {
                 scanw("%s", password);
                 move(0, 0);
+                if (strlen(password) < 7)
+                {
+                    pass = 0;
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8)), (COLS/2 - 15), " YOUR PASSWORD IS TOO SHORT! " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    goto rewrite;
+                }
+
                 if (strlen(password) > 40)
                 {
                     pass = 0;
@@ -402,26 +416,57 @@ int sign_up_menu()
             }
             break;
         case 5:
-            // اولا فایل ها رو بساز و در فایل نام و ایمیل و رمز را بزار
-            mvprintw(0, 0,"%s", name);
-            mvprintw(10, 0,"%s", password);
-            mvprintw(20, 0,"%s", email);
-            refresh();
-            sleep(3);
-            return 4;
-
+            if ((user != 0) && (pass != 0) && (mail != 0) )
+            {
+                if (is_exist(name) == 0)
+                {
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(4));
+                    mvprintw(((LINES/8)), (COLS/2 - 27), " YOUR ACCOUNT COMPLETLY CREATED! :) JUST A SECOND..." );
+                    attroff(COLOR_PAIR(4));
+                    refresh();
+                    write_on_file(name, password, email);
+                    refresh();
+                    sleep(3);
+                    return 0;
+                }
+                else
+                {
+                    user = 0;
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8)), (COLS/2 - 23), " THE USERNAME EXISTS! PLEASE ENTER ANOTHER! " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    goto rewrite;
+                }
+            }
+            else
+            {
+                curs_set(false);
+                noecho(); 
+                attron(COLOR_PAIR(5));
+                mvprintw(((LINES/8)), (COLS/2 - 18), " PLEASE COMPLETE YOUR INFORMATION! " );
+                attroff(COLOR_PAIR(5));
+                refresh();
+                sleep(2);
+                goto rewrite;
+            }
         case 6:
             return 0;
     }
 }
 
-int is_exist(char *user , char *pass , char *mail)
+int is_exist(char *user)
 {
     FILE * file_account_password;
-    file_account_password = fopen("account&password.txt", "r");
-    char user_name[100], password[100], email[100];
+    file_account_password = fopen("account_password.txt", "r");
+    char user_name[100];
 
-    while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
+    while (fscanf(file_account_password, "%s", user_name) != EOF)
     {
         if (strcmp(user, user_name) == 0)
         {
@@ -436,7 +481,7 @@ int is_exist(char *user , char *pass , char *mail)
 int is_correct(char *user , char *pass , char *mail)
 {
     FILE * file_account_password;
-    file_account_password = fopen("account&password.txt", "r");
+    file_account_password = fopen("account_password.txt", "r");
     char user_name[100], password[100], email[100];
 
     while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
@@ -451,8 +496,12 @@ int is_correct(char *user , char *pass , char *mail)
     return 0;
 }
 
-void write_on_file()
+void write_on_file(char *user , char *pass , char *mail)
 {
+    FILE * file_account_password;
+    file_account_password = fopen("account_password.txt", "a");
+    fprintf(file_account_password, "%s %s %s", user, pass, mail);
+    fclose(file_account_password);
 
 } 
 

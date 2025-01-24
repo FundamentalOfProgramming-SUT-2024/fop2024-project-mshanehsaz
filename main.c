@@ -29,7 +29,7 @@ int main()
             /*
             which_case = 1   sign up menu
             which_case = 2   sign in menu
-            which_case = 3   main and first menu
+            which_case = 3   exit
             ...
             */
 
@@ -67,6 +67,12 @@ int main()
         else if (which_menu == 3)
         {
             break;
+        }
+
+        else if (which_menu == 4)
+        {
+            // int which_case = sign_in_menu();
+
         }
 
     }
