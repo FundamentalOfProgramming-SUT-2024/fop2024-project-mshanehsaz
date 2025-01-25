@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "menu.c"
+#include "game.c"
 
 
 int main()
