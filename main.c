@@ -20,6 +20,7 @@ int main()
     which_menu = 2   sign in menu
     which_menu = 3   exit
     which_menu = 4   after sign up menu & sign in menu
+    which_menu = 5   forgot pass
     ...
     */
     while (1)
@@ -64,15 +65,23 @@ int main()
             }
         }
 
+        else if (which_menu == 2)
+        {
+            int which_case = sign_in_menu();
+            if (which_case == 0)
+            {
+                which_menu = 0;
+            }
+            else if (which_case == 4)
+            {
+                which_menu = 4;
+            }
+
+        }
+
         else if (which_menu == 3)
         {
             break;
-        }
-
-        else if (which_menu == 4)
-        {
-            // int which_case = sign_in_menu();
-
         }
 
     }

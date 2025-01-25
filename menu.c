@@ -12,8 +12,7 @@ int drawing_first_menu();
 int is_exist(char *);
 void write_on_file(char * , char * , char *);
 int sign_up_menu();
-void sign_in_menu();
-void score_table();
+int sign_in_menu();
 
 
 void clear_and_border()
@@ -439,7 +438,7 @@ int sign_up_menu()
                         refresh();
                         write_on_file(name, password, email);
                         sleep(3);
-                        return 0;
+                        return 1;
                     }
                     else
                     {
@@ -496,20 +495,30 @@ int is_exist(char *user)
     return 0;
 }
 
-int is_correct(char *user , char *pass , char *mail)
+int is_correct(char *user , char *pass)
 {
     FILE * file_account_password;
     file_account_password = fopen("accounts_passwords.txt", "r");
-    char user_name[100], password[100], email[100];
+    char user_name[100], password[100];
 
-    while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
+    /*
+    the user not exist return 0
+    the user is exist but the pass is incorrect return 2
+    */
+
+    while (fscanf(file_account_password, "%s %s", user_name, password) != EOF)
     {
-        if (strcmp(user, user_name) == 0 && strcmp(pass, password) == 0)
+        if (strcmp(user, user_name) == 0)
         {
-            fclose(file_account_password);
-            return 1;
+            if (strcmp(pass, password) == 0)
+            {
+                fclose(file_account_password);
+                return 1;
+            }
+            return 2;
         }
     }
+
     fclose(file_account_password);
     return 0;
 }
@@ -559,7 +568,7 @@ int email_is_correct(char *email)
     return 1;
 }
 
-int pass_is_correct(char * pass)
+int pass_is_correct(char *pass)
 {
     int number = 0;
     int lower = 0;
@@ -590,9 +599,240 @@ int pass_is_correct(char * pass)
     }
 }
 
-void sign_in_menu()
+int sign_in_menu()
 {
-    clear_and_border();
+    char name[100];
+    char password[100];
+    int user = 0;
+    int pass = 0;
+    int which_case = 0;
+    while (1)
+    {
+        clear_and_border();
+        attron(COLOR_PAIR(3));
+        mvprintw(((LINES/2) - 8), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+        mvprintw(((LINES/2)) - 5, ((COLS/2) - 11) ," ENTER YOUR PASSWORD ");
+        mvprintw(((LINES/2)) - 2, ((COLS/2) - 9) ," ENTER THE GAME! ");
+        mvprintw(((LINES/2)) + 1, ((COLS/2) - 10) ," I FORGOT MY PASS! ");
+        mvprintw(((LINES/2) + 4), ((COLS/2) - 9) ," ENTER AS A GUEST ");
+        mvprintw(((LINES/2)) + 7, ((COLS/2) - 4) ," BACK ");
+        attroff(COLOR_PAIR(3));
+
+        if (user == 1)
+        {
+            mvprintw(((LINES/2) - 8), (COLS/2) + 14, "%s", name); 
+            refresh();
+        }
+        if (pass == 1)
+        {
+            mvprintw((LINES/2) - 5, (COLS/2) + 14, "%s", password); 
+            refresh();
+        }
+   
+        for(int ch = getch(); ch != 10; ch = getch())
+        {
+            if (ch == KEY_UP)
+            {
+                which_case --;
+                if (which_case == 0)
+                {
+                    which_case = 6;
+                }
+            }
+            if ((ch == KEY_DOWN))
+            {
+                which_case ++;
+                if (which_case == 7)
+                {
+                    which_case = 1;
+                }
+            }
+
+            switch (which_case)
+            {
+            
+            case 1:
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2)) - 5, ((COLS/2) - 11) ," ENTER YOUR PASSWORD ");
+                mvprintw(((LINES/2)) - 2, ((COLS/2) - 9) ," ENTER THE GAME! ");
+                mvprintw(((LINES/2)) + 1, ((COLS/2) - 10) ," I FORGOT MY PASS! ");
+                mvprintw(((LINES/2) + 4), ((COLS/2) - 9) ," ENTER AS A GUEST ");
+                mvprintw(((LINES/2)) + 7, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2) - 8), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                attroff(COLOR_PAIR(4));
+
+                break;
+
+            case 2:
+                mvprintw(((LINES/2) - 8), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2)) - 2, ((COLS/2) - 9) ," ENTER THE GAME! ");
+                mvprintw(((LINES/2)) + 1, ((COLS/2) - 10) ," I FORGOT MY PASS! ");
+                mvprintw(((LINES/2) + 4), ((COLS/2) - 9) ," ENTER AS A GUEST ");
+                mvprintw(((LINES/2)) + 7, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2)) - 5, ((COLS/2) - 11) ," ENTER YOUR PASSWORD ");
+                attroff(COLOR_PAIR(4));
+                break;
+
+            case 3:
+                mvprintw(((LINES/2) - 8), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2)) - 5, ((COLS/2) - 11) ," ENTER YOUR PASSWORD ");
+                mvprintw(((LINES/2)) + 1, ((COLS/2) - 10) ," I FORGOT MY PASS! ");
+                mvprintw(((LINES/2) + 4), ((COLS/2) - 9) ," ENTER AS A GUEST ");
+                mvprintw(((LINES/2)) + 7, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(11));
+                mvprintw(((LINES/2)) - 2, ((COLS/2) - 9) ," ENTER THE GAME! ");
+                attroff(COLOR_PAIR(11));
+                break;
+
+            case 4:
+                mvprintw(((LINES/2) - 8), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2)) - 5, ((COLS/2) - 11) ," ENTER YOUR PASSWORD ");
+                mvprintw(((LINES/2)) - 2, ((COLS/2) - 9) ," ENTER THE GAME! ");
+                mvprintw(((LINES/2) + 4), ((COLS/2) - 9) ," ENTER AS A GUEST ");
+                mvprintw(((LINES/2)) + 7, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(5));
+                mvprintw(((LINES/2)) + 1, ((COLS/2) - 10) ," I FORGOT MY PASS! ");
+                attroff(COLOR_PAIR(5));
+                break;
+
+            case 5:
+                mvprintw(((LINES/2) - 8), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2)) - 5, ((COLS/2) - 11) ," ENTER YOUR PASSWORD ");
+                mvprintw(((LINES/2)) - 2, ((COLS/2) - 9) ," ENTER THE GAME! ");
+                mvprintw(((LINES/2)) + 1, ((COLS/2) - 10) ," I FORGOT MY PASS! ");
+                mvprintw(((LINES/2)) + 7, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2) + 4), ((COLS/2) - 9) ," ENTER AS A GUEST ");
+                attroff(COLOR_PAIR(4));
+                break;
+
+            case 6:
+                mvprintw(((LINES/2) - 8), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2)) - 5, ((COLS/2) - 11) ," ENTER YOUR PASSWORD ");
+                mvprintw(((LINES/2)) - 2, ((COLS/2) - 9) ," ENTER THE GAME! ");
+                mvprintw(((LINES/2)) + 1, ((COLS/2) - 10) ," I FORGOT MY PASS! ");
+                mvprintw(((LINES/2) + 4), ((COLS/2) - 9) ," ENTER AS A GUEST ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2)) + 7, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(4));
+                break;
+
+            }
+        }
+        refresh();
+
+        switch (which_case)
+        {
+            case 1:
+                move(((LINES/2) - 8), (COLS/2) + 14);
+                curs_set(true);
+                echo();
+                refresh();
+                scanw("%99s", name);
+                move(0, 0);
+                user = 1;
+                curs_set(false);
+                noecho();
+                continue;
+
+            case 2:
+                move((LINES/2) - 5, (COLS/2) + 14);
+                curs_set(true);
+                echo();
+                refresh();
+                scanw("%99s", password);
+                move(0, 0);
+                pass = 1;
+                curs_set(false);
+                noecho();
+                continue;
+
+            case 3:
+                if (user != 0 && pass != 0)
+                {
+                    if (is_correct(name, password) == 1)
+                    {
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(11));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                 " );
+                        mvprintw(((LINES/8)), (COLS/2 - 18), " YES, IT'S YOU! JUST A MOMENT... " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                 " );
+                        attroff(COLOR_PAIR(11));
+                        refresh();
+                        sleep(3); 
+                        return 4;
+                    }
+
+                    else if(is_correct(name, password) == 2)
+                    {
+                        pass = 0;
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(5));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                    " );
+                        mvprintw(((LINES/8)), (COLS/2 - 18), " INCORRECT THE PASSWORD! TRY AGAIN! " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                    " );
+                        attroff(COLOR_PAIR(5));
+                        refresh();
+                        sleep(3);
+                        continue;
+                    }
+
+                    else
+                    {
+                        user = 0;
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(5));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                      " );
+                        mvprintw(((LINES/8)), (COLS/2 - 18), " I'M AFRAID, WE DON'T HAVE THIS USER!  " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                      " );
+                        attroff(COLOR_PAIR(5));
+                        refresh();
+                        sleep(3);
+                        continue;
+                    }
+                }
+
+                else
+                {
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                   " );
+                    mvprintw(((LINES/8)), (COLS/2 - 18), " PLEASE COMPLETE YOUR INFORMATION! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                   " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(3);
+                    continue;
+                }
+
+                break;
+
+            case 4:
+                
+                break;
+                
+            case 5:
+
+                break;
+
+            case 6:
+                return 0;
+                break;
+
+        }
+    }
 
 }
 
