@@ -23,11 +23,14 @@ void clear_and_border()
         start_color();
         init_color(5, 0, 200, 0);
         init_color(6, 304, 355, 202);
+        init_color(10, 300, 550, 400);
         init_pair(1, COLOR_GREEN, COLOR_BLACK);
         init_pair(2, COLOR_WHITE, 5);
         init_pair(3, COLOR_WHITE, COLOR_BLACK);
         init_pair(4, COLOR_WHITE, 6);
-        init_pair(5, COLOR_WHITE, COLOR_RED);    
+        init_pair(5, COLOR_WHITE, COLOR_RED); 
+        init_pair(11, COLOR_WHITE, 10);
+
     }
     clear();
 
@@ -58,7 +61,6 @@ void clear_and_border()
 
 int drawing_first_menu()
 {
-    drawing_section:
     clear_and_border();
     attron(COLOR_PAIR(2));
     mvprintw(((LINES/2) - 6), ((COLS/2) - 13) ," HELLO, ENJOY THE GAME! ");
@@ -127,201 +129,197 @@ int drawing_first_menu()
 
 int sign_up_menu()
 {
-    char name[1000] = "";
-    char password[1000] = "";
-    char email[1000] = "";
+    srand(time(0));
+    char name[100];
+    char password[100];
+    char email[100];
     int user = 0;
     int pass = 0;
     int mail = 0;
-    rewrite:
-
-    srand(time(0));
-    clear_and_border();
-    attron(COLOR_PAIR(2));
-    mvprintw(((LINES/2) - 9), ((COLS/2) - 13) ," LET'S CREATE AN ACCOUNT! ");
-    mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
-    attroff(COLOR_PAIR(2));
-    attron(COLOR_PAIR(3));
-    mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
-    mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
-    mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
-    mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
-    mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
-    attroff(COLOR_PAIR(3));
-    refresh();
-    if (user == 1)
-    {
-       mvprintw(((LINES/2) - 6), (COLS/2) + 12, "%s", name); 
-       refresh();
-    }
-    if (pass == 1)
-    {
-       mvprintw(((LINES/2)), (COLS/2) + 25, "%s", password); 
-       refresh();
-    }
-    if (mail == 1)
-    {
-       mvprintw((LINES/2) - 3, (COLS/2) + 20, "%s", email); 
-       refresh();
-    }
-
-    menu:
     int which_case = 1;
-    
-    refresh();
-
-    for(int ch = getch(); ch != 10; ch = getch())
+    while (1)
     {
-        if (ch == KEY_UP)
+        clear_and_border();
+        attron(COLOR_PAIR(2));
+        mvprintw(((LINES/2) - 9), ((COLS/2) - 13) ," LET'S CREATE AN ACCOUNT! ");
+        mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
+        attroff(COLOR_PAIR(2));
+        attron(COLOR_PAIR(3));
+        mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+        mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+        mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+        mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
+        mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
+        attroff(COLOR_PAIR(3));
+        refresh();
+        if (user == 1)
         {
-            which_case --;
-            if (which_case == 0)
+            mvprintw(((LINES/2) - 6), (COLS/2) + 12, "%s", name); 
+            refresh();
+        }
+        if (pass == 1)
+        {
+            mvprintw(((LINES/2)), (COLS/2) + 25, "%s", password); 
+            refresh();
+        }
+        if (mail == 1)
+        {
+            mvprintw((LINES/2) - 3, (COLS/2) + 20, "%s", email); 
+            refresh();
+        }        
+
+        for(int ch = getch(); ch != 10; ch = getch())
+        {
+            if (ch == KEY_UP)
             {
-                which_case = 6;
+                which_case --;
+                if (which_case == 0)
+                {
+                    which_case = 6;
+                }
+            }
+            if ((ch == KEY_DOWN))
+            {
+                which_case ++;
+                if (which_case == 7)
+                {
+                    which_case = 1;
+                }
+            }
+            switch (which_case)
+            {
+            
+            case 1:
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                attroff(COLOR_PAIR(4));
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+                mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+                mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
+                mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(2));
+                mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
+                attroff(COLOR_PAIR(2));
+
+                break;
+
+            case 2:
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+                attroff(COLOR_PAIR(4));
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+                mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
+                mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(2));
+                mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
+                attroff(COLOR_PAIR(2));
+                break;
+
+            case 3:
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+                attroff(COLOR_PAIR(4));
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+                mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
+                mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(2));
+                mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
+                attroff(COLOR_PAIR(2));
+                break;
+
+            case 4:
+                attron(COLOR_PAIR(5));
+                mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
+                attroff(COLOR_PAIR(5));
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+                mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+                mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(2));
+                mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
+                attroff(COLOR_PAIR(2));
+                break;
+
+            case 5:
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
+                attroff(COLOR_PAIR(4));
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+                mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+                mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
+                mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                break;
+
+            case 6:
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(4));
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
+                mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
+                mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(2));
+                mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
+                attroff(COLOR_PAIR(2));
+                break;
+
             }
         }
-        if ((ch == KEY_DOWN))
-        {
-            which_case ++;
-            if (which_case == 7)
-            {
-                which_case = 1;
-            }
-        }
+        refresh();
+
         switch (which_case)
         {
-        
-        case 1:
-            attron(COLOR_PAIR(4));
-            mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
-            attroff(COLOR_PAIR(4));
-            attron(COLOR_PAIR(3));
-            mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
-            mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
-            mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
-            mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
-            attroff(COLOR_PAIR(3));
-            attron(COLOR_PAIR(2));
-            mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
-            attroff(COLOR_PAIR(2));
+            case 1:
+                move(((LINES/2) - 6), (COLS/2) + 12);
+                curs_set(true);
+                echo();
+                refresh();
 
-            break;
-
-        case 2:
-            attron(COLOR_PAIR(4));
-            mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
-            attroff(COLOR_PAIR(4));
-            attron(COLOR_PAIR(3));
-            mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
-            mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
-            mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
-            mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
-            attroff(COLOR_PAIR(3));
-            attron(COLOR_PAIR(2));
-            mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
-            attroff(COLOR_PAIR(2));
-            break;
-        case 3:
-            attron(COLOR_PAIR(4));
-            mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
-            attroff(COLOR_PAIR(4));
-            attron(COLOR_PAIR(3));
-            mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
-            mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
-            mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
-            mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
-            attroff(COLOR_PAIR(3));
-            attron(COLOR_PAIR(2));
-            mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
-            attroff(COLOR_PAIR(2));
-            break;
-        case 4:
-            attron(COLOR_PAIR(5));
-            mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
-            attroff(COLOR_PAIR(5));
-            attron(COLOR_PAIR(3));
-            mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
-            mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
-            mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
-            mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
-            attroff(COLOR_PAIR(3));
-            attron(COLOR_PAIR(2));
-            mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
-            attroff(COLOR_PAIR(2));
-            break;
-        case 5:
-            attron(COLOR_PAIR(4));
-            mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
-            attroff(COLOR_PAIR(4));
-            attron(COLOR_PAIR(3));
-            mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
-            mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
-            mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
-            mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
-            mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
-            attroff(COLOR_PAIR(3));
-
-            break;
-
-        case 6:
-            attron(COLOR_PAIR(4));
-            mvprintw(((LINES/2) + 9), ((COLS/2) - 4) ," BACK ");
-            attroff(COLOR_PAIR(4));
-            attron(COLOR_PAIR(3));
-            mvprintw(((LINES/2) - 6), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
-            mvprintw(((LINES/2) - 3), (COLS/2) - 15 ," ENTER YOUR EMAIL (xxx@yyy.zzz) ");
-            mvprintw(((LINES/2)), ((COLS/2) - 22) ," CREATE A PASSWORD (more than 7 characters) ");
-            mvprintw(((LINES/2) + 3), ((COLS/2) - 13) ," MAKE A PASSWORD FOR ME! ");
-            attroff(COLOR_PAIR(3));
-            attron(COLOR_PAIR(2));
-            mvprintw(((LINES/2) + 6), ((COLS/2) - 10) ," CREAT THE ACCOUNT ");
-            attroff(COLOR_PAIR(2));
-            break;
-
-        }
-    }
-    refresh();
-
-    switch (which_case)
-    {
-        case 1:
-            move(((LINES/2) - 6), (COLS/2) + 12);
-            curs_set(true);
-            echo();
-            refresh();
-            while (1)
-            {
-                scanw("%s", name);
-                move(0, 0);
-                if (strlen(name) > 30)
-                {
-                    user = 0;
-                    curs_set(false);
-                    noecho(); 
-                    attron(COLOR_PAIR(5));
-                    mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR NAME IS TOO LONG! " );
-                    attroff(COLOR_PAIR(5));
-                    refresh();
-                    sleep(2);
-                    goto rewrite;
-                }
-                else
-                {
-                    user = 1;
-                    curs_set(false);
-                    noecho();
-                    goto menu;
-                }
-            }    
-            break;
-        
-        case 2:
-            move((LINES/2) - 3, (COLS/2) + 20);
-            curs_set(true);
-            echo();
-            refresh();
-            while (1)
-            {
+                    scanw("%s", name);
+                    move(0, 0);
+                    if (strlen(name) > 30)
+                    {
+                        user = 0;
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(5));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 12), "                        " );
+                        mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR NAME IS TOO LONG! " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 12), "                        " );
+                        attroff(COLOR_PAIR(5));
+                        refresh();
+                        sleep(3);
+                        continue;
+                    }
+                    else
+                    {
+                        user = 1;
+                        curs_set(false);
+                        noecho();
+                        continue;
+                    }    
+                break;
+            
+            case 2:
+                move((LINES/2) - 3, (COLS/2) + 20);
+                curs_set(true);
+                echo();
+                refresh();
                 scanw("%s", email);
                 move(0, 0);
                 if (strlen(email) > 40)
@@ -330,11 +328,13 @@ int sign_up_menu()
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 12), "                         " );
                     mvprintw(((LINES/8)), (COLS/2 - 12), " YOUR EMAIL IS TOO LONG! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 12), "                         " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(2);
-                    goto rewrite;
+                    sleep(3);
+                    continue;
                 }
                 else if (email_is_correct(email) == 0)
                 {
@@ -342,30 +342,29 @@ int sign_up_menu()
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 21), "                                        " );
                     mvprintw(((LINES/8)), (COLS/2 - 21), " YOUR EMAIL DOES NOT MATCH THE PATTERN! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 21), "                                        " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(2);
-                    goto rewrite;
+                    sleep(3);
+                    continue;
                 }
 
-                else
-                {
-                    mail = 1;
-                    curs_set(false);
-                    noecho();
-                    goto menu;
-                }
-            }
-            break;
+                    else
+                    {
+                        mail = 1;
+                        curs_set(false);
+                        noecho();
+                        continue;
+                    }
+                break;
 
-        case 3:
-            move(LINES/2, (COLS/2) + 25);
-            curs_set(true);
-            echo();
-            refresh();
-            while (1)
-            {
+            case 3:
+                move(LINES/2, (COLS/2) + 25);
+                curs_set(true);
+                echo();
+                refresh();
                 scanw("%s", password);
                 move(0, 0);
                 if (strlen(password) < 7)
@@ -374,11 +373,13 @@ int sign_up_menu()
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                             " );
                     mvprintw(((LINES/8)), (COLS/2 - 15), " YOUR PASSWORD IS TOO SHORT! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                             " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(2);
-                    goto rewrite;
+                    sleep(3);
+                    continue;
                 }
 
                 if (strlen(password) > 40)
@@ -387,11 +388,13 @@ int sign_up_menu()
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                            " );
                     mvprintw(((LINES/8)), (COLS/2 - 15), " YOUR PASSWORD IS TOO LONG! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(2);
-                    goto rewrite;
+                    sleep(3);
+                    continue;
                 }
                 else if (pass_is_correct(password) == 0)
                 {
@@ -399,11 +402,13 @@ int sign_up_menu()
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 22), "                                           " );
                     mvprintw(((LINES/8)), (COLS/2 - 22), " YOUR PASSWORD DOES NOT MATCH THE PATTERN! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 22), "                                           " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(2);
-                    goto rewrite;
+                    sleep(3);
+                    continue;
                 }
 
                 else
@@ -411,62 +416,75 @@ int sign_up_menu()
                     pass = 1;
                     curs_set(false);
                     noecho();
-                    goto menu;
+                    continue;
                 }
-            }
-            break;
-        case 5:
-            if ((user != 0) && (pass != 0) && (mail != 0) )
-            {
-                if (is_exist(name) == 0)
+                break;
+
+            case 4:
+                move(0,0);
+                break;
+                
+            case 5:
+                if ((user != 0) && (pass != 0) && (mail != 0) )
                 {
-                    curs_set(false);
-                    noecho(); 
-                    attron(COLOR_PAIR(4));
-                    mvprintw(((LINES/8)), (COLS/2 - 27), " YOUR ACCOUNT COMPLETLY CREATED! :) JUST A SECOND..." );
-                    attroff(COLOR_PAIR(4));
-                    refresh();
-                    write_on_file(name, password, email);
-                    refresh();
-                    sleep(3);
-                    return 0;
+                    if (is_exist(name) == 0)
+                    {
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(11));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 27), "                                                     " );
+                        mvprintw(((LINES/8)), (COLS/2 - 27), " YOUR ACCOUNT COMPLETLY CREATED! :) JUST A SECOND... " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 27), "                                                     " );
+                        attroff(COLOR_PAIR(11));
+                        refresh();
+                        write_on_file(name, password, email);
+                        sleep(3);
+                        return 0;
+                    }
+                    else
+                    {
+                        user = 0;
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(5));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 23), "                                            " );
+                        mvprintw(((LINES/8)), (COLS/2 - 23), " THE USERNAME EXISTS! PLEASE ENTER ANOTHER! " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 23), "                                            " );
+                        attroff(COLOR_PAIR(5));
+                        refresh();
+                        sleep(3);
+                        continue;
+                    }
                 }
                 else
                 {
-                    user = 0;
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
-                    mvprintw(((LINES/8)), (COLS/2 - 23), " THE USERNAME EXISTS! PLEASE ENTER ANOTHER! " );
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                   " );
+                    mvprintw(((LINES/8)), (COLS/2 - 18), " PLEASE COMPLETE YOUR INFORMATION! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                   " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(2);
-                    goto rewrite;
+                    sleep(3);
+                    continue;
                 }
-            }
-            else
-            {
-                curs_set(false);
-                noecho(); 
-                attron(COLOR_PAIR(5));
-                mvprintw(((LINES/8)), (COLS/2 - 18), " PLEASE COMPLETE YOUR INFORMATION! " );
-                attroff(COLOR_PAIR(5));
-                refresh();
-                sleep(2);
-                goto rewrite;
-            }
-        case 6:
-            return 0;
+                break;
+
+            case 6:
+                return 0;
+        }
     }
+
 }
 
 int is_exist(char *user)
 {
     FILE * file_account_password;
-    file_account_password = fopen("account_password.txt", "r");
-    char user_name[100];
+    file_account_password = fopen("accounts_passwords.txt", "r");
+    char user_name[100], password[100], email[100];
 
-    while (fscanf(file_account_password, "%s", user_name) != EOF)
+    while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
     {
         if (strcmp(user, user_name) == 0)
         {
@@ -481,7 +499,7 @@ int is_exist(char *user)
 int is_correct(char *user , char *pass , char *mail)
 {
     FILE * file_account_password;
-    file_account_password = fopen("account_password.txt", "r");
+    file_account_password = fopen("accounts_passwords.txt", "r");
     char user_name[100], password[100], email[100];
 
     while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
@@ -499,10 +517,9 @@ int is_correct(char *user , char *pass , char *mail)
 void write_on_file(char *user , char *pass , char *mail)
 {
     FILE * file_account_password;
-    file_account_password = fopen("account_password.txt", "a");
-    fprintf(file_account_password, "%s %s %s", user, pass, mail);
+    file_account_password = fopen("accounts_passwords.txt", "a");
+    fprintf(file_account_password, "%s %s %s\n", user, pass, mail);
     fclose(file_account_password);
-
 } 
 
 int email_is_correct(char *email)
