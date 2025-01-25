@@ -14,7 +14,6 @@ int main()
     curs_set(false);
     keypad(stdscr, TRUE);
     noecho();
- 
     int which_menu = 0;
     /*
     which_menu = 0   main & first menu
@@ -88,6 +87,12 @@ int main()
         else if (which_menu == 3)
         {
             break;
+        }
+
+        else if (which_menu == 4)
+        {
+            int which_case = before_play_menu(which_line_user);
+
         }
 
     }

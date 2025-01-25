@@ -5,6 +5,9 @@
 #include <string.h>
 #include <ctype.h>
 
+int how_many_line = 0;
+int which_line_user;
+
 int pass_is_correct(char *);
 int email_is_correct(char *);
 void clear_and_border();
@@ -437,6 +440,7 @@ int sign_up_menu()
                         attroff(COLOR_PAIR(11));
                         refresh();
                         write_on_file(name, password, email);
+                        which_line_user = how_many_line;
                         sleep(3);
                         return 4;
                     }
@@ -542,6 +546,7 @@ void write_on_file(char *user , char *pass , char *mail)
     file_account_password = fopen("accounts_passwords.txt", "a");
     fprintf(file_account_password, "%s %s %s\n", user, pass, mail);
     fclose(file_account_password);
+    how_many_line ++;
 } 
 
 int email_is_correct(char *email)
@@ -782,6 +787,7 @@ int sign_in_menu()
                         attroff(COLOR_PAIR(11));
                         refresh();
                         sleep(3); 
+                        which_line_user = which_line(name);
                         return 4;
                     }
 
@@ -846,6 +852,7 @@ int sign_in_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                              " );
                     attroff(COLOR_PAIR(11));
                     refresh();
+                    which_line_user = -1;
                     sleep(3); 
                     return 5;
                     break;
@@ -857,4 +864,22 @@ int sign_in_menu()
         }
     }
 
+}
+
+int which_line(char *username)
+{
+    FILE *file_account_password;
+    file_account_password = fopen("accounts_passwords.txt", "r");
+    char line[300];
+    char user[100];
+
+    int i = 0;
+    do
+    {
+        fgets(line, sizeof(line), file_account_password);
+        line[strcspn(line, "\n")] = '\0';
+        sscanf(line, "%s", user);
+        i++;
+    } while (strcmp(user, username) != 0);
+    return i;
 }

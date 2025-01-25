@@ -4,17 +4,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
 typedef struct
 {
-    char username[100];
+    int line;
     int gold;
-
+    int life_time;
+    int hungry_amount;
+    int telesm[20];
+    int selah[20];
     int x;
     int y;
-
 } player;
 
-int before_play_menu(char *username)
+int before_play_menu(int line)
 {
 
 }
