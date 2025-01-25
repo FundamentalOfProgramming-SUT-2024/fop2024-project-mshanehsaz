@@ -438,7 +438,7 @@ int sign_up_menu()
                         refresh();
                         write_on_file(name, password, email);
                         sleep(3);
-                        return 0;
+                        return 4;
                     }
                     else
                     {
@@ -501,7 +501,6 @@ int is_exist(char *user)
     fclose(file_account_password);
     return 0; 
 }
-
 
 int is_correct(char *user , char *pass)
 {
@@ -839,8 +838,17 @@ int sign_in_menu()
                 break;
                 
             case 5:
-
-                break;
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(11));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                              " );
+                    mvprintw(((LINES/8)), (COLS/2 - 18), " AS A GUEST, JUST A MOMENT... " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                              " );
+                    attroff(COLOR_PAIR(11));
+                    refresh();
+                    sleep(3); 
+                    return 5;
+                    break;
 
             case 6:
                 return 0;
@@ -850,4 +858,3 @@ int sign_in_menu()
     }
 
 }
-

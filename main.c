@@ -13,6 +13,8 @@ int main()
     curs_set(false);
     keypad(stdscr, TRUE);
     noecho();
+    int as_guest_or_not = 0;
+    // if user enter as a guest 1 
     int which_menu = 0;
     /*
     which_menu = 0   main & first menu
@@ -74,6 +76,11 @@ int main()
             }
             else if (which_case == 4)
             {
+                which_menu = 4;
+            }
+            else if (which_case == 5)
+            {
+                as_guest_or_not = 1;
                 which_menu = 4;
             }
 
