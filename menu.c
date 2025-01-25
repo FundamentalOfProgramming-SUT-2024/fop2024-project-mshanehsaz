@@ -438,7 +438,7 @@ int sign_up_menu()
                         refresh();
                         write_on_file(name, password, email);
                         sleep(3);
-                        return 1;
+                        return 0;
                     }
                     else
                     {
@@ -479,45 +479,59 @@ int sign_up_menu()
 
 int is_exist(char *user)
 {
-    FILE * file_account_password;
+    FILE *file_account_password;
     file_account_password = fopen("accounts_passwords.txt", "r");
+
+    char line[300];
     char user_name[100], password[100], email[100];
 
-    while (fscanf(file_account_password, "%s %s %s", user_name, password, email) != EOF)
+    while (fgets(line, sizeof(line), file_account_password) != NULL)
     {
+        line[strcspn(line, "\n")] = '\0';
+
+        sscanf(line, "%s %s %s", user_name, password, email);
+
         if (strcmp(user, user_name) == 0)
         {
             fclose(file_account_password);
-            return 1;
+            return 1; 
         }
     }
+
     fclose(file_account_password);
-    return 0;
+    return 0; 
 }
+
 
 int is_correct(char *user , char *pass)
 {
     FILE * file_account_password;
     file_account_password = fopen("accounts_passwords.txt", "r");
-    char user_name[100], password[100];
-
-    /*
+     /*
     the user not exist return 0
     the user is exist but the pass is incorrect return 2
     */
+    char line[300];
+    char user_name[100], password[100], email[100];
 
-    while (fscanf(file_account_password, "%s %s", user_name, password) != EOF)
+    while (fgets(line, sizeof(line), file_account_password) != NULL)
     {
+        line[strcspn(line, "\n")] = '\0';
+
+        sscanf(line, "%s %s %s", user_name, password, email);
+
         if (strcmp(user, user_name) == 0)
         {
-            if (strcmp(pass, password) == 0)
+            if (strcmp(password, pass) == 0)
             {
                 fclose(file_account_password);
-                return 1;
+                return 1; 
             }
+            fclose(file_account_password);
             return 2;
         }
     }
+
 
     fclose(file_account_password);
     return 0;
@@ -605,7 +619,7 @@ int sign_in_menu()
     char password[100];
     int user = 0;
     int pass = 0;
-    int which_case = 0;
+    int which_case = 1;
     while (1)
     {
         clear_and_border();
@@ -790,11 +804,12 @@ int sign_in_menu()
                     else
                     {
                         user = 0;
+                        pass = 0;
                         curs_set(false);
                         noecho(); 
                         attron(COLOR_PAIR(5));
                         mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                      " );
-                        mvprintw(((LINES/8)), (COLS/2 - 18), " I'M AFRAID, WE DON'T HAVE THIS USER!  " );
+                        mvprintw(((LINES/8)), (COLS/2 - 18), " I'M AFRAID, WE DON'T HAVE THIS USER! " );
                         mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                      " );
                         attroff(COLOR_PAIR(5));
                         refresh();
