@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "menu.c"
 #include "game.c"
 
 
@@ -22,8 +21,14 @@ int main()
     which_menu = 3   exit
     which_menu = 4   after sign up menu & sign in menu
     which_menu = 5   forgot pass
+    which_menu = 6   game setting
+    which_menu = 7   account page
+    which_menu = 8   score table
+    which_menu = 9   new game
+    which_menu = 10  resume
     ...
     */
+
     while (1)
     {
         if (which_menu == 0)
@@ -77,10 +82,6 @@ int main()
             {
                 which_menu = 4;
             }
-            else if (which_case == 4)
-            {
-                which_menu = 4;
-            }
 
         }
 
@@ -92,6 +93,15 @@ int main()
         else if (which_menu == 4)
         {
             int which_case = before_play_menu(which_line_user);
+            if (which_menu == 7)
+            {
+                profile();
+                which_menu = 4;
+            }
+            else if (which_case == 0)
+            {
+                which_menu = 0;
+            }
 
         }
 
