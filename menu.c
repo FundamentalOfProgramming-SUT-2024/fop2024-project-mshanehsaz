@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <unistd.h>
+
 
 int how_many_line = 0;
 int which_line_user = -1;
@@ -457,6 +459,7 @@ int sign_up_menu()
                         attroff(COLOR_PAIR(11));
                         refresh();
                         write_on_file(name, password, email);
+                        how_many_line ++;
                         which_line_user = how_many_line;
                         sleep(3);
                         return 4;
@@ -862,9 +865,9 @@ int sign_in_menu()
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(11));
-                    mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                              " );
-                    mvprintw(((LINES/8)), (COLS/2 - 18), " AS A GUEST, JUST A MOMENT... " );
-                    mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                              " );
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 16), "                              " );
+                    mvprintw(((LINES/8)), (COLS/2 - 16), " AS A GUEST, JUST A MOMENT... " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 16), "                              " );
                     attroff(COLOR_PAIR(11));
                     refresh();
                     which_line_user = -1;

@@ -3,7 +3,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "game.c"
 
 
@@ -102,9 +101,21 @@ int main()
             {
                 which_menu = 0;
             }
+            else if (which_case == 6)
+            {
+                which_menu = 6;
+            }
 
         }
 
+        else if (which_menu == 6)
+        {
+            int which_case = setting();
+            if (which_case = 4)
+            {
+                which_menu = 4;
+            }
+        }
     }
     refresh();
     endwin();
