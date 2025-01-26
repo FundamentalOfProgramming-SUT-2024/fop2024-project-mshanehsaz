@@ -18,11 +18,41 @@ typedef struct
     int telesm[20];
     int selah[20];
     int hardness;
+    int level;
     int x;
     int y;
 } Player;
 
 Player player;
+
+void clear_and_border2()
+{
+    clear();
+    attron(COLOR_PAIR(1));
+    mvprintw(LINES - 1, COLS - 1, "#");
+    mvprintw(0, 0, "#");
+    mvprintw(LINES -1 , 0, "#");
+    mvprintw(0, COLS - 1, "#");
+    for (int i =  1 ; i < LINES - 1; i++)
+    {
+        mvprintw(i, 0, "|");   
+    }
+    for (int i = 1 ; i < LINES - 1; i++)
+    {
+        mvprintw(i, COLS - 1, "|");   
+    }
+    for (int i = 1 ; i < COLS - 1; i++)
+    {
+        mvprintw(0, i, "*"); 
+        mvprintw(4, i, "*");  
+    }
+    for (int i = 1 ; i < COLS - 1 ; i++)
+    {
+        mvprintw(LINES - 1, i, "*");  
+        mvprintw(LINES - 5, i, "*");  
+    }
+    refresh();
+}
 
 void which_user(int line_user)
 {
@@ -405,4 +435,46 @@ int setting()
     }
 }
 
-int 
+void alert(char *message)
+{
+    for (int i = 2; i < COLS - 1; i++)
+    {
+        mvprintw(1, i, " ");
+        mvprintw(2, i, " ");
+        mvprintw(3, i, " ");
+    }
+
+    attron(A_BOLD);
+    attron(COLOR_PAIR(11));
+    for (int i = 2; i < strlen(message) + 4; i++)
+    {
+        mvprintw(1, i, " ");
+    }
+    mvprintw(2, 2, " %s ", message);
+    for (int i = 2; i < strlen(message) + 4; i++)
+    {
+        mvprintw(3, i, " ");
+    }
+    attroff(COLOR_PAIR(11));
+    attroff(A_BOLD);
+
+    refresh();
+}
+
+// void elemnts_under_board()
+// {
+//     mvprintw()
+// }
+
+int new_game()
+{
+    clear_and_border2();
+
+    char ch = getch();
+    if (ch == 'q')
+    {
+        return 0;
+    }
+
+
+}

@@ -105,6 +105,10 @@ int main()
             {
                 which_menu = 6;
             }
+            else if (which_case == 9)
+            {
+                which_menu = 9;
+            }
 
         }
 
@@ -114,6 +118,14 @@ int main()
             if (which_case = 4)
             {
                 which_menu = 4;
+            }
+        }
+        else if(which_menu == 9)
+        {
+            int which_case = new_game();
+            if (which_case == 0)
+            {
+                which_menu = 0;
             }
         }
     }
