@@ -93,7 +93,7 @@ int main()
         else if (which_menu == 4)
         {
             int which_case = before_play_menu(which_line_user);
-            if (which_menu == 7)
+            if (which_case == 7)
             {
                 profile();
                 which_menu = 4;

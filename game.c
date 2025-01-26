@@ -47,7 +47,11 @@ void which_user(int line_user)
 
 int before_play_menu(int line)
 {
-    if (line != -1)
+    if (line == -1)
+    {
+        player.line = -1;
+    }
+    else
     {
         which_user(line);
     }
@@ -198,27 +202,21 @@ void profile()
 {
     player.gold = 0;
     clear_and_border();
-    refresh();
     while (1)
     {
-        noecho();
-        curs_set(false);
-
-        char ch = getch();
-
-        if (ch == 'q')
-        {
-            break;
-        }
-
         if (player.line == -1)
         {
             attron(COLOR_PAIR(11));
-            mvprintw(((LINES/2) - 1), (COLS/2) - 5,"        ");
-            mvprintw(((LINES/2)), (COLS/2) - 5," GUEST! ");
-            mvprintw(((LINES/2) + 1), (COLS/2) - 5,"        ");
+            mvprintw(((LINES/2) - 4), (COLS/2) - 5,"        ");
+            mvprintw(((LINES/2) - 3), (COLS/2) - 5," GUEST! ");
+            mvprintw(((LINES/2)) - 2, (COLS/2) - 5,"        ");
             attroff(COLOR_PAIR(11));
             refresh(); 
+            attron(COLOR_PAIR(5));
+            mvprintw(((LINES/2)) + 2, ((COLS/2) - 10) ,"                   ");
+            mvprintw(((LINES/2)) + 3, ((COLS/2) - 10) ," PRESS Q TO LEAVE: ");
+            mvprintw(((LINES/2)) + 4, ((COLS/2) - 10) ,"                   ");
+            attroff(COLOR_PAIR(5));
         }
         
         else
@@ -226,17 +224,20 @@ void profile()
             attron(COLOR_PAIR(11));
             mvprintw(((LINES/2) - 8), (COLS/2) - (6 + (strlen(user[0])/2))," USERNAME: %s ", user[0]);
             mvprintw(((LINES/2)) - 4, ((COLS/2) - (6 + (strlen(user[1])/2))) ," PASSWORD: %s ", user[1]);
-            mvprintw(((LINES/2)), ((COLS/2) - 9) ," EMAIL: %s ", user[2]);
+            mvprintw(((LINES/2)), ((COLS/2) - (5 + (strlen(user[2])/2))) ," EMAIL: %s ", user[2]);
             mvprintw(((LINES/2)) + 4, ((COLS/2) - 9) ," SCORE(GOLD): %d ", player.gold);
             attroff(COLOR_PAIR(11));
             attron(COLOR_PAIR(5));
             mvprintw(((LINES/2)) + 7, ((COLS/2) - 10) ,"                   ");
-            mvprintw(((LINES/2)) + 8, ((COLS/2) - 10) ," PRESS Q TO LEAVE: ");
+            mvprintw(((LINES/2)) + 8, ((COLS/2) - 10) ," PRESS Q TO LEAVE ");
             mvprintw(((LINES/2)) + 9, ((COLS/2) - 10) ,"                   ");
             attroff(COLOR_PAIR(5));
             refresh();
         }
-
-
+        char ch = getch();
+        if (ch == 'q')
+        {
+            break;
+        }
     }
 }
