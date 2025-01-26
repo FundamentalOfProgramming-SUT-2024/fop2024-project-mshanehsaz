@@ -16,12 +16,15 @@ typedef struct
     int life_time;
     int hungry_amount;
     int telesm[20];
+    int main_selah;
     int selah[20];
     int hardness;
     int level;
     int x;
     int y;
 } Player;
+
+int first_life;
 
 Player player;
 
@@ -276,8 +279,6 @@ int setting()
 {
     clear_and_border();
     int which_case = 1;
-    player.color = 0;
-    player.hardness = 0;
     while (1)
     {
         if(player.hardness != 0)
@@ -461,15 +462,121 @@ void alert(char *message)
     refresh();
 }
 
-// void elemnts_under_board()
-// {
-//     mvprintw()
-// }
+void elemnts_under_board()
+{
+    attron(A_BOLD);
+    attron(COLOR_PAIR(11));
+    for (int i = 2; i < COLS - 2; i++)
+    {
+        mvprintw(LINES - 4, i, " ");
+    }
+    for (int i = 2; i < COLS - 2; i++)
+    {
+        mvprintw(LINES - 3, i, " ");
+    }
+
+    mvprintw(LINES - 3, 2, " Level: %d ", player.level);
+    mvprintw(LINES - 3, (COLS/5) + 2, " Gold: %d ", player.gold);
+    mvprintw(LINES - 3, 2*(COLS/5) + 2, " Hit: ");
+    attroff(COLOR_PAIR(11));
+
+    attron(COLOR_PAIR(5));
+    for (int i = 0; i < first_life; i++)
+    {
+            mvprintw(LINES - 3, 2*(COLS/5) + 8 + i," ");
+    }
+    for (int i = 0; i < player.life_time; i++)
+    {
+        mvprintw(LINES - 3, 2*(COLS/5) + 8 + i,"#");
+    }
+    attroff(COLOR_PAIR(5));
+
+    attron(COLOR_PAIR(11));
+    mvprintw(LINES - 3, 3*(COLS/5) + 2, " Hunger: ");
+    attroff(COLOR_PAIR(11));
+
+    attron(COLOR_PAIR(5));
+    for (int i = 0; i < 20; i++)
+    {
+            mvprintw(LINES - 3, 3*(COLS/5) + 12 + i," ");
+    }
+    for (int i = 0; i < player.hungry_amount; i++)
+    {
+        mvprintw(LINES - 3, 3*(COLS/5) + 12 + i,"#");
+    }
+    attroff(COLOR_PAIR(5));
+
+    attron(COLOR_PAIR(11));
+    mvprintw(LINES - 3, 4*(COLS/5) + 2, " Weapon: ");
+    switch (player.main_selah)
+    {
+    case 1:
+        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Mace");
+        break;
+    
+    case 2:
+        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Dagger");
+        break;
+
+    case 3:
+        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Magic Wand");
+        break;
+
+    case 4:
+        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Normal Arrow");
+        break;
+
+    case 5:
+        mvprintw(LINES - 3, 4*(COLS/6) + 11, "Sword");
+        break;
+
+    }
+
+    for (int i = 2; i < COLS - 2; i++)
+    {
+        mvprintw(LINES - 2, i, " ");
+    }
+    attroff(COLOR_PAIR(11));
+    attroff(A_BOLD);
+
+    refresh();
+}
 
 int new_game()
 {
-    clear_and_border2();
+    if (player.color > 3 || player.color < 1)
+    {
+        player.color = 1;
+    }
+    if (player.hardness > 3 || player.hardness < 1)
+    {
+        player.hardness = 1;
+    }
+    player.gold = 0;
+    player.main_selah = 1;
+    if (player.hardness == 1)
+    {
+        player.life_time = 24;
+        player.hungry_amount = 0;
+    }
+    else if (player.hardness == 2)
+    {
+        player.life_time = 18;
+        player.hungry_amount = 2;
+    }
+    else if (player.hardness == 3)
+    {
+        player.life_time = 12; 
+        player.hungry_amount = 4;  
+    }
+    first_life = player.life_time;
+    player.level = 1;
+    player.selah[0] = 1;
 
+    clear_and_border2();
+    elemnts_under_board();
+    alert("salamamammslaksdjlakda");
+    sleep(3);
     char ch = getch();
     if (ch == 'q')
     {
