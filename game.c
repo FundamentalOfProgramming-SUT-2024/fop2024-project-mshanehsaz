@@ -45,9 +45,12 @@ typedef struct
 {
         char **map;
         int type;
+        int on_off;
 }room;
 
 room *rooms;
+
+char **all_map;
 
 
 int first_life;
@@ -85,14 +88,14 @@ void clear_and_border2()
 
 void map()
 {
-    rooms = (room *) malloc(6 * sizeof(room));
-    for (int i = 0; i<6; i++)
+    rooms = (room *) malloc(9 * sizeof(room));
+    for (int i = 0; i<8; i++)
     {
         if (player.level == 4)
         {
             non_kaboos:
             //دو مورد از ۴ حالتی که میتونه بیاد باید اتاق معمولی باشه یعنی اگه ۰ یا ۱ بود معمولی 
-            rooms[i].type = rand()%5;
+            rooms[i].type = rand()%2;
             if (rooms[i].type == 3)
             {
                 goto non_kaboos;
@@ -102,30 +105,40 @@ void map()
         {
             non_kaboos1:
             //دو مورد از ۴ حالتی که میتونه بیاد باید اتاق معمولی باشه یعنی اگه ۰ یا ۱ بود معمولی 
-            rooms[i].type = rand()%4;
+            rooms[i].type = rand()%2;
             if (rooms[i].type == 3)
             {
                 goto non_kaboos1;
             }
         }
-
         if (rooms[i].type == 1 || rooms[i].type == 0)
         {
             int height = rand()%7 + 4;
-            int width = rand()%7 + 8;
+            int width = rand()%13 + 6;
 
-            rooms[i].map = (char **) malloc(((LINES - 6)/6)*sizeof(char *));
-            for (int j = 0; j<((LINES - 6)/6); j++)
+            rooms[i].map = (char **) malloc(((LINES - 10)/2)*sizeof(char *));
+            for (int j = 0; j<((LINES - 10)/2); j++)
             {
-                rooms[i].map[j] = (char *) malloc(((COLS - 2)/6)*sizeof(char));
-                for (int k = 0; k < ((COLS - 2)/6); k++)
+                rooms[i].map[j] = (char *) malloc(((COLS - 2)/4)*sizeof(char));
+                for (int k = 0; k < ((COLS - 2)/4); k++)
                 {
                     rooms[i].map[j][k] = ' ';
                 }
             }
 
-            int firstx = rand()%(((LINES - 6)/12) - 4) + 1;
-            int firsty = rand()%(((COLS - 2)/12) - 4) + 1;
+            int firstx = rand()%((LINES - 10)/6) + 1;
+            int firsty = rand()%((COLS - 2)/6) + 1;
+
+
+            if (firstx + height < ((LINES - 10)/2) && firsty + width < ((COLS - 2)/4)) 
+            {
+            } 
+            else 
+            {
+                i --;
+                continue;
+            }
+
 
             for (int k = 1; k < width; k++)
             {
@@ -154,22 +167,31 @@ void map()
 
         else if (rooms[i].type == 2)
         {
-            int height = rand()%7 + 4;
-            int width = rand()%7 + 8;
+                        int height = rand()%5 + 4;
+            int width = rand()%9 + 8;
 
-            rooms[i].map = (char **) malloc(((LINES - 6)/6)*sizeof(char *));
-            for (int j = 0; j<((LINES - 6)/6); j++)
+            rooms[i].map = (char **) malloc(((LINES - 10)/2)*sizeof(char *));
+            for (int j = 0; j<((LINES - 10)/2); j++)
             {
-                rooms[i].map[j] = (char *) malloc(((COLS - 2)/6)*sizeof(char));
-                for (int k = 0; k < ((COLS - 2)/6); k++)
+                rooms[i].map[j] = (char *) malloc(((COLS - 2)/4)*sizeof(char));
+                for (int k = 0; k < ((COLS - 2)/4); k++)
                 {
                     rooms[i].map[j][k] = ' ';
                 }
             }
 
-            int firstx = rand()%(((LINES - 6)/12) - 4) + 1;
-            int firsty = rand()%(((COLS - 2)/12) - 4) + 1;
+            int firstx = rand()%((LINES - 10)/6) + 2;
+            int firsty = rand()%((COLS - 2)/10) + 2;
 
+
+            if (firstx + height < ((LINES - 10)/2) && firsty + width < ((COLS - 2)/4)) 
+            {
+            } 
+            else 
+            {
+                i --;
+                continue;
+            }
             for (int k = 1; k < width; k++)
             {
                 rooms[i].map[firstx][firsty + k] = '-';
@@ -203,8 +225,152 @@ void map()
         {
 
         }
-            
+
+        rooms[i].on_off = 0;   
     }   
+
+    all_map = (char **) malloc ((LINES - 10)*sizeof(char *));
+    for (int i = 0; i < (LINES - 10); i++)
+    {
+        all_map[i] = (char *) malloc((COLS - 2) * sizeof(char));
+        for (int j = 0; j < (COLS - 2); j++)
+        {
+            all_map[i][j] = ' ';
+        }
+    }  
+
+    int which_map = 0;
+
+    while(which_map < 8)
+    {
+        int row, col;
+        switch (which_map) 
+        {
+        case 0:
+            row = 0;
+            col = 0;
+            break;
+
+        case 1:
+            row = 0;
+            col = (COLS - 2) / 4;
+            break;
+
+        case 2:
+            row = 0;
+            col = 2 * (COLS - 2) / 4;
+            break;
+
+        case 3:
+            row = 0;
+            col = 3 * (COLS - 2) / 4;
+            break;
+
+        case 4:
+            row = ((LINES - 10) / 2);
+            col = 0;
+            break;
+
+        case 5:
+            row = ((LINES - 10) / 2);
+            col = (COLS - 2) / 4;
+            break;
+
+        case 6:
+            row = ((LINES - 10) / 2);
+            col = 2 * (COLS - 2) / 4 ;
+            break;
+
+        case 7:
+            row = (LINES - 10) / 2;
+            col = 3 * (COLS - 2) / 4;
+            break;
+
+        }
+
+        for (int i = 0; i < ((LINES - 10) / 2); i++) 
+        {
+            for (int j = 0; j < ((COLS - 2) / 4); j++) 
+            {
+                all_map[row + i][col + j] = rooms[which_map].map[i][j];
+            }
+        }
+        which_map ++;
+    }
+}
+
+void print_map(int which_index) 
+{
+    rooms[which_index].on_off = 1;
+    int row, col;
+    switch (which_index) 
+    {
+    case 0:
+        row = 6;
+        col = 2;
+        break;
+
+    case 1:
+        row = 6;
+        col = (COLS - 2) / 4 + 2;
+        break;
+
+    case 2:
+        row = 6;
+        col = 2 * (COLS - 2) / 4 + 2;
+        break;
+
+    case 3:
+        row = 6;
+        col = 3 * (COLS - 2) / 4 + 2;
+        break;
+
+    case 4:
+        row = ((LINES - 10) / 2) + 4;
+        col = 2;
+        break;
+
+    case 5:
+        row = ((LINES - 10) / 2) + 4;
+        col = (COLS - 2) / 4 + 2;
+        break;
+
+    case 6:
+        row = ((LINES - 10) / 2) + 4;
+        col = 2 * (COLS - 2) / 4 + 2;
+        break;
+
+    case 7:
+        row = (LINES - 10) / 2 + 4;
+        col = 3 * (COLS - 2) / 4 + 2;
+        break;
+
+    }
+
+    for (int i = 0; i < ((LINES - 10) / 2) - 1; i++) 
+    {
+        for (int j = 0; j < ((COLS - 2) / 4) - 1; j++) 
+        {
+            move(row + i, col + j);
+            printw("%c", rooms[which_index].map[i][j]);
+        }
+    }
+    refresh();
+
+}
+
+void print_all_map()
+{
+    move(6, 2);
+    for (int i = 0; i < LINES - 10; i++)
+    {
+        for (int j = 0; j < COLS - 2; j++)
+        {
+            printw("%c", all_map[i][j]);
+        }
+        move(6 + i + 1, 2);
+    }
+    refresh(); 
 }
 
 void which_user(int line_user)
@@ -743,12 +909,12 @@ int new_game()
     clear_and_border2();
     elemnts_under_board();
     map();
+    print_all_map();
     alert("salam", "khoobi", -1);
-    sleep(3);
     char ch = getch();
     if (ch == 'q')
     {
-        return 0;
+        return 4;
     }
 
 

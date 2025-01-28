@@ -326,7 +326,7 @@ int sign_up_menu()
                         mvprintw(((LINES/8) + 1), (COLS/2 - 12), "                        " );
                         attroff(COLOR_PAIR(5));
                         refresh();
-                        sleep(3);
+                        sleep(2);
                         continue;
                     }
                     else
@@ -356,7 +356,7 @@ int sign_up_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 12), "                         " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(3);
+                    sleep(2);
                     continue;
                 }
                 else if (email_is_correct(email) == 0)
@@ -370,7 +370,7 @@ int sign_up_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 21), "                                        " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(3);
+                    sleep(2);
                     continue;
                 }
 
@@ -401,7 +401,7 @@ int sign_up_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                             " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(3);
+                    sleep(2);
                     continue;
                 }
 
@@ -416,7 +416,7 @@ int sign_up_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(3);
+                    sleep(2);
                     continue;
                 }
                 else if (pass_is_correct(password) == 0)
@@ -430,7 +430,7 @@ int sign_up_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 22), "                                           " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(3);
+                    sleep(2);
                     continue;
                 }
 
@@ -463,7 +463,7 @@ int sign_up_menu()
                         write_on_file(name, password, email);
                         how_many_line ++;
                         which_line_user = how_many_line;
-                        sleep(3);
+                        sleep(2);
                         return 4;
                     }
                     else
@@ -477,7 +477,7 @@ int sign_up_menu()
                         mvprintw(((LINES/8) + 1), (COLS/2 - 23), "                                            " );
                         attroff(COLOR_PAIR(5));
                         refresh();
-                        sleep(3);
+                        sleep(2);
                         continue;
                     }
                 }
@@ -491,7 +491,7 @@ int sign_up_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                   " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(3);
+                    sleep(2);
                     continue;
                 }
                 break;
@@ -808,7 +808,7 @@ int sign_in_menu()
                         mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                 " );
                         attroff(COLOR_PAIR(11));
                         refresh();
-                        sleep(3); 
+                        sleep(2); 
                         which_line_user = line_finder(name);
                         return 4;
                     }
@@ -824,7 +824,7 @@ int sign_in_menu()
                         mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                    " );
                         attroff(COLOR_PAIR(5));
                         refresh();
-                        sleep(3);
+                        sleep(2);
                         continue;
                     }
 
@@ -840,7 +840,7 @@ int sign_in_menu()
                         mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                      " );
                         attroff(COLOR_PAIR(5));
                         refresh();
-                        sleep(3);
+                        sleep(2);
                         continue;
                     }
                 }
@@ -855,7 +855,7 @@ int sign_in_menu()
                     mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                   " );
                     attroff(COLOR_PAIR(5));
                     refresh();
-                    sleep(3);
+                    sleep(2);
                     continue;
                 }
 
@@ -873,7 +873,7 @@ int sign_in_menu()
                     attroff(COLOR_PAIR(11));
                     refresh();
                     which_line_user = -1;
-                    sleep(3); 
+                    sleep(2); 
                     return 4;
 
             case 6:

@@ -11,6 +11,7 @@ int main()
     // wchar_t emoji[] = L"🌍😄🐱‍👤";
     // mvaddwstr(5, 5, emoji);
     setlocale(LC_ALL, "");
+    srand(time(0));
     initscr();
     curs_set(false);
     keypad(stdscr, TRUE);
@@ -129,6 +130,10 @@ int main()
             if (which_case == 0)
             {
                 which_menu = 0;
+            }
+            if (which_case == 4)
+            {
+                which_menu = 4;
             }
         }
     }
