@@ -6,8 +6,17 @@
 #include <ctype.h>
 #include "menu.c"
 
+
 char **user;
 
+/*
+color 1 = yellow
+color 2 = blue
+color 3 = green
+hardness 1 = easy
+hardness 2 = normal
+hardness 3 = hard
+*/
 typedef struct
 {
     int line;
@@ -20,9 +29,26 @@ typedef struct
     int selah[20];
     int hardness;
     int level;
+    int room_i;
     int x;
     int y;
 } Player;
+
+
+/*
+type 1 = mamooli
+type 2 = telesm
+type 3 = kaboos
+type 4 = ganj
+*/
+typedef struct
+{
+        char **map;
+        int type;
+}room;
+
+room *rooms;
+
 
 int first_life;
 
@@ -55,6 +81,130 @@ void clear_and_border2()
         mvprintw(LINES - 5, i, "*");  
     }
     refresh();
+}
+
+void map()
+{
+    rooms = (room *) malloc(6 * sizeof(room));
+    for (int i = 0; i<6; i++)
+    {
+        if (player.level == 4)
+        {
+            non_kaboos:
+            //دو مورد از ۴ حالتی که میتونه بیاد باید اتاق معمولی باشه یعنی اگه ۰ یا ۱ بود معمولی 
+            rooms[i].type = rand()%5;
+            if (rooms[i].type == 3)
+            {
+                goto non_kaboos;
+            }
+        }
+        else 
+        {
+            non_kaboos1:
+            //دو مورد از ۴ حالتی که میتونه بیاد باید اتاق معمولی باشه یعنی اگه ۰ یا ۱ بود معمولی 
+            rooms[i].type = rand()%4;
+            if (rooms[i].type == 3)
+            {
+                goto non_kaboos1;
+            }
+        }
+
+        if (rooms[i].type == 1 || rooms[i].type == 0)
+        {
+            int height = rand()%7 + 4;
+            int width = rand()%7 + 8;
+
+            rooms[i].map = (char **) malloc(((LINES - 6)/6)*sizeof(char *));
+            for (int j = 0; j<((LINES - 6)/6); j++)
+            {
+                rooms[i].map[j] = (char *) malloc(((COLS - 2)/6)*sizeof(char));
+                for (int k = 0; k < ((COLS - 2)/6); k++)
+                {
+                    rooms[i].map[j][k] = ' ';
+                }
+            }
+
+            int firstx = rand()%(((LINES - 6)/12) - 4) + 1;
+            int firsty = rand()%(((COLS - 2)/12) - 4) + 1;
+
+            for (int k = 1; k < width; k++)
+            {
+                rooms[i].map[firstx][firsty + k] = '-';
+            }
+
+            for (int k = 1; k < width; k++)
+            {
+                rooms[i].map[firstx + height][firsty + k] = '-';
+            }
+
+            for (int k = 1; k < height; k++)
+            {
+                rooms[i].map[firstx + k][firsty] = '|';
+            }
+
+            for (int k = 1; k < height; k++)
+            {
+                rooms[i].map[firstx + k][firsty + width] = '|';
+            }   
+            rooms[i].map[firstx][firsty] = '$';
+            rooms[i].map[firstx + height][firsty] = '$';
+            rooms[i].map[firstx][firsty + width] = '$';
+            rooms[i].map[firstx + height][firsty + width] = '$';
+        }
+
+        else if (rooms[i].type == 2)
+        {
+            int height = rand()%7 + 4;
+            int width = rand()%7 + 8;
+
+            rooms[i].map = (char **) malloc(((LINES - 6)/6)*sizeof(char *));
+            for (int j = 0; j<((LINES - 6)/6); j++)
+            {
+                rooms[i].map[j] = (char *) malloc(((COLS - 2)/6)*sizeof(char));
+                for (int k = 0; k < ((COLS - 2)/6); k++)
+                {
+                    rooms[i].map[j][k] = ' ';
+                }
+            }
+
+            int firstx = rand()%(((LINES - 6)/12) - 4) + 1;
+            int firsty = rand()%(((COLS - 2)/12) - 4) + 1;
+
+            for (int k = 1; k < width; k++)
+            {
+                rooms[i].map[firstx][firsty + k] = '-';
+            }
+
+            for (int k = 1; k < width; k++)
+            {
+                rooms[i].map[firstx + height][firsty + k] = '-';
+            }
+
+            for (int k = 1; k < height; k++)
+            {
+                rooms[i].map[firstx + k][firsty] = '|';
+            }
+
+            for (int k = 1; k < height; k++)
+            {
+                rooms[i].map[firstx + k][firsty + width] = '|';
+            }   
+            rooms[i].map[firstx][firsty] = '$';
+            rooms[i].map[firstx + height][firsty] = '$';
+            rooms[i].map[firstx][firsty + width] = '$';
+            rooms[i].map[firstx + height][firsty + width] = '$';
+        }
+        
+        else if (rooms[i].type == 3)
+        {
+            //kaboos
+        }
+        else if (rooms[i].type == 4)
+        {
+
+        }
+            
+    }   
 }
 
 void which_user(int line_user)
@@ -436,7 +586,7 @@ int setting()
     }
 }
 
-void alert(char *message)
+void alert(char *message1, char *message2, int number)
 {
     for (int i = 2; i < COLS - 1; i++)
     {
@@ -447,15 +597,27 @@ void alert(char *message)
 
     attron(A_BOLD);
     attron(COLOR_PAIR(11));
-    for (int i = 2; i < strlen(message) + 4; i++)
+
+    char buffer[256];
+    if (number == -1)
+    {
+        snprintf(buffer, sizeof(buffer), "%s", message1);
+    }
+    else
+    {
+        snprintf(buffer, sizeof(buffer), "%s %d %s", message1, number, message2);
+    }
+
+    for (int i = 2; i < strlen(buffer) + 4; i++)
     {
         mvprintw(1, i, " ");
     }
-    mvprintw(2, 2, " %s ", message);
-    for (int i = 2; i < strlen(message) + 4; i++)
+    mvprintw(2, 2, " %s ", buffer);
+    for (int i = 2; i < strlen(buffer) + 4; i++)
     {
         mvprintw(3, i, " ");
     }
+
     attroff(COLOR_PAIR(11));
     attroff(A_BOLD);
 
@@ -511,23 +673,28 @@ void elemnts_under_board()
     switch (player.main_selah)
     {
     case 1:
-        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Mace");
+        wchar_t emoji[] = L"🪓";
+        mvaddwstr(LINES - 3, 4*(COLS/5) + 11, emoji);
         break;
     
     case 2:
-        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Dagger");
+        wchar_t emoji1[] = L"🗡️";
+        mvaddwstr(LINES - 3, 4*(COLS/5) + 11, emoji1);
         break;
 
     case 3:
-        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Magic Wand");
+        wchar_t emoji2[] = L"🪄";
+        mvaddwstr(LINES - 3, 4*(COLS/5) + 11, emoji2);
         break;
 
     case 4:
-        mvprintw(LINES - 3, 4*(COLS/5) + 11, "Normal Arrow");
+        wchar_t emoji3[] = L"🏹";
+        mvaddwstr(LINES - 3, 4*(COLS/5) + 11, emoji3);
         break;
 
     case 5:
-        mvprintw(LINES - 3, 4*(COLS/6) + 11, "Sword");
+        wchar_t emoji4[] = L"⚔️";
+        mvaddwstr(LINES - 3, 4*(COLS/5) + 11, emoji4);
         break;
 
     }
@@ -575,7 +742,8 @@ int new_game()
 
     clear_and_border2();
     elemnts_under_board();
-    alert("salamamammslaksdjlakda");
+    map();
+    alert("salam", "khoobi", -1);
     sleep(3);
     char ch = getch();
     if (ch == 'q')

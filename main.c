@@ -8,6 +8,9 @@
 
 int main()
 {
+    // wchar_t emoji[] = L"🌍😄🐱‍👤";
+    // mvaddwstr(5, 5, emoji);
+    setlocale(LC_ALL, "");
     initscr();
     curs_set(false);
     keypad(stdscr, TRUE);

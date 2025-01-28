@@ -5,6 +5,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <locale.h>
+#include <wchar.h>
 
 
 int how_many_line = 0;
