@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <ncurses.h>
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 #include "menu.c"
 
 
@@ -35,17 +29,31 @@ typedef struct
 } Player;
 
 
+typedef struct
+{
+    int x;
+    int y;
+}pair;
+
+
 /*
 type 1 = mamooli
 type 2 = telesm
 type 3 = kaboos
 type 4 = ganj
 */
+
+/*
+door 0 = up
+door 1 = right
+door 2 = left
+door 3 = down
+*/
 typedef struct
 {
         char **map;
         int type;
-        int on_off;
+        pair doors[4];
 }room;
 
 room *rooms;
@@ -56,6 +64,43 @@ char **all_map;
 int first_life;
 
 Player player;
+
+
+void connect_plus(int x1, int y1, int x2, int y2) 
+{
+    int current_x = x1, current_y = y1;
+    
+    while (current_x != x2 || current_y != y2) 
+    {
+        if (all_map[current_x][current_y] == ' ') 
+            all_map[current_x][current_y] = '#';
+
+        int move_horizontally = rand() % 2;
+
+        if (move_horizontally && current_y != y2)  
+            if (current_y > y2)
+            {
+                current_y += -1;
+            }
+            else
+            { 
+                current_y += 1;
+            }
+        else if (current_x != x2)  
+            if (current_x > x2)
+            {
+                current_x += -1;
+            }
+            else
+            { 
+                current_x += 1;
+            }    }
+}
+
+// void connect_room()
+// {
+//     connect_plus(rooms[0].doors[1].x, rooms[0].doors[1].y, rooms[1].doors[2].x, rooms[1].doors[2].y);
+// }
 
 void clear_and_border2()
 {
@@ -84,6 +129,102 @@ void clear_and_border2()
         mvprintw(LINES - 5, i, "*");  
     }
     refresh();
+}
+
+void adding_doors(int i, int firstx, int firsty, int width, int height)
+{
+    switch (i)
+    {
+    case 0:
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[1].y = firsty + width;
+        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+
+        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[3].x = firstx + height;
+        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        break;
+    
+    case 1:
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[1].y = firsty + width;
+        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[2].y = firsty;
+        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+
+        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[3].x = firstx + height;
+        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        break;
+
+    case 2:
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[1].y = firsty + width;
+        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[2].y = firsty;
+        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+
+        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[3].x = firstx + height;
+        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        break;
+    case 3:
+
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[2].y = firsty;
+        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+
+        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[3].x = firstx + height;
+        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        break;
+    case 4:
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[1].y = firsty + width;
+        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[0].x = firstx;
+        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        break;
+    case 5:
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[1].y = firsty + width;
+        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[2].y = firsty;
+        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+
+        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[0].x = firstx;
+        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        break;
+    case 6:
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[1].y = firsty + width;
+        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[2].y = firsty;
+        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+
+        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[0].x = firstx;
+        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        break;
+    case 7:
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[2].y = firsty;
+        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[0].x = firstx;
+        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        break;
+    }
 }
 
 void map()
@@ -126,8 +267,8 @@ void map()
                 }
             }
 
-            int firstx = rand()%((LINES - 10)/6) + 1;
-            int firsty = rand()%((COLS - 2)/6) + 1;
+            int firstx = rand()%((LINES - 10)/8) + 1;
+            int firsty = rand()%((COLS - 2)/8) + 1;
 
 
             if (firstx + height < ((LINES - 10)/2) && firsty + width < ((COLS - 2)/4)) 
@@ -163,6 +304,7 @@ void map()
             rooms[i].map[firstx + height][firsty] = '$';
             rooms[i].map[firstx][firsty + width] = '$';
             rooms[i].map[firstx + height][firsty + width] = '$';
+            adding_doors(i, firstx, firsty, width, height);
         }
 
         else if (rooms[i].type == 2)
@@ -225,8 +367,6 @@ void map()
         {
 
         }
-
-        rooms[i].on_off = 0;   
     }   
 
     all_map = (char **) malloc ((LINES - 10)*sizeof(char *));
@@ -297,66 +437,6 @@ void map()
         }
         which_map ++;
     }
-}
-
-void print_map(int which_index) 
-{
-    rooms[which_index].on_off = 1;
-    int row, col;
-    switch (which_index) 
-    {
-    case 0:
-        row = 6;
-        col = 2;
-        break;
-
-    case 1:
-        row = 6;
-        col = (COLS - 2) / 4 + 2;
-        break;
-
-    case 2:
-        row = 6;
-        col = 2 * (COLS - 2) / 4 + 2;
-        break;
-
-    case 3:
-        row = 6;
-        col = 3 * (COLS - 2) / 4 + 2;
-        break;
-
-    case 4:
-        row = ((LINES - 10) / 2) + 4;
-        col = 2;
-        break;
-
-    case 5:
-        row = ((LINES - 10) / 2) + 4;
-        col = (COLS - 2) / 4 + 2;
-        break;
-
-    case 6:
-        row = ((LINES - 10) / 2) + 4;
-        col = 2 * (COLS - 2) / 4 + 2;
-        break;
-
-    case 7:
-        row = (LINES - 10) / 2 + 4;
-        col = 3 * (COLS - 2) / 4 + 2;
-        break;
-
-    }
-
-    for (int i = 0; i < ((LINES - 10) / 2) - 1; i++) 
-    {
-        for (int j = 0; j < ((COLS - 2) / 4) - 1; j++) 
-        {
-            move(row + i, col + j);
-            printw("%c", rooms[which_index].map[i][j]);
-        }
-    }
-    refresh();
-
 }
 
 void print_all_map()
@@ -909,6 +989,7 @@ int new_game()
     clear_and_border2();
     elemnts_under_board();
     map();
+    // connect_room();
     print_all_map();
     alert("salam", "khoobi", -1);
     char ch = getch();
