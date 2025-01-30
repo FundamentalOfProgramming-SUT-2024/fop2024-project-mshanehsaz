@@ -60,7 +60,9 @@ room *rooms;
 
 char **all_map;
 
-char **map_show;
+char **map_whithout_tale;
+
+char **map_that_shown;
 
 
 int first_life;
@@ -448,6 +450,15 @@ void adding_doors(int i, int firstx, int firsty, int width, int height)
 
 void map()
 {
+    map_that_shown = (char **) malloc ((LINES - 10)*sizeof(char *));
+    for (int i = 0; i < (LINES - 10); i++)
+    {
+        map_that_shown[i] = (char *) malloc((COLS - 2) * sizeof(char));
+        for (int j = 0; j < (COLS - 2); j++)
+        {
+            map_that_shown[i][j] = ' ';
+        }
+    }  
 
     all_map = (char **) malloc ((LINES - 10)*sizeof(char *));
     for (int i = 0; i < (LINES - 10); i++)
@@ -611,17 +622,29 @@ void map()
 
 void print_all_map()
 {
-    attron(COLOR_PAIR(15));
     move(6, 2);
     for (int i = 0; i < LINES - 10; i++)
     {
         for (int j = 0; j < COLS - 2; j++)
         {
-            printw("%c", all_map[i][j]);
+            if (map_whithout_tale[i][j] == 'G')
+            {
+                attron(COLOR_PAIR(16));
+                printw("%c", map_whithout_tale[i][j]);
+                attroff(COLOR_PAIR(16));
+                continue;
+            }
+            if (map_whithout_tale[i][j] == 'o')
+            {
+                printw("%c", map_whithout_tale[i][j]);
+                continue;
+            }
+            attron(COLOR_PAIR(15));
+            printw("%c", map_whithout_tale[i][j]);
+            attroff(COLOR_PAIR(15));
         }
         move(6 + i + 1, 2);
     }
-    attroff(COLOR_PAIR(15));
     refresh(); 
 }
 
@@ -1129,16 +1152,38 @@ void elemnts_under_board()
 
 void copy_map()
 {
-    map_show = (char **) malloc((LINES - 10) * sizeof(char *));
+    map_whithout_tale = (char **) malloc((LINES - 10) * sizeof(char *));
     for (int i = 0; i < LINES - 10; i++)
     {
-        map_show[i] = (char *) malloc((COLS - 2)*sizeof(char));
+        map_whithout_tale[i] = (char *) malloc((COLS - 2)*sizeof(char));
 
         for (int j = 0; j < COLS - 2; j++)
         {
-            map_show[i][j] = all_map[i][j];
+            map_whithout_tale[i][j] = all_map[i][j];
         }
     }
+}
+
+void elements_on_map()
+{
+    for (int i = 0; i < LINES - 10; i++)
+    {
+        for (int j = 0; j < COLS - 2; j++)
+        {
+            int sotoon_panjereh = rand()%40;
+            int gold = rand()%40;
+            if (all_map[i][j] == '.' && all_map[i + 1][j + 1] != '+' && all_map[i + 1][j] != '+' && all_map[i][j + 1] != '+' && all_map[i][j - 1] != '+' && all_map[i - 1][j] != '+' && all_map[i - 1][j - 1] != '+' && !sotoon_panjereh)
+            {
+                all_map[i][j] = 'o';
+            }
+
+            if (all_map[i][j] == '.' && !gold)
+            {
+                all_map[i][j] = 'G';
+            }
+        }
+    }
+
 }
 
 int new_game()
@@ -1176,6 +1221,11 @@ int new_game()
     elemnts_under_board();
     map();
     connect_room();
+    elements_on_map();
+    
+
+
+
     copy_map();
     print_all_map();
     alert("salam", "khoobi", -1);
