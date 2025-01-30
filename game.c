@@ -60,6 +60,8 @@ room *rooms;
 
 char **all_map;
 
+char **map_show;
+
 
 int first_life;
 
@@ -531,6 +533,15 @@ void map()
             rooms[i].map[firstx + height][firsty] = '$';
             rooms[i].map[firstx][firsty + width] = '$';
             rooms[i].map[firstx + height][firsty + width] = '$';
+
+            for (int k = firstx + 1; k < firstx + height; k++)
+            {
+                for (int j = firsty + 1; j <  firsty + width; j++)
+                {
+                    rooms[i].map[k][j] = '.';
+                }
+            }
+
             add_to_main_map(i);
             adding_doors(i, firstx, firsty, width, height);
         }
@@ -600,6 +611,7 @@ void map()
 
 void print_all_map()
 {
+    attron(COLOR_PAIR(15));
     move(6, 2);
     for (int i = 0; i < LINES - 10; i++)
     {
@@ -609,6 +621,7 @@ void print_all_map()
         }
         move(6 + i + 1, 2);
     }
+    attroff(COLOR_PAIR(15));
     refresh(); 
 }
 
@@ -1114,6 +1127,20 @@ void elemnts_under_board()
     refresh();
 }
 
+void copy_map()
+{
+    map_show = (char **) malloc((LINES - 10) * sizeof(char *));
+    for (int i = 0; i < LINES - 10; i++)
+    {
+        map_show[i] = (char *) malloc((COLS - 2)*sizeof(char));
+
+        for (int j = 0; j < COLS - 2; j++)
+        {
+            map_show[i][j] = all_map[i][j];
+        }
+    }
+}
+
 int new_game()
 {
     if (player.color > 3 || player.color < 1)
@@ -1149,6 +1176,7 @@ int new_game()
     elemnts_under_board();
     map();
     connect_room();
+    copy_map();
     print_all_map();
     alert("salam", "khoobi", -1);
     char ch = getch();

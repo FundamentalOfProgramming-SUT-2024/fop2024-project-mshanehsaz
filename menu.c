@@ -47,12 +47,14 @@ void clear_and_border()
         init_color(5, 0, 200, 0);
         init_color(6, 304, 355, 202);
         init_color(10, 300, 550, 500);
+        init_color(12, 600, 700, 900);
         init_pair(1, COLOR_GREEN, COLOR_BLACK);
         init_pair(2, COLOR_WHITE, 5);
         init_pair(3, COLOR_WHITE, COLOR_BLACK);
         init_pair(4, COLOR_WHITE, 6);
         init_pair(5, COLOR_WHITE, COLOR_RED); 
         init_pair(11, COLOR_WHITE, 10);
+        init_pair(15, 12, COLOR_BLACK);
 
     }
     clear();
