@@ -65,42 +65,258 @@ int first_life;
 
 Player player;
 
-
-void connect_plus(int x1, int y1, int x2, int y2) 
+void add_to_main_map(int i)
 {
-    int current_x = x1, current_y = y1;
-    
-    while (current_x != x2 || current_y != y2) 
+    int row, col;
+    switch (i) 
     {
-        if (all_map[current_x][current_y] == ' ') 
-            all_map[current_x][current_y] = '#';
+    case 0:
+        row = 0;
+        col = 0;
+        break;
 
-        int move_horizontally = rand() % 2;
+    case 1:
+        row = 0;
+        col = (COLS - 2) / 4;
+        break;
 
-        if (move_horizontally && current_y != y2)  
-            if (current_y > y2)
-            {
-                current_y += -1;
-            }
-            else
-            { 
-                current_y += 1;
-            }
-        else if (current_x != x2)  
-            if (current_x > x2)
-            {
-                current_x += -1;
-            }
-            else
-            { 
-                current_x += 1;
-            }    }
+    case 2:
+        row = 0;
+        col = 2 * (COLS - 2) / 4;
+        break;
+
+    case 3:
+        row = 0;
+        col = 3 * (COLS - 2) / 4;
+        break;
+
+    case 4:
+        row = ((LINES - 10) / 2);
+        col = 0;
+        break;
+
+    case 5:
+        row = ((LINES - 10) / 2);
+        col = (COLS - 2) / 4;
+        break;
+
+    case 6:
+        row = ((LINES - 10) / 2);
+        col = 2 * (COLS - 2) / 4 ;
+        break;
+
+    case 7:
+        row = (LINES - 10) / 2;
+        col = 3 * (COLS - 2) / 4;
+        break;
+
+    }
+
+    for (int k = 0; k < ((LINES - 10) / 2); k++) 
+    {
+        for (int j = 0; j < ((COLS - 2) / 4); j++) 
+        {
+            all_map[row + k][col + j] = rooms[i].map[k][j];
+        }
+    }
 }
 
-// void connect_room()
-// {
-//     connect_plus(rooms[0].doors[1].x, rooms[0].doors[1].y, rooms[1].doors[2].x, rooms[1].doors[2].y);
-// }
+void connect_plus(int x1, int y1, int dir1, int x2, int y2, int dir2)
+{
+    srand(time(0));
+
+    switch (dir1)
+    {
+    case 0:
+        x1 --;
+        break;
+
+    case 1:
+        y1 ++;
+        break;
+        
+    case 2:
+        y1 --;
+        break;
+
+    case 3:
+        x1 ++;
+        break;
+    }
+
+    switch (dir2)
+    {
+    case 0:
+        x2 --;
+        break;
+
+    case 1:
+        y2 ++;
+        break;
+        
+    case 2:
+        y2 --;
+        break;
+
+    case 3:
+        x2 ++;
+        break;
+    }
+
+    while (x1 != x2 || y1 != y2) 
+    {
+        int turn = rand() % 2;
+
+        if (all_map[x1][y1] == ' ')
+        {
+            all_map[x1][y1] = '#';
+        }
+        
+        if (turn && x1 != x2)
+        {
+            x1 += (x1 < x2) ? 1 : -1;
+        } 
+        else if(y1 != y2)
+        {
+            y1 += (y1 < y2) ? 1 : -1;
+        } 
+    }
+    all_map[x1][y1] = '#';
+}
+
+void connect_room()
+{
+    int which_arr = rand()%4;
+
+    switch (which_arr)
+    {
+    case 0:
+        connect_plus(rooms[0].doors[1].x, rooms[0].doors[1].y, 1,
+                    rooms[1].doors[2].x, rooms[1].doors[2].y, 2);
+
+        connect_plus(rooms[0].doors[3].x, rooms[0].doors[3].y, 3,
+                    rooms[4].doors[0].x, rooms[4].doors[0].y, 0);  
+        
+        connect_plus(rooms[1].doors[1].x, rooms[1].doors[1].y, 1,
+                    rooms[2].doors[2].x, rooms[2].doors[2].y, 2);
+        
+        connect_plus(rooms[2].doors[1].x, rooms[2].doors[1].y, 1,
+                    rooms[3].doors[2].x, rooms[3].doors[2].y, 2);
+        
+        connect_plus(rooms[3].doors[3].x, rooms[3].doors[3].y, 3,
+                    rooms[7].doors[0].x, rooms[7].doors[0].y, 0);
+        
+        connect_plus(rooms[5].doors[1].x, rooms[5].doors[1].y, 1,
+                    rooms[6].doors[2].x, rooms[6].doors[2].y, 2);
+        
+        connect_plus(rooms[6].doors[1].x, rooms[6].doors[1].y, 1,
+                    rooms[7].doors[2].x, rooms[7].doors[2].y, 2); 
+        break;
+
+        case 1:
+        connect_plus(rooms[0].doors[1].x, rooms[0].doors[1].y, 1,
+                    rooms[1].doors[2].x, rooms[1].doors[2].y, 2); 
+
+        connect_plus(rooms[1].doors[3].x, rooms[1].doors[3].y, 3,
+                    rooms[5].doors[0].x, rooms[5].doors[0].y, 0);
+        
+        connect_plus(rooms[1].doors[1].x, rooms[1].doors[1].y, 1,
+                    rooms[2].doors[2].x, rooms[2].doors[2].y, 2);
+        
+        connect_plus(rooms[2].doors[3].x, rooms[2].doors[3].y, 3,
+                    rooms[6].doors[0].x, rooms[6].doors[0].y, 0);
+        
+        connect_plus(rooms[3].doors[3].x, rooms[3].doors[3].y, 3,
+                    rooms[7].doors[0].x, rooms[7].doors[0].y, 0);
+        
+        connect_plus(rooms[4].doors[1].x, rooms[4].doors[1].y, 1,
+                    rooms[5].doors[2].x, rooms[5].doors[2].y, 2);
+        
+        connect_plus(rooms[6].doors[1].x, rooms[6].doors[1].y, 1,
+                    rooms[7].doors[2].x, rooms[7].doors[2].y, 2); 
+        break;
+
+        case 2:
+        connect_plus(rooms[0].doors[1].x, rooms[0].doors[1].y, 1,
+                    rooms[1].doors[2].x, rooms[1].doors[2].y, 2);
+
+        connect_plus(rooms[0].doors[3].x, rooms[0].doors[3].y, 3,
+                    rooms[4].doors[0].x, rooms[4].doors[0].y, 0);  
+
+        connect_plus(rooms[1].doors[3].x, rooms[1].doors[3].y, 3,
+                    rooms[5].doors[0].x, rooms[5].doors[0].y, 0);
+        
+        connect_plus(rooms[2].doors[1].x, rooms[2].doors[1].y, 1,
+                    rooms[3].doors[2].x, rooms[3].doors[2].y, 2);
+        
+        connect_plus(rooms[2].doors[3].x, rooms[2].doors[3].y, 3,
+                    rooms[6].doors[0].x, rooms[6].doors[0].y, 0);
+        
+        connect_plus(rooms[3].doors[3].x, rooms[3].doors[3].y, 3,
+                    rooms[7].doors[0].x, rooms[7].doors[0].y, 0);
+        
+        connect_plus(rooms[5].doors[1].x, rooms[5].doors[1].y, 1,
+                    rooms[6].doors[2].x, rooms[6].doors[2].y, 2);
+
+        break;
+        
+        case 3:
+
+        connect_plus(rooms[0].doors[3].x, rooms[0].doors[3].y, 3,
+                    rooms[4].doors[0].x, rooms[4].doors[0].y, 0);  
+
+        connect_plus(rooms[1].doors[3].x, rooms[1].doors[3].y, 3,
+                    rooms[5].doors[0].x, rooms[5].doors[0].y, 0);
+        
+        connect_plus(rooms[2].doors[3].x, rooms[2].doors[3].y, 3,
+                    rooms[6].doors[0].x, rooms[6].doors[0].y, 0);
+        
+        connect_plus(rooms[3].doors[3].x, rooms[3].doors[3].y, 3,
+                    rooms[7].doors[0].x, rooms[7].doors[0].y, 0);
+        
+        connect_plus(rooms[4].doors[1].x, rooms[4].doors[1].y, 1,
+                    rooms[5].doors[2].x, rooms[5].doors[2].y, 2);
+        
+        connect_plus(rooms[5].doors[1].x, rooms[5].doors[1].y, 1,
+                    rooms[6].doors[2].x, rooms[6].doors[2].y, 2);
+        
+        connect_plus(rooms[6].doors[1].x, rooms[6].doors[1].y, 1,
+                    rooms[7].doors[2].x, rooms[7].doors[2].y, 2); 
+        break;
+    
+    
+    }
+         
+        //connect_plus(rooms[0].doors[1].x, rooms[0].doors[1].y, 1,
+        //             rooms[1].doors[2].x, rooms[1].doors[2].y, 2);
+
+        // connect_plus(rooms[0].doors[3].x, rooms[0].doors[3].y, 3,
+        //             rooms[4].doors[0].x, rooms[4].doors[0].y, 0);  
+
+        // connect_plus(rooms[1].doors[3].x, rooms[1].doors[3].y, 3,
+        //             rooms[5].doors[0].x, rooms[5].doors[0].y, 0);
+        
+        // connect_plus(rooms[1].doors[1].x, rooms[1].doors[1].y, 1,
+        //             rooms[2].doors[2].x, rooms[2].doors[2].y, 2);
+        
+        // connect_plus(rooms[2].doors[1].x, rooms[2].doors[1].y, 1,
+        //             rooms[3].doors[2].x, rooms[3].doors[2].y, 2);
+        
+        // connect_plus(rooms[2].doors[3].x, rooms[2].doors[3].y, 3,
+        //             rooms[6].doors[0].x, rooms[6].doors[0].y, 0);
+        
+        // connect_plus(rooms[3].doors[3].x, rooms[3].doors[3].y, 3,
+        //             rooms[7].doors[0].x, rooms[7].doors[0].y, 0);
+        
+        // connect_plus(rooms[4].doors[1].x, rooms[4].doors[1].y, 1,
+        //             rooms[5].doors[2].x, rooms[5].doors[2].y, 2);
+        
+        // connect_plus(rooms[5].doors[1].x, rooms[5].doors[1].y, 1,
+        //             rooms[6].doors[2].x, rooms[6].doors[2].y, 2);
+        
+        // connect_plus(rooms[6].doors[1].x, rooms[6].doors[1].y, 1,
+        //             rooms[7].doors[2].x, rooms[7].doors[2].y, 2); 
+}
 
 void clear_and_border2()
 {
@@ -138,97 +354,108 @@ void adding_doors(int i, int firstx, int firsty, int width, int height)
     case 0:
         rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
         rooms[i].doors[1].y = firsty + width;
-        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+        all_map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
 
         rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
         rooms[i].doors[3].x = firstx + height;
-        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        all_map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
         break;
     
     case 1:
         rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[1].y = firsty + width;
-        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+        rooms[i].doors[1].y = firsty + width + (COLS - 2)/4;
+        all_map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
 
         rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[2].y = firsty;
-        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+        rooms[i].doors[2].y = firsty + (COLS - 2)/4;
+        all_map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
 
-        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + (COLS - 2)/4 + 1;
         rooms[i].doors[3].x = firstx + height;
-        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        all_map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
         break;
 
     case 2:
         rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[1].y = firsty + width;
-        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+        rooms[i].doors[1].y = firsty + width + 2*(COLS - 2)/4;
+        all_map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
 
         rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[2].y = firsty;
-        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+        rooms[i].doors[2].y = firsty + 2*(COLS - 2)/4;
+        all_map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
 
-        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1 + 2*(COLS - 2)/4;
         rooms[i].doors[3].x = firstx + height;
-        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        all_map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
         break;
     case 3:
 
         rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[2].y = firsty;
-        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+        rooms[i].doors[2].y = firsty + 3*(COLS - 2)/4;
+        all_map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
 
-        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1;
+        rooms[i].doors[3].y = (rand()%(width-3)) + firsty + 1 + 3*(COLS - 2)/4;
         rooms[i].doors[3].x = firstx + height;
-        rooms[i].map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
+        all_map[rooms[i].doors[3].x][rooms[i].doors[3].y] = '+';
         break;
     case 4:
-        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1 + (LINES - 10)/2;
         rooms[i].doors[1].y = firsty + width;
-        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+        all_map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
         rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
-        rooms[i].doors[0].x = firstx;
-        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        rooms[i].doors[0].x = firstx + (LINES - 10)/2;
+        all_map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
         break;
     case 5:
-        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[1].y = firsty + width;
-        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1 + (LINES - 10)/2;
+        rooms[i].doors[1].y = firsty + width + (COLS - 2)/4;
+        all_map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
 
-        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[2].y = firsty;
-        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1 + (LINES - 10)/2;
+        rooms[i].doors[2].y = firsty + (COLS - 2)/4;
+        all_map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
 
-        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
-        rooms[i].doors[0].x = firstx;
-        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1 + (COLS - 2)/4;
+        rooms[i].doors[0].x = firstx + (LINES - 10)/2;
+        all_map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
         break;
     case 6:
-        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[1].y = firsty + width;
-        rooms[i].map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
+        rooms[i].doors[1].x = (rand()%(height-3)) + firstx + 1 + (LINES - 10)/2;
+        rooms[i].doors[1].y = firsty + width + 2*(COLS - 2)/4;
+        all_map[rooms[i].doors[1].x][rooms[i].doors[1].y] = '+';
 
-        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[2].y = firsty;
-        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1 + (LINES - 10)/2;
+        rooms[i].doors[2].y = firsty + 2*(COLS - 2)/4;
+        all_map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
 
-        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
-        rooms[i].doors[0].x = firstx;
-        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1 + 2*(COLS - 2)/4;
+        rooms[i].doors[0].x = firstx + (LINES - 10)/2;
+        all_map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
         break;
     case 7:
-        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1;
-        rooms[i].doors[2].y = firsty;
-        rooms[i].map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
-        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1;
-        rooms[i].doors[0].x = firstx;
-        rooms[i].map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
+        rooms[i].doors[2].x = (rand()%(height-3)) + firstx + 1 + (LINES - 10)/2;
+        rooms[i].doors[2].y = firsty + 3*(COLS - 2)/4;
+        all_map[rooms[i].doors[2].x][rooms[i].doors[2].y] = '+';
+
+        rooms[i].doors[0].y = (rand()%(width-3)) + firsty + 1 + 3*(COLS - 2)/4;
+        rooms[i].doors[0].x = firstx + (LINES - 10)/2;
+        all_map[rooms[i].doors[0].x][rooms[i].doors[0].y] = '+';
         break;
     }
 }
 
 void map()
 {
+
+    all_map = (char **) malloc ((LINES - 10)*sizeof(char *));
+    for (int i = 0; i < (LINES - 10); i++)
+    {
+        all_map[i] = (char *) malloc((COLS - 2) * sizeof(char));
+        for (int j = 0; j < (COLS - 2); j++)
+        {
+            all_map[i][j] = ' ';
+        }
+    }  
     rooms = (room *) malloc(9 * sizeof(room));
     for (int i = 0; i<8; i++)
     {
@@ -304,6 +531,7 @@ void map()
             rooms[i].map[firstx + height][firsty] = '$';
             rooms[i].map[firstx][firsty + width] = '$';
             rooms[i].map[firstx + height][firsty + width] = '$';
+            add_to_main_map(i);
             adding_doors(i, firstx, firsty, width, height);
         }
 
@@ -368,75 +596,6 @@ void map()
 
         }
     }   
-
-    all_map = (char **) malloc ((LINES - 10)*sizeof(char *));
-    for (int i = 0; i < (LINES - 10); i++)
-    {
-        all_map[i] = (char *) malloc((COLS - 2) * sizeof(char));
-        for (int j = 0; j < (COLS - 2); j++)
-        {
-            all_map[i][j] = ' ';
-        }
-    }  
-
-    int which_map = 0;
-
-    while(which_map < 8)
-    {
-        int row, col;
-        switch (which_map) 
-        {
-        case 0:
-            row = 0;
-            col = 0;
-            break;
-
-        case 1:
-            row = 0;
-            col = (COLS - 2) / 4;
-            break;
-
-        case 2:
-            row = 0;
-            col = 2 * (COLS - 2) / 4;
-            break;
-
-        case 3:
-            row = 0;
-            col = 3 * (COLS - 2) / 4;
-            break;
-
-        case 4:
-            row = ((LINES - 10) / 2);
-            col = 0;
-            break;
-
-        case 5:
-            row = ((LINES - 10) / 2);
-            col = (COLS - 2) / 4;
-            break;
-
-        case 6:
-            row = ((LINES - 10) / 2);
-            col = 2 * (COLS - 2) / 4 ;
-            break;
-
-        case 7:
-            row = (LINES - 10) / 2;
-            col = 3 * (COLS - 2) / 4;
-            break;
-
-        }
-
-        for (int i = 0; i < ((LINES - 10) / 2); i++) 
-        {
-            for (int j = 0; j < ((COLS - 2) / 4); j++) 
-            {
-                all_map[row + i][col + j] = rooms[which_map].map[i][j];
-            }
-        }
-        which_map ++;
-    }
 }
 
 void print_all_map()
@@ -989,7 +1148,7 @@ int new_game()
     clear_and_border2();
     elemnts_under_board();
     map();
-    // connect_room();
+    connect_room();
     print_all_map();
     alert("salam", "khoobi", -1);
     char ch = getch();
