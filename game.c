@@ -14,9 +14,10 @@ hardness 3 = hard
 typedef struct
 {
     int line;
+    int score;
     int gold;
     int color;
-    int life_time;
+    float life_time;
     float hungry_amount;
     int telesm[20];
     int main_selah;
@@ -639,6 +640,8 @@ void map()
     }   
 }
 
+// درست بشود...
+
 void print_all_map()
 {
     move(6, 2);
@@ -646,10 +649,19 @@ void print_all_map()
     {
         for (int j = 0; j < COLS - 2; j++)
         {
-            if (all_map[i][j] == 'G')
+            if (all_map[i][j] == 'B')
+            {
+                attron(COLOR_PAIR(40));
+                printw("%c", all_map[i][j]);
+                attroff(COLOR_PAIR(40));
+                refresh();
+                continue;
+            }
+
+            if (all_map[i][j] == 'C')
             {
                 attron(COLOR_PAIR(16));
-                printw("%c", map_whithout_tale[i][j]);
+                printw("%c", all_map[i][j]);
                 attroff(COLOR_PAIR(16));
                 continue;
             }
@@ -666,8 +678,6 @@ void print_all_map()
     }
     refresh(); 
 }
-
-
 
 void which_user(int line_user)
 {
@@ -1197,6 +1207,7 @@ void elements_on_map()
         {
             int sotoon_panjereh = rand()%40;
             int gold = rand()%50;
+            int black_gold = rand()%160;
 
             int tale_random;
             switch (player.hardness)
@@ -1213,6 +1224,7 @@ void elements_on_map()
                 tale_random = 50;
                 break;
             }
+
             int tale = rand()%tale_random;
 
             if (all_map[i][j] == '.' && all_map[i + 1][j + 1] != '+' && all_map[i + 1][j] != '+' && all_map[i][j + 1] != '+' && all_map[i][j - 1] != '+' && all_map[i - 1][j] != '+' && all_map[i - 1][j - 1] != '+' && !sotoon_panjereh)
@@ -1222,12 +1234,17 @@ void elements_on_map()
 
             if (all_map[i][j] == '.' && !gold)
             {
-                all_map[i][j] = 'G';
+                all_map[i][j] = 'C';
             }
 
             if (all_map[i][j] == '.' && !tale)
             {
                 all_map[i][j] = '^';
+            }
+
+            if (all_map[i][j] == '.' && !black_gold)
+            {
+                all_map[i][j] = 'B';
             }
         }
     }
@@ -1308,7 +1325,16 @@ void print_map()
     {
         for (int j = 0; j < COLS - 2; j++)
         {
-            if (map_that_shown[i][j] == 'G')
+
+            if (map_that_shown[i][j] == 'B')
+            {
+                attron(COLOR_PAIR(40));
+                printw("%c", map_that_shown[i][j]);
+                attroff(COLOR_PAIR(40));
+                continue;
+            }
+
+            if (map_that_shown[i][j] == 'C')
             {
                 attron(COLOR_PAIR(16));
                 printw("%c", map_that_shown[i][j]);
@@ -1329,28 +1355,16 @@ void print_map()
     refresh(); 
 }
 
-void player_move(int x_pa, int y_pa)
+void player_move(int x_pa, int y_pa, int g_on_off)
 {
     player.hungry_amount += 0.0675;
-    
-    if (player.y >= COLS - 2)
+    print_map();
+
+    if (g_on_off == 1)
     {
-        player.y --;
-    }
-    if (player.x >= LINES - 10)
-    {
-        player.x --;
-    }
-    if (player.y <= 2)
-    {
-        player.y ++;
-    }
-    if (player.x  <= 6)
-    {
-        player.x ++;
+        goto whith_g_key;
     }
 
-    print_map();
     if (all_map[player.x - 6][player.y - 2] == 'o' || all_map[player.x - 6][player.y - 2] == '$' || all_map[player.x - 6][player.y - 2] == '|' || all_map[player.x - 6][player.y - 2] == '-' || all_map[player.x - 6][player.y - 2] == ' ')
     {
         player.x = x_pa;
@@ -1359,11 +1373,103 @@ void player_move(int x_pa, int y_pa)
     
     if (all_map[player.x - 6][player.y - 2] == '^')
     {
+        map_that_shown[player.x - 6][player.y - 2] = '^';
         player.x = x_pa;
         player.y = y_pa;
-        map_that_shown[player.x - 6][player.y - 2] == '^';
         print_map();
         player.life_time --;
+    }
+
+    if (map_that_shown[player.x - 6][player.y - 2] == 'C')
+    {
+        int random;
+        switch (player.hardness)
+        {
+        case 1:
+            random = 40;
+            break;
+        
+        case 2:
+            random = 30;
+            break;
+
+        case 3:
+            random = 20;
+            break;
+        }
+
+        // int random;
+        // switch (which_room)
+        // {
+        // case 1:
+        //     random = 40;
+        //     break;
+        
+        // case 2:
+        //     random = 30;
+        //     break;
+
+        // case 3:
+        //     random = 20;
+        //     break;
+        // }
+
+        int gold = rand()%random;
+        alert("You'v got", "Gold!", gold);
+        player.gold += gold;
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
+
+    if (map_that_shown[player.x - 6][player.y - 2] == 'B')
+    {
+        int random;
+        switch (player.hardness)
+        {
+        case 1:
+            random = 120;
+            break;
+        
+        case 2:
+            random = 90;
+            break;
+
+        case 3:
+            random = 60;
+            break;
+        }
+
+        // int random;
+        // switch (which_room)
+        // {
+        // case 1:
+        //     random = 40;
+        //     break;
+        
+        // case 2:
+        //     random = 30;
+        //     break;
+
+        // case 3:
+        //     random = 20;
+        //     break;
+        // }
+
+        int gold = rand()%random;
+        alert("You'v got", "Black Gold!", gold);
+        player.gold += gold;
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+
+        print_map();
+    }
+
+    if (all_map[player.x - 6][player.y - 2] == '+')
+    {
+
+
+    
     }
 
 
@@ -1396,9 +1502,7 @@ void player_move(int x_pa, int y_pa)
 
 
 
-
-
-
+    whith_g_key:
 
     int color;
     switch (player.color)
@@ -1434,20 +1538,21 @@ int new_game()
         player.hardness = 1;
     }
     player.gold = 0;
+    player.score = 0;
     player.main_selah = 1;
     if (player.hardness == 1)
     {
-        player.life_time = 24;
+        player.life_time = 25;
         player.hungry_amount = 0;
     }
     else if (player.hardness == 2)
     {
-        player.life_time = 18;
+        player.life_time = 21;
         player.hungry_amount = 2;
     }
     else if (player.hardness == 3)
     {
-        player.life_time = 12; 
+        player.life_time = 17; 
         player.hungry_amount = 4;  
     }
     first_life = player.life_time;
@@ -1463,55 +1568,87 @@ int new_game()
 
     random_first_map();
 
-    player_move(0, 0);
+    player_move(0, 0, 0);
 
     int m_on_off = 0;
+    int g_on_off = 0;
     for(int ch = getch(); ch != 'q'; ch = getch())
     {
+        if (player.hungry_amount < 10 && player.life_time < 25)
+        {
+            player.life_time += 0.25;
+        }
+
+        if (player.hungry_amount > 10)
+        {
+            player.life_time -= 0.125;
+        }
+
+        if (player.life_time == 0)
+        {
+            attron(COLOR_PAIR(5));
+            mvprintw((LINES/2) - 2, (COLS/2) - 8, "               ");
+            mvprintw((LINES/2) - 1 , (COLS/2) - 8, "   YOU DIED!   ");
+            mvprintw((LINES/2), (COLS/2) - 8, "               ");
+            mvprintw((LINES/2) + 1, (COLS/2) - 8, " GAME IS OVER! ");
+            mvprintw((LINES/2) + 2, (COLS/2) - 8, "               ");
+            attroff(COLOR_PAIR(5));
+            refresh();
+            sleep(3);
+            break;
+        }
         switch(ch)
         {
             case (56):
                 player.x --;
-                player_move(player.x + 1, player.y);
+                player_move(player.x + 1, player.y, g_on_off);
+                g_on_off = 0;
                 break;
 
             case (54):
                 player.y ++;
-                player_move(player.x, player.y - 1);
+                player_move(player.x, player.y - 1, g_on_off);
+                g_on_off = 0;
                 break;
 
             case (52):
                 player.y --;
-                player_move(player.x, player.y + 1);
+                player_move(player.x, player.y + 1, g_on_off);
+                g_on_off = 0;
                 break;
 
             case (50):
                 player.x ++;
-                player_move(player.x - 1, player.y);
+                player_move(player.x - 1, player.y, g_on_off);
+                g_on_off = 0;
                 break;
 
             case (51):
                 player.x ++;
                 player.y ++;
-                player_move(player.x - 1, player.y - 1);
+                player_move(player.x - 1, player.y - 1, g_on_off);
+                g_on_off = 0;
                 break;
 
             case (49):
                 player.x ++;
                 player.y --;
-                player_move(player.x - 1, player.y + 1);
+                player_move(player.x - 1, player.y + 1, g_on_off);
+                g_on_off = 0;
                 break;
 
             case (55):
                 player.x --;
                 player.y --;
-                player_move(player.x + 1, player.y + 1);
+                player_move(player.x + 1, player.y + 1, g_on_off);
+                g_on_off = 0;
                 break;
 
             case (57):
                 player.x --;
                 player.y ++;
-                player_move(player.x + 1, player.y - 1);
+                player_move(player.x + 1, player.y - 1, g_on_off);
+                g_on_off = 0;
                 break;
 
             case ('m'):
@@ -1525,8 +1662,13 @@ int new_game()
                     clear_and_border2();
                     elemnts_under_board();
                     m_on_off = 0; 
-                    player_move(player.x, player.y);
+                    player_move(player.x, player.y, g_on_off);
                 }
+                break;
+
+
+            case ('g'):
+                g_on_off = 1;
                 break;
 
 
