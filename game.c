@@ -434,11 +434,10 @@ int which_room_is_the_player(int x, int y)
 
 void updating_room_that_shown(int which_dir)
 {
-    int x = player.x  - 6 + 1;
-    int y = player.y - 2;
-    switch (which_dir)
+    if (which_dir == 0)
     {
-    case 0:
+        int x = player.x  - 5;
+        int y = player.y - 2;
         while (map_whithout_tale[x][y] != '$') 
         {
             map_that_shown[x][y] = map_whithout_tale[x][y];
@@ -474,27 +473,130 @@ void updating_room_that_shown(int which_dir)
             y ++;
         }
         map_that_shown[x][y] = map_whithout_tale[x][y];
-        break;
+    }
     
-    default:
-        break;
+    else if (which_dir == 1)
+    {
+        int x = player.x  - 6;
+        int y = player.y - 3;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            x ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        x --;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            x --;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        y --;
+        while (map_whithout_tale[x][y] != '$')
+        {
+            int i = x;
+            map_that_shown[i][y] = map_whithout_tale[i][y];
+            i++;
+            while (map_whithout_tale[i][y] != '-' && map_whithout_tale[i][y] != '+')
+            {
+                map_that_shown[i][y] = map_whithout_tale[i][y];
+                i++;
+            }
+            map_that_shown[i][y] = map_whithout_tale[i][y];
+            y --;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        x ++;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            x ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    else if (which_dir == 3)
+    {
+        int x = player.x - 7;
+        int y = player.y - 2;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            y ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        y --;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            y --;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        x --;
+        while (map_whithout_tale[x][y] != '$')
+        {
+            int j = y;
+            map_that_shown[x][j] = map_whithout_tale[x][j];
+            j++;
+            while (map_whithout_tale[x][j] != '|' && map_whithout_tale[x][j] != '+')
+            {
+                map_that_shown[x][j] = map_whithout_tale[x][j];
+                j++;
+            }
+            map_that_shown[x][j] = map_whithout_tale[x][j];
+            x --;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        y ++;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            y ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+    }
+    
+    else if (which_dir == 2)
+    {
+        int x = player.x - 6;
+        int y = player.y - 1;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            x ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        x --;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            x --;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        y ++;
+        while (map_whithout_tale[x][y] != '$')
+        {
+            int i = x;
+            map_that_shown[i][y] = map_whithout_tale[i][y];
+            i++;
+            while (map_whithout_tale[i][y] != '-' && map_whithout_tale[i][y] != '+')
+            {
+                map_that_shown[i][y] = map_whithout_tale[i][y];
+                i++;
+            }
+            map_that_shown[i][y] = map_whithout_tale[i][y];
+            y++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        x ++;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            x ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y]; 
+    }
 
     player.room_i = which_room_is_the_player(player.x, player.y);
     if (rooms[player.room_i].type == 0 || rooms[player.room_i].type == 1 || rooms[player.room_i].type == 2)
@@ -1388,7 +1490,6 @@ int before_play_menu(int line)
 void profile()
 {
     clear_and_border();
-    player.gold = 0;
     while (1)
     {
         if (player.line == -1)
@@ -1806,7 +1907,7 @@ void random_first_map()
             {
                 map_that_shown[i][j] = map_whithout_tale[i][j];
 
-                if (!okey && map_whithout_tale[i][j] == '.')
+                if (!okey && all_map[i][j] == '.')
                 {
                     player.x = i + 6;
                     player.y = j + 2;
@@ -1989,22 +2090,22 @@ void player_move(int x_pa, int y_pa, int g_on_off)
     {
         updating_ways_that_shown(player.x, player.y);
         print_map();
-        if (all_map[player.x - 5][player.y - 2] == '+')
+        if (all_map[player.x - 5][player.y - 2] == '+' && map_that_shown[player.x - 5][player.y - 2] != '+')
         {
             updating_room_that_shown(0);
         }
 
-        if (all_map[player.x - 6][player.y - 3] == '+')
+        if (all_map[player.x - 6][player.y - 3] == '+' && map_that_shown[player.x - 6][player.y - 3] != '+')
         {
             updating_room_that_shown(1);
         }
 
-        if (all_map[player.x - 6][player.y - 1] == '+')
+        if (all_map[player.x - 6][player.y - 1] == '+'&& map_that_shown[player.x - 6][player.y - 1] != '+')
         {
             updating_room_that_shown(2);
         }
 
-        if (all_map[player.x - 7][player.y - 2] == '+')
+        if (all_map[player.x - 7][player.y - 2] == '+' && map_that_shown[player.x - 7][player.y - 2] != '+')
         {
             updating_room_that_shown(3);
         }
@@ -2232,7 +2333,7 @@ int new_game()
                 player_move(player.y, player.y, 0);
                 break;
 
-            case ('w'):
+            case ('i'):
                 // weapon_manu();
                 clear_and_border2();
                 elemnts_under_board();

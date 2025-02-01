@@ -95,6 +95,17 @@ void clear_and_border()
     refresh();
 }
 
+
+void write_on_file(char *user , char *pass , char *mail)
+{
+    FILE * file_account_password;
+    file_account_password = fopen("accounts_passwords.txt", "a");
+
+    fprintf(file_account_password, "%s %s %s\n", user, pass, mail);
+    fclose(file_account_password);
+    how_many_line ++;
+} 
+
 int drawing_first_menu()
 {
     clear_and_border();
@@ -574,15 +585,6 @@ int is_correct(char *user , char *pass)
     fclose(file_account_password);
     return 0;
 }
-
-void write_on_file(char *user , char *pass , char *mail)
-{
-    FILE * file_account_password;
-    file_account_password = fopen("accounts_passwords.txt", "a");
-    fprintf(file_account_password, "%s %s %s\n", user, pass, mail);
-    fclose(file_account_password);
-    how_many_line ++;
-} 
 
 int email_is_correct(char *email)
 {

@@ -119,6 +119,7 @@ int main()
                 which_menu = 4;
             }
         }
+        
         else if(which_menu == 9)
         {
             int which_case = new_game();
