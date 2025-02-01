@@ -11,6 +11,21 @@ hardness 1 = easy
 hardness 2 = normal
 hardness 3 = hard
 */
+
+
+/*
+which food 1 = mamooli
+which food 2 = magic
+which food 3 = great
+which food 4 = fased
+*/
+
+typedef struct
+{
+    int time;
+    int count;
+}food;
+
 typedef struct
 {
     int line;
@@ -19,16 +34,16 @@ typedef struct
     int color;
     float life_time;
     float hungry_amount;
-    int telesm[20];
+    int telesm[3];
+    food foods[4];
     int main_selah;
-    int selah[20];
+    int count_selahs[5];
     int hardness;
     int level;
     int room_i;
     int x;
     int y;
 } Player;
-
 
 typedef struct
 {
@@ -42,8 +57,8 @@ type 0 = mamooli
 type 1 = mamooli
 type 2 = mamooli
 type 3 = telesm
-type 4 = kaboos
-type 5 = ganj
+type 4 = ganj
+type 5 = kaboos
 */
 
 /*
@@ -71,6 +86,300 @@ char **map_that_shown;
 int first_life;
 
 Player player;
+
+
+
+void alert(char *message1, char *message2, int number)
+{
+    for (int i = 2; i < COLS - 1; i++)
+    {
+        mvprintw(1, i, " ");
+        mvprintw(2, i, " ");
+        mvprintw(3, i, " ");
+    }
+
+    attron(A_BOLD);
+    attron(COLOR_PAIR(11));
+
+    char buffer[256];
+    if (number == -1)
+    {
+        snprintf(buffer, sizeof(buffer), "%s", message1);
+    }
+    else
+    {
+        snprintf(buffer, sizeof(buffer), "%s %d %s", message1, number, message2);
+    }
+
+    for (int i = 2; i < strlen(buffer) + 4; i++)
+    {
+        mvprintw(1, i, " ");
+    }
+    mvprintw(2, 2, " %s ", buffer);
+    for (int i = 2; i < strlen(buffer) + 4; i++)
+    {
+        mvprintw(3, i, " ");
+    }
+
+    attroff(COLOR_PAIR(11));
+    attroff(A_BOLD);
+
+    refresh();
+}
+
+void food_manu()
+{
+    int which_case = 1;
+    while (1)
+    {
+        wchar_t emoji1[] = L"🍗";
+        wchar_t emoji2[] = L"🪄🍗";
+        wchar_t emoji3[] = L"👑🍗";
+        clear_and_border();
+        attron(COLOR_PAIR(3));
+        mvaddwstr((LINES/2) - 6, (COLS/2) - 30, emoji1);
+        mvaddwstr((LINES/2) - 3, (COLS/2) - 13, emoji2);
+        mvaddwstr((LINES/2), (COLS/2) - 13, emoji3);
+        mvprintw(((LINES/2)) - 6, ((COLS/2) - 27) ,"* %d  1- ORDINARY FOOD (MAY BE MIXED WITH SPOILED FOOD!)", (player.foods[0].count + player.foods[1].count));
+        mvprintw(((LINES/2)) - 3, ((COLS/2) - 8) ,"* %d  2- MAGIC FOOD", player.foods[1].count);
+        mvprintw(((LINES/2)), (COLS/2) - 8 ,"* %d  3- GREAT FOOD", player.foods[1].count);
+        mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+        mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+        attroff(COLOR_PAIR(3));
+        refresh();
+        for(int ch = getch(); ch != 10; ch = getch())
+        {
+            if (ch == KEY_UP)
+            {
+                which_case --;
+                if (which_case == 0)
+                {
+                    which_case = 2;
+                }
+            }
+            if ((ch == KEY_DOWN))
+            {
+                which_case ++;
+                if (which_case == 3)
+                {
+                    which_case = 1;
+                }
+            }
+
+            switch (which_case)
+            {
+            
+            case 1:
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+                attroff(COLOR_PAIR(4));
+
+                break;
+
+            case 2:
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(4));
+                break;
+
+            }
+        }
+        refresh();
+        switch (which_case)
+        {
+            case 1:
+                int which;
+                int count;
+                move(((LINES/2)) + 3, ((COLS/2) + 16));
+                curs_set(true);
+                echo();
+                refresh();
+                if (scanw("%d", &which) == 1 && which >= 1 && which <= 3)
+                {
+                    if (which == 1)
+                    {
+                        count = player.foods[0].count + player.foods[3].count;
+                    }
+                    else 
+                    {
+                        count = player.foods[which - 1].count;
+                    }
+
+                    if (count == 0)
+                    {
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(5));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 11), "                     " );
+                        mvprintw(((LINES/8)), (COLS/2 - 11), " YOU HAVEN'T ENOUGH! " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 11), "                     " );
+                        attroff(COLOR_PAIR(5));
+                        refresh();    
+                        sleep(3);
+                        continue;
+                    }
+                    move(0, 0);
+                    curs_set(false);
+                    noecho();
+                    continue; 
+                }
+                else
+                {
+                    player.color = 0;
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                            " );
+                    mvprintw(((LINES/8)), (COLS/2 - 15), " PLEASE ENTER CORRECT ITEM! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(3);
+                    continue;
+                }
+
+            case 2:
+                if (which == 1)
+                {
+
+                }
+                return;
+        }
+    }
+}
+
+void weapon_menu()
+{
+    int which_case = 1;
+    while (1)
+    {
+        wchar_t emoji1[] = L"🍗";
+        wchar_t emoji2[] = L"🪄🍗";
+        wchar_t emoji3[] = L"👑🍗";
+        clear_and_border();
+        attron(COLOR_PAIR(3));
+        mvaddwstr((LINES/2) - 6, (COLS/2) - 30, emoji1);
+        mvaddwstr((LINES/2) - 3, (COLS/2) - 13, emoji2);
+        mvaddwstr((LINES/2), (COLS/2) - 13, emoji3);
+        mvprintw(((LINES/2)) - 6, ((COLS/2) - 27) ,"* %d  1- ORDINARY FOOD (MAY BE MIXED WITH SPOILED FOOD!)", (player.foods[0].count + player.foods[1].count));
+        mvprintw(((LINES/2)) - 3, ((COLS/2) - 8) ,"* %d  2- MAGIC FOOD", player.foods[1].count);
+        mvprintw(((LINES/2)), (COLS/2) - 8 ,"* %d  3- GREAT FOOD", player.foods[1].count);
+        mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+        mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+        attroff(COLOR_PAIR(3));
+        refresh();
+        for(int ch = getch(); ch != 10; ch = getch())
+        {
+            if (ch == KEY_UP)
+            {
+                which_case --;
+                if (which_case == 0)
+                {
+                    which_case = 2;
+                }
+            }
+            if ((ch == KEY_DOWN))
+            {
+                which_case ++;
+                if (which_case == 3)
+                {
+                    which_case = 1;
+                }
+            }
+
+            switch (which_case)
+            {
+            
+            case 1:
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+                attroff(COLOR_PAIR(4));
+
+                break;
+
+            case 2:
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(4));
+                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(4));
+                break;
+
+            }
+        }
+        refresh();
+        switch (which_case)
+        {
+            case 1:
+                int which;
+                int count;
+                move(((LINES/2)) + 3, ((COLS/2) + 16));
+                curs_set(true);
+                echo();
+                refresh();
+                if (scanw("%d", &which) == 1 && which >= 1 && which <= 3)
+                {
+                    if (which == 1)
+                    {
+                        count = player.foods[0].count + player.foods[3].count;
+                    }
+                    else 
+                    {
+                        count = player.foods[which - 1].count;
+                    }
+
+                    if (count == 0)
+                    {
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(5));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 11), "                     " );
+                        mvprintw(((LINES/8)), (COLS/2 - 11), " YOU HAVEN'T ENOUGH! " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 11), "                     " );
+                        attroff(COLOR_PAIR(5));
+                        refresh();    
+                        sleep(3);
+                        continue;
+                    }
+                    move(0, 0);
+                    curs_set(false);
+                    noecho();
+                    continue; 
+                }
+                else
+                {
+                    player.color = 0;
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                            " );
+                    mvprintw(((LINES/8)), (COLS/2 - 15), " PLEASE ENTER CORRECT ITEM! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(3);
+                    continue;
+                }
+
+            case 2:
+                if (which == 1)
+                {
+
+                }
+                return;
+        }
+    }
+}
 
 int which_room_is_the_player(int x, int y)
 {
@@ -123,17 +432,85 @@ int which_room_is_the_player(int x, int y)
     }
 }
 
-void updating_room_that_shown()
+void updating_room_that_shown(int which_dir)
 {
-    int i = player.x + 6;
-    int j = player.y + 2;
-    while (all_map[i][j] != '$')
+    int x = player.x  - 6 + 1;
+    int y = player.y - 2;
+    switch (which_dir)
     {
-        map_that_shown[i][j] = all_map[i][j];
-        ;
+    case 0:
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            y ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        y --;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            y --;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        x ++;
+        while (map_whithout_tale[x][y] != '$')
+        {
+            int j = y;
+            map_that_shown[x][j] = map_whithout_tale[x][j];
+            j++;
+            while (map_whithout_tale[x][j] != '|' && map_whithout_tale[x][j] != '+')
+            {
+                map_that_shown[x][j] = map_whithout_tale[x][j];
+                j++;
+            }
+            map_that_shown[x][j] = map_whithout_tale[x][j];
+            x++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        y ++;
+        while (map_whithout_tale[x][y] != '$') 
+        {
+            map_that_shown[x][y] = map_whithout_tale[x][y];
+            y ++;
+        }
+        map_that_shown[x][y] = map_whithout_tale[x][y];
+        break;
+    
+    default:
+        break;
     }
-    map_that_shown[i][j] = all_map[i][j];
-    i++;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    player.room_i = which_room_is_the_player(player.x, player.y);
+    if (rooms[player.room_i].type == 0 || rooms[player.room_i].type == 1 || rooms[player.room_i].type == 2)
+    {
+        alert("You Are Now In A Ordinary Room!", "", -1);
+    }
+
+    else if (rooms[player.room_i].type == 3)
+    {
+        alert("You Are Now In A Telesm Room!", "", -1);
+    }
+
+    else if (rooms[player.room_i].type == 4)
+    {
+        alert("Bravo!! You Are Now In The Ganj Room!", "", -1);
+    }
 
 }
 
@@ -795,38 +1172,38 @@ void print_all_map()
     {
         for (int j = 0; j < COLS - 2; j++)
         {
-            if (all_map[i][j] == 'B')
+            if (map_whithout_tale[i][j] == 'B')
             {
                 attron(COLOR_PAIR(40));
-                printw("%c", all_map[i][j]);
+                printw("%c", map_whithout_tale[i][j]);
                 attroff(COLOR_PAIR(40));
                 refresh();
                 continue;
             }
 
-            if (all_map[i][j] == '#')
+            if (map_whithout_tale[i][j] == '#')
             {
                 attron(COLOR_PAIR(41));
-                printw("%c", all_map[i][j]);
+                printw("%c", map_whithout_tale[i][j]);
                 attroff(COLOR_PAIR(41));
                 refresh();
                 continue;
             }
 
-            if (all_map[i][j] == 'C')
+            if (map_whithout_tale[i][j] == 'C')
             {
                 attron(COLOR_PAIR(16));
-                printw("%c", all_map[i][j]);
+                printw("%c", map_whithout_tale[i][j]);
                 attroff(COLOR_PAIR(16));
                 continue;
             }
-            if (all_map[i][j] == 'o')
+            if (map_whithout_tale[i][j] == 'o')
             {
-                printw("%c", all_map[i][j]);
+                printw("%c", map_whithout_tale[i][j]);
                 continue;
             }
             attron(COLOR_PAIR(15));
-            printw("%c", all_map[i][j]);
+            printw("%c", map_whithout_tale[i][j]);
             attroff(COLOR_PAIR(15));
         }
         move(6 + i + 1, 2);
@@ -1010,8 +1387,8 @@ int before_play_menu(int line)
 
 void profile()
 {
-    player.gold = 0;
     clear_and_border();
+    player.gold = 0;
     while (1)
     {
         if (player.line == -1)
@@ -1054,10 +1431,10 @@ void profile()
 
 int setting()
 {
-    clear_and_border();
     int which_case = 1;
     while (1)
     {
+        clear_and_border();
         if(player.hardness != 0)
         {
             mvprintw(((LINES/2) - 6), (COLS/2) + 28, "%d", player.hardness); 
@@ -1174,6 +1551,11 @@ int setting()
                     attroff(COLOR_PAIR(5));
                     refresh();
                     sleep(3);
+                    attron(COLOR_PAIR(100));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                            " );
+                    mvprintw(((LINES/8)), (COLS/2 - 15), " PLEASE ENTER CORRECT ITEM! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
+                    attroff(COLOR_PAIR(100));
                     continue;
                 }
 
@@ -1211,44 +1593,6 @@ int setting()
                 return 4;
         }
     }
-}
-
-void alert(char *message1, char *message2, int number)
-{
-    for (int i = 2; i < COLS - 1; i++)
-    {
-        mvprintw(1, i, " ");
-        mvprintw(2, i, " ");
-        mvprintw(3, i, " ");
-    }
-
-    attron(A_BOLD);
-    attron(COLOR_PAIR(11));
-
-    char buffer[256];
-    if (number == -1)
-    {
-        snprintf(buffer, sizeof(buffer), "%s", message1);
-    }
-    else
-    {
-        snprintf(buffer, sizeof(buffer), "%s %d %s", message1, number, message2);
-    }
-
-    for (int i = 2; i < strlen(buffer) + 4; i++)
-    {
-        mvprintw(1, i, " ");
-    }
-    mvprintw(2, 2, " %s ", buffer);
-    for (int i = 2; i < strlen(buffer) + 4; i++)
-    {
-        mvprintw(3, i, " ");
-    }
-
-    attroff(COLOR_PAIR(11));
-    attroff(A_BOLD);
-
-    refresh();
 }
 
 void elemnts_under_board()
@@ -1592,6 +1936,7 @@ void player_move(int x_pa, int y_pa, int g_on_off)
         alert("You'v got", "Gold!", gold);
         player.gold += gold;
         map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
         all_map[player.x - 6][player.y - 2] = '.';
         print_map();
     }
@@ -1630,33 +1975,45 @@ void player_move(int x_pa, int y_pa, int g_on_off)
         //     break;
         // }
 
-        int gold = rand()%random;
+        int gold = rand()%random + 20;
         alert("You'v got", "Black Gold!", gold);
         player.gold += gold;
-        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_that_shown[player.x - 6][player.y - 2] = '.';        
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
         all_map[player.x - 6][player.y - 2] = '.';
 
         print_map();
-    }
-
-    if (all_map[player.x - 6][player.y - 2] == '+')
-    {
-        if (all_map[x_pa - 6][y_pa - 2] == '#')
-        {
-            // updating_room_that_shown();
-            print_map();
-        }
-        else
-        {
-            updating_ways_that_shown(player.x, player.y);
-            print_map();
-        }
     }
 
     if (all_map[player.x - 6][player.y - 2] == '#')
     {
         updating_ways_that_shown(player.x, player.y);
         print_map();
+        if (all_map[player.x - 5][player.y - 2] == '+')
+        {
+            updating_room_that_shown(0);
+        }
+
+        if (all_map[player.x - 6][player.y - 3] == '+')
+        {
+            updating_room_that_shown(1);
+        }
+
+        if (all_map[player.x - 6][player.y - 1] == '+')
+        {
+            updating_room_that_shown(2);
+        }
+
+        if (all_map[player.x - 7][player.y - 2] == '+')
+        {
+            updating_room_that_shown(3);
+        }
+    }
+
+    if (all_map[player.x - 6][player.y - 2] == '+')
+    {
+            updating_ways_that_shown(player.x, player.y);
+            print_map();
     }
 
 
@@ -1744,7 +2101,19 @@ int new_game()
     }
     first_life = player.life_time;
     player.level = 1;
-    player.selah[0] = 1;
+
+    for (int j = 0; j < 4; j++)
+    {
+        player.foods[j].count = 0;
+        player.foods[j].time = 20;
+        player.count_selahs[j+1] = 0;
+
+    }
+
+    for (int j = 0; j < 3; j++)
+    {
+        player.telesm[j] = 0;
+    }
 
     clear_and_border2();
     elemnts_under_board();
@@ -1769,7 +2138,7 @@ int new_game()
             player.life_time -= 0.125;
         }
 
-        if (player.life_time == 0)
+        if (player.life_time <= 0)
         {
             attron(COLOR_PAIR(5));
             mvprintw((LINES/2) - 2, (COLS/2) - 8, "               ");
@@ -1856,8 +2225,19 @@ int new_game()
                 g_on_off = 1;
                 break;
 
+            case ('f'):
+                food_manu();
+                clear_and_border2();
+                elemnts_under_board();
+                player_move(player.y, player.y, 0);
+                break;
 
-
+            case ('w'):
+                // weapon_manu();
+                clear_and_border2();
+                elemnts_under_board();
+                player_move(player.y, player.y, 0);
+                break;
         }
     }
 
