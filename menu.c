@@ -52,6 +52,7 @@ void clear_and_border()
         init_color(21, 800, 700, 0);
         init_color(22, 100, 100, 900);
         init_color(23, 100, 900, 400);
+        init_color(24, 900, 900, 1100);
         init_pair(1, COLOR_GREEN, COLOR_BLACK);
         init_pair(2, COLOR_WHITE, 5);
         init_pair(3, COLOR_WHITE, COLOR_BLACK);
@@ -64,9 +65,7 @@ void clear_and_border()
         init_pair(32, COLOR_BLACK, 22);
         init_pair(33, COLOR_BLACK, 23);
         init_pair(40, 39, COLOR_BLACK);
-
-        
-
+        init_pair(41, 24, 24);
     }
     clear();
 

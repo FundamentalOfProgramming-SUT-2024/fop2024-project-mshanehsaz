@@ -38,10 +38,12 @@ typedef struct
 
 
 /*
+type 0 = mamooli
 type 1 = mamooli
-type 2 = telesm
-type 3 = kaboos
-type 4 = ganj
+type 2 = mamooli
+type 3 = telesm
+type 4 = kaboos
+type 5 = ganj
 */
 
 /*
@@ -70,11 +72,93 @@ int first_life;
 
 Player player;
 
-void updating_map_that_shown(int x, int y)
+int which_room_is_the_player(int x, int y)
 {
-    if (all_map[x][y] == '+')
-    {
+    int i = x;
+    int j = y; 
 
+    if (i > 5 && i < (LINES - 10)/2 + 5 && j > 1 && j < (COLS - 2)/4)
+    {
+        return 0;
+    }
+
+    else if (i > 5 && i < (LINES - 10)/2 + 5 && j > (COLS - 2)/4 + 1 && j < 2*(COLS - 2)/4 + 1)
+    {
+        return 1;
+    }    
+    
+    
+    else if (i > 5 && i < (LINES - 10)/2 + 5 && j > 2*(COLS - 2)/4 + 1 && j < 3*(COLS - 2)/4 + 1)
+    {
+        return 2;
+    }
+    
+    else if (i > 5 && i < (LINES - 10)/2 + 5 && j > 3*(COLS - 2)/4 + 1 && j < (COLS - 2) + 1)
+    {
+        return 3;
+    }
+
+    
+    else if (i > (LINES - 10)/2 + 5 && i < (LINES - 10) + 5 && j > 1 && j < (COLS - 2)/4 + 1)
+    {
+        return 4;
+    }
+
+    
+    else if (i > (LINES - 10)/2 + 5 && i < (LINES - 10) + 5 && j > (COLS - 2)/4 + 1 && j < 2*(COLS - 2)/4 + 1)
+    {
+        return 5;
+    }
+
+    
+    else if (i > (LINES - 10)/2 + 5 && i < (LINES - 10) + 5 && j > 2*(COLS - 2)/4 + 1 && j < 3*(COLS - 2)/4 + 1)
+    {
+        return 6;
+    }
+
+    
+    else if (i > (LINES - 10)/2 + 5 && i < (LINES - 10) + 5 && j > 3*(COLS - 2)/4 + 1 && j < (COLS - 2) + 1)
+    {
+        return 7;
+    }
+}
+
+void updating_room_that_shown()
+{
+    int i = player.x + 6;
+    int j = player.y + 2;
+    while (all_map[i][j] != '$')
+    {
+        map_that_shown[i][j] = all_map[i][j];
+        ;
+    }
+    map_that_shown[i][j] = all_map[i][j];
+    i++;
+
+}
+
+void updating_ways_that_shown(int i, int j)
+{
+    if (all_map[i - 6][j - 2] == '#')
+    {
+        map_that_shown[i - 6][j - 2] = '#';
+    }
+
+    if (all_map[i - 5][j - 2] == '#')
+    {
+        map_that_shown[i - 5][j - 2] = '#';
+    }
+    if (all_map[i - 7][j - 2] == '#')
+    {
+        map_that_shown[i - 7][j - 2] = '#';
+    }
+    if (all_map[i - 6][j - 1] == '#')
+    {
+        map_that_shown[i - 6][j - 1] = '#';
+    }
+    if (all_map[i - 6][j - 3] == '#')
+    {
+        map_that_shown[i - 6][j - 3] = '#';
     }
 
 }
@@ -490,29 +574,12 @@ void map()
         }
     }  
     rooms = (room *) malloc(9 * sizeof(room));
+
+
+
     for (int i = 0; i<8; i++)
     {
-        if (player.level == 4)
-        {
-            non_kaboos:
-            //دو مورد از ۴ حالتی که میتونه بیاد باید اتاق معمولی باشه یعنی اگه ۰ یا ۱ بود معمولی 
-            rooms[i].type = rand()%2;
-            if (rooms[i].type == 3)
-            {
-                goto non_kaboos;
-            }
-        }
-        else 
-        {
-            non_kaboos1:
-            //دو مورد از ۴ حالتی که میتونه بیاد باید اتاق معمولی باشه یعنی اگه ۰ یا ۱ بود معمولی 
-            rooms[i].type = rand()%2;
-            if (rooms[i].type == 3)
-            {
-                goto non_kaboos1;
-            }
-        }
-        if (rooms[i].type == 1 || rooms[i].type == 0)
+        if (i == 2 && player.level == 4)
         {
             int height = rand()%7 + 4;
             int width = rand()%13 + 6;
@@ -576,66 +643,145 @@ void map()
             add_to_main_map(i);
             adding_doors(i, firstx, firsty, width, height);
         }
-
-        else if (rooms[i].type == 2)
+        else 
         {
-                        int height = rand()%5 + 4;
-            int width = rand()%9 + 8;
-
-            rooms[i].map = (char **) malloc(((LINES - 10)/2)*sizeof(char *));
-            for (int j = 0; j<((LINES - 10)/2); j++)
+            //دو مورد از ۴ حالتی که میتونه بیاد باید اتاق معمولی باشه یعنی اگه ۰ یا ۱ یا ۲ بود معمولی 
+            rooms[i].type = rand()%4;
+    
+            if (rooms[i].type == 1 || rooms[i].type == 0 || rooms[i].type == 2)
             {
-                rooms[i].map[j] = (char *) malloc(((COLS - 2)/4)*sizeof(char));
-                for (int k = 0; k < ((COLS - 2)/4); k++)
+                int height = rand()%7 + 4;
+                int width = rand()%13 + 6;
+
+                rooms[i].map = (char **) malloc(((LINES - 10)/2)*sizeof(char *));
+                for (int j = 0; j<((LINES - 10)/2); j++)
                 {
-                    rooms[i].map[j][k] = ' ';
+                    rooms[i].map[j] = (char *) malloc(((COLS - 2)/4)*sizeof(char));
+                    for (int k = 0; k < ((COLS - 2)/4); k++)
+                    {
+                        rooms[i].map[j][k] = ' ';
+                    }
                 }
+
+                int firstx = rand()%((LINES - 10)/8) + 1;
+                int firsty = rand()%((COLS - 2)/8) + 1;
+
+
+                if (firstx + height < ((LINES - 10)/2) && firsty + width < ((COLS - 2)/4)) 
+                {
+                } 
+                else 
+                {
+                    i --;
+                    continue;
+                }
+
+
+                for (int k = 1; k < width; k++)
+                {
+                    rooms[i].map[firstx][firsty + k] = '-';
+                }
+
+                for (int k = 1; k < width; k++)
+                {
+                    rooms[i].map[firstx + height][firsty + k] = '-';
+                }
+
+                for (int k = 1; k < height; k++)
+                {
+                    rooms[i].map[firstx + k][firsty] = '|';
+                }
+
+                for (int k = 1; k < height; k++)
+                {
+                    rooms[i].map[firstx + k][firsty + width] = '|';
+                }   
+                rooms[i].map[firstx][firsty] = '$';
+                rooms[i].map[firstx + height][firsty] = '$';
+                rooms[i].map[firstx][firsty + width] = '$';
+                rooms[i].map[firstx + height][firsty + width] = '$';
+
+                for (int k = firstx + 1; k < firstx + height; k++)
+                {
+                    for (int j = firsty + 1; j <  firsty + width; j++)
+                    {
+                        rooms[i].map[k][j] = '.';
+                    }
+                }
+
+                add_to_main_map(i);
+                adding_doors(i, firstx, firsty, width, height);
             }
 
-            int firstx = rand()%((LINES - 10)/6) + 2;
-            int firsty = rand()%((COLS - 2)/10) + 2;
+            else if (rooms[i].type == 3)
+            {
+                int height = rand()%7 + 4;
+                int width = rand()%13 + 6;
+
+                rooms[i].map = (char **) malloc(((LINES - 10)/2)*sizeof(char *));
+                for (int j = 0; j<((LINES - 10)/2); j++)
+                {
+                    rooms[i].map[j] = (char *) malloc(((COLS - 2)/4)*sizeof(char));
+                    for (int k = 0; k < ((COLS - 2)/4); k++)
+                    {
+                        rooms[i].map[j][k] = ' ';
+                    }
+                }
+
+                int firstx = rand()%((LINES - 10)/8) + 1;
+                int firsty = rand()%((COLS - 2)/8) + 1;
 
 
-            if (firstx + height < ((LINES - 10)/2) && firsty + width < ((COLS - 2)/4)) 
-            {
-            } 
-            else 
-            {
-                i --;
-                continue;
+                if (firstx + height < ((LINES - 10)/2) && firsty + width < ((COLS - 2)/4)) 
+                {
+                } 
+                else 
+                {
+                    i --;
+                    continue;
+                }
+
+
+                for (int k = 1; k < width; k++)
+                {
+                    rooms[i].map[firstx][firsty + k] = '-';
+                }
+
+                for (int k = 1; k < width; k++)
+                {
+                    rooms[i].map[firstx + height][firsty + k] = '-';
+                }
+
+                for (int k = 1; k < height; k++)
+                {
+                    rooms[i].map[firstx + k][firsty] = '|';
+                }
+
+                for (int k = 1; k < height; k++)
+                {
+                    rooms[i].map[firstx + k][firsty + width] = '|';
+                }   
+                rooms[i].map[firstx][firsty] = '$';
+                rooms[i].map[firstx + height][firsty] = '$';
+                rooms[i].map[firstx][firsty + width] = '$';
+                rooms[i].map[firstx + height][firsty + width] = '$';
+
+                for (int k = firstx + 1; k < firstx + height; k++)
+                {
+                    for (int j = firsty + 1; j <  firsty + width; j++)
+                    {
+                        rooms[i].map[k][j] = '.';
+                    }
+                }
+
+                add_to_main_map(i);
+                adding_doors(i, firstx, firsty, width, height);
             }
-            for (int k = 1; k < width; k++)
+
+            else if (rooms[i].type == 5)
             {
-                rooms[i].map[firstx][firsty + k] = '-';
+                //kaboos
             }
-
-            for (int k = 1; k < width; k++)
-            {
-                rooms[i].map[firstx + height][firsty + k] = '-';
-            }
-
-            for (int k = 1; k < height; k++)
-            {
-                rooms[i].map[firstx + k][firsty] = '|';
-            }
-
-            for (int k = 1; k < height; k++)
-            {
-                rooms[i].map[firstx + k][firsty + width] = '|';
-            }   
-            rooms[i].map[firstx][firsty] = '$';
-            rooms[i].map[firstx + height][firsty] = '$';
-            rooms[i].map[firstx][firsty + width] = '$';
-            rooms[i].map[firstx + height][firsty + width] = '$';
-        }
-        
-        else if (rooms[i].type == 3)
-        {
-            //kaboos
-        }
-        else if (rooms[i].type == 4)
-        {
-
         }
     }   
 }
@@ -654,6 +800,15 @@ void print_all_map()
                 attron(COLOR_PAIR(40));
                 printw("%c", all_map[i][j]);
                 attroff(COLOR_PAIR(40));
+                refresh();
+                continue;
+            }
+
+            if (all_map[i][j] == '#')
+            {
+                attron(COLOR_PAIR(41));
+                printw("%c", all_map[i][j]);
+                attroff(COLOR_PAIR(41));
                 refresh();
                 continue;
             }
@@ -1316,6 +1471,17 @@ void random_first_map()
             }
         }
     }
+
+    player.room_i = which_room_is_the_player(player.x, player.y);
+    if (rooms[player.room_i].type == 0 || rooms[player.room_i].type == 1 || rooms[player.room_i].type == 2)
+    {
+        alert("You Are Now In A Ordinary Room!", "", -1);
+    }
+
+    else if (rooms[player.room_i].type == 3)
+    {
+        alert("You Are Now In A Telesm Room!", "", -1);
+    }
 }
 
 void print_map()
@@ -1325,6 +1491,14 @@ void print_map()
     {
         for (int j = 0; j < COLS - 2; j++)
         {
+            if (map_that_shown[i][j] == '#')
+            {
+                attron(COLOR_PAIR(41));
+                printw("%c", map_that_shown[i][j]);
+                attroff(COLOR_PAIR(41));
+                refresh();
+                continue;
+            }
 
             if (map_that_shown[i][j] == 'B')
             {
@@ -1467,9 +1641,22 @@ void player_move(int x_pa, int y_pa, int g_on_off)
 
     if (all_map[player.x - 6][player.y - 2] == '+')
     {
+        if (all_map[x_pa - 6][y_pa - 2] == '#')
+        {
+            // updating_room_that_shown();
+            print_map();
+        }
+        else
+        {
+            updating_ways_that_shown(player.x, player.y);
+            print_map();
+        }
+    }
 
-
-    
+    if (all_map[player.x - 6][player.y - 2] == '#')
+    {
+        updating_ways_that_shown(player.x, player.y);
+        print_map();
     }
 
 
@@ -1565,9 +1752,7 @@ int new_game()
     connect_room();
     elements_on_map();
     copy_map();
-
     random_first_map();
-
     player_move(0, 0, 0);
 
     int m_on_off = 0;
@@ -1579,7 +1764,7 @@ int new_game()
             player.life_time += 0.25;
         }
 
-        if (player.hungry_amount > 10)
+        if (player.hungry_amount > 15)
         {
             player.life_time -= 0.125;
         }
