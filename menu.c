@@ -53,6 +53,8 @@ void clear_and_border()
         init_color(22, 100, 100, 900);
         init_color(23, 100, 900, 400);
         init_color(24, 900, 900, 1100);
+        init_color(81, 764, 764, 764);
+        init_color(82, 700, 560, 348);
         init_pair(1, COLOR_GREEN, COLOR_BLACK);
         init_pair(2, COLOR_WHITE, 5);
         init_pair(3, COLOR_WHITE, COLOR_BLACK);
@@ -66,6 +68,9 @@ void clear_and_border()
         init_pair(33, COLOR_BLACK, 23);
         init_pair(40, 39, COLOR_BLACK);
         init_pair(100,COLOR_BLACK, COLOR_BLACK);
+        init_pair(101,COLOR_BLACK, 21);
+        init_pair(102,COLOR_BLACK, 81);
+        init_pair(103,COLOR_BLACK, 82);
         init_pair(41, 24, 24);
     }
     clear();
@@ -94,7 +99,6 @@ void clear_and_border()
     }
     refresh();
 }
-
 
 void write_on_file(char *user , char *pass , char *mail)
 {
@@ -486,7 +490,7 @@ int sign_up_menu()
                         refresh();
                         write_on_file(name, password, email);
                         how_many_line ++;
-                        which_line_user = how_many_line;
+                        which_line_user = line_finder(name);
                         sleep(2);
                         return 4;
                     }

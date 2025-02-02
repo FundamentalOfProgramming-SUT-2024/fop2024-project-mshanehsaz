@@ -108,6 +108,11 @@ int main()
             {
                 which_menu = 9;
             }
+            else if (which_case == 8)
+            {
+                score_table();
+                which_menu = 4;
+            }
 
         }
 

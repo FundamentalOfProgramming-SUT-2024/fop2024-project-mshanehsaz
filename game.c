@@ -88,6 +88,62 @@ int first_life;
 Player player;
 
 
+void save_score()
+{
+typedef struct {
+    char name[100];
+    int gold;
+    int score;
+    int games;
+} save;
+
+    FILE *file = fopen("score.txt", "r");
+
+    save play[100];
+
+    int count = 0;
+    
+    char line[1000];
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        line[strcspn(line, "\n")] = '\0';
+
+        sscanf(line, "%s %d %d %d", play[count].name, &play[count].gold, &play[count].score, &play[count].games);
+        count ++;
+    }
+    fclose(file);
+
+    int found = 0;
+    for (int i = 0; i < count; i++) 
+    {
+        if (strcmp(play[i].name, user[0]) == 0) 
+        {
+            play[i].gold += player.gold;
+            play[i].score += player.score;
+            play[i].games += 1;
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found && count < 100) 
+    {
+        strcpy(play[count].name, user[0]);
+        play[count].gold = player.gold;
+        play[count].score = player.score;
+        play[count].games = 1;
+        count++;
+    }
+
+    file = fopen("score.txt", "w");
+
+    for (int i = 0; i < count; i++) 
+    {
+        fprintf(file, "%s %d %d %d\n", play[i].name, play[i].gold, play[i].score, play[i].games);
+    }
+    
+    fclose(file);
+}
 
 void alert(char *message1, char *message2, int number)
 {
@@ -1475,15 +1531,166 @@ int before_play_menu(int line)
                 return 6;
 
             case 4:
-                return 8;
-                break;
-                
+                return 8;  
+
             case 5:
                 return 7;
 
             case 6:
                 return 0;
         }
+    }
+}
+
+void score_table()
+{
+    clear_and_border();
+    typedef struct {
+    char name[100];
+    int gold;
+    int score;
+    int games;
+    } save;
+
+    FILE *file = fopen("score.txt", "r");
+
+    save play[100];
+
+    int count = 0;
+    
+    char line[1000];
+    while (fgets(line, sizeof(line), file) != NULL)
+    {
+        line[strcspn(line, "\n")] = '\0';
+
+        sscanf(line, "%s %d %d %d", play[count].name, &play[count].gold, &play[count].score, &play[count].games);
+        count ++;
+    }
+    fclose(file);
+
+    if (player.line == -1)
+    {
+        strcpy(play[count].name, "GUEST");
+        play[count].gold = player.gold;
+        play[count].score = player.score;
+        play[count].games = 1;
+        count ++;
+    }
+
+    if (count == 0)
+    {
+        curs_set(false);
+        noecho(); 
+        attron(COLOR_PAIR(5));
+        mvprintw(((LINES/8) - 1), (COLS/2 - 10), "                   " );
+        mvprintw(((LINES/8)), (COLS/2 - 10), " NOBODY PLAYED YET " );
+        mvprintw(((LINES/8) + 1), (COLS/2 - 10), "                   " );
+        attroff(COLOR_PAIR(5));
+        refresh();
+        sleep(2);
+        return;
+    }
+
+    for (int i = 0; i < count - 1; i++)
+    {
+        for (int j = i + 1; j < count; j++)
+        {
+            if (play[i].score < play[j].score)
+            {
+                save temp = play[i];
+                play[i] = play[j];
+                play[j] = temp;
+            }
+        }
+    }
+
+    int which_page = 1;
+    int max_which_page = ((count - 1)/3) + 1;
+    int count_copy = count;
+    
+    for (int ch = 'e'; ch != 'q'; ch = getch())
+    {
+        if (ch == KEY_UP)
+        { 
+            which_page --;
+            if (which_page == 0)
+            {
+                which_page = max_which_page;
+            }
+
+        }
+        
+        if (ch == KEY_DOWN)
+        { 
+            which_page ++;
+            if (which_page > max_which_page)
+            {
+                which_page = 1;
+            }
+        }
+
+
+        int i = which_page;
+
+        clear_and_border();
+        if (i == 1)
+        {
+            if (count_copy > 0)
+            {
+            wchar_t emoji[] = L"🥇";
+            mvaddwstr((LINES/2) - 4, (COLS/4) + 3, emoji);
+            attron(COLOR_PAIR(101));
+            mvprintw((LINES/2) - 4, (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d (GOAT!) ", 3*(i - 1) + 1, play[3*(i - 1)].name, play[3*(i - 1)].gold, play[3*(i - 1)].score, play[3*(i - 1)].games);
+            attroff(COLOR_PAIR(101));
+            count_copy --;
+            }
+            if (count_copy > 0)
+            {
+            wchar_t emoji1[] = L"🥈";
+            mvaddwstr((LINES/2), (COLS/4) + 3, emoji1);
+            attron(COLOR_PAIR(102));
+            mvprintw((LINES/2), (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d (HOTSHOT!) ", 3*(i - 1) + 2, play[3*(i - 1) + 1].name, play[3*(i - 1) + 1].gold, play[3*(i - 1) + 1].score, play[3*(i - 1) + 1].games);
+            attroff(COLOR_PAIR(102));
+            count_copy --;
+            }
+            if (count_copy > 0)
+            {
+            wchar_t emoji2[] = L"🥉";
+            mvaddwstr((LINES/2) + 4, (COLS/4) + 3, emoji2);
+            attron(COLOR_PAIR(103));
+            mvprintw((LINES/2) + 4, (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d (ACE!) ", 3*(i - 1) + 3, play[3*(i - 1) + 2].name, play[3*(i - 1) + 2].gold, play[3*(i - 1) + 2].score, play[3*(i - 1) + 2].games);
+            attroff(COLOR_PAIR(103));
+            count_copy --;
+            }
+            refresh();
+        }
+        if (i != 1)
+        {
+            attron(COLOR_PAIR(101));
+            mvprintw((LINES/2) - 4, (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d ", 3*(i - 1) + 1, play[3*(i - 1)].name, play[3*(i - 1)].gold, play[3*(i - 1)].score, play[3*(i - 1)].games);
+            attroff(COLOR_PAIR(101));
+            count_copy --;
+            if (count_copy > 0)
+            {
+            attron(COLOR_PAIR(102));
+            mvprintw((LINES/2), (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d ", 3*(i - 1) + 2, play[3*(i - 1) + 1].name, play[3*(i - 1) + 1].gold, play[3*(i - 1) + 1].score, play[3*(i - 1) + 1].games);
+            attroff(COLOR_PAIR(102));
+            count_copy --;
+            }
+            if (count_copy > 0)
+            {
+            attron(COLOR_PAIR(103));
+            mvprintw((LINES/2) + 4, (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d ", 3*(i - 1) + 3, play[3*(i - 1) + 2].name, play[3*(i - 1) + 2].gold, play[3*(i - 1) + 2].score, play[3*(i - 1) + 2].games);
+            attroff(COLOR_PAIR(103));
+            count_copy --;
+            }
+            refresh();
+        }
+
+    if (count_copy == 0)
+    {
+        count_copy = count;
+    }
     }
 }
 
@@ -1495,16 +1702,19 @@ void profile()
         if (player.line == -1)
         {
             attron(COLOR_PAIR(11));
-            mvprintw(((LINES/2) - 4), (COLS/2) - 5,"        ");
-            mvprintw(((LINES/2) - 3), (COLS/2) - 5," GUEST! ");
-            mvprintw(((LINES/2)) - 2, (COLS/2) - 5,"        ");
+            mvprintw(((LINES/2) - 6), (COLS/2) - 5,"        ");
+            mvprintw(((LINES/2) - 5), (COLS/2) - 5," GUEST! ");
+            mvprintw(((LINES/2)) - 4, (COLS/2) - 5,"        ");
             attroff(COLOR_PAIR(11));
-            refresh(); 
+            attron(COLOR_PAIR(11));
+            mvprintw(((LINES/2)) -1, ((COLS/2) - 6) ," SCORE: %d ", player.score);
+            attroff(COLOR_PAIR(11));
             attron(COLOR_PAIR(5));
-            mvprintw(((LINES/2)) + 2, ((COLS/2) - 10) ,"                  ");
-            mvprintw(((LINES/2)) + 3, ((COLS/2) - 10) ," PRESS Q TO LEAVE ");
-            mvprintw(((LINES/2)) + 4, ((COLS/2) - 10) ,"                  ");
+            mvprintw(((LINES/2)) + 2, ((COLS/2) - 10) ,"                   ");
+            mvprintw(((LINES/2)) + 3, ((COLS/2) - 10) ," PRESS Q TO LEAVE! ");
+            mvprintw(((LINES/2)) + 4, ((COLS/2) - 10) ,"                   ");
             attroff(COLOR_PAIR(5));
+            refresh();
         }
         
         else
@@ -1512,13 +1722,13 @@ void profile()
             attron(COLOR_PAIR(11));
             mvprintw(((LINES/2) - 8), (COLS/2) - (6 + (strlen(user[0])/2))," USERNAME: %s ", user[0]);
             mvprintw(((LINES/2)) - 4, ((COLS/2) - (6 + (strlen(user[1])/2))) ," PASSWORD: %s ", user[1]);
-            mvprintw(((LINES/2)), ((COLS/2) - (5 + (strlen(user[2])/2))) ," EMAIL: %s ", user[2]);
-            mvprintw(((LINES/2)) + 4, ((COLS/2) - 9) ," SCORE(GOLD): %d ", player.gold);
+            mvprintw(((LINES/2)), ((COLS/2) - (4 + (strlen(user[2])/2))) ," EMAIL: %s ", user[2]);
+            mvprintw(((LINES/2)) + 4, ((COLS/2) - 5) ," SCORE: %d ", player.score);
             attroff(COLOR_PAIR(11));
             attron(COLOR_PAIR(5));
-            mvprintw(((LINES/2)) + 7, ((COLS/2) - 10) ,"                  ");
-            mvprintw(((LINES/2)) + 8, ((COLS/2) - 10) ," PRESS Q TO LEAVE ");
-            mvprintw(((LINES/2)) + 9, ((COLS/2) - 10) ,"                  ");
+            mvprintw(((LINES/2)) + 7, ((COLS/2) - 10) ,"                   ");
+            mvprintw(((LINES/2)) + 8, ((COLS/2) - 10) ," PRESS Q TO LEAVE! ");
+            mvprintw(((LINES/2)) + 9, ((COLS/2) - 10) ,"                   ");
             attroff(COLOR_PAIR(5));
             refresh();
         }
@@ -2036,6 +2246,7 @@ void player_move(int x_pa, int y_pa, int g_on_off)
         int gold = rand()%random;
         alert("You'v got", "Gold!", gold);
         player.gold += gold;
+        player.score += gold;
         map_that_shown[player.x - 6][player.y - 2] = '.';
         map_whithout_tale[player.x - 6][player.y - 2] = '.';
         all_map[player.x - 6][player.y - 2] = '.';
@@ -2079,6 +2290,7 @@ void player_move(int x_pa, int y_pa, int g_on_off)
         int gold = rand()%random + 20;
         alert("You'v got", "Black Gold!", gold);
         player.gold += gold;
+        player.score += gold;
         map_that_shown[player.x - 6][player.y - 2] = '.';        
         map_whithout_tale[player.x - 6][player.y - 2] = '.';
         all_map[player.x - 6][player.y - 2] = '.';
@@ -2182,9 +2394,6 @@ int new_game()
     {
         player.hardness = 1;
     }
-    player.gold = 0;
-    player.score = 0;
-    player.main_selah = 1;
     if (player.hardness == 1)
     {
         player.life_time = 25;
@@ -2202,6 +2411,9 @@ int new_game()
     }
     first_life = player.life_time;
     player.level = 1;
+    player.gold = 0;
+    player.score = 0;
+    player.main_selah = 1;
 
     for (int j = 0; j < 4; j++)
     {
@@ -2344,10 +2556,8 @@ int new_game()
 
     if (player.line != -1)
     {
-        FILE * file_score = fopen("score.txt", "a");
-        fprintf(file_score, "%s %d %d\n", user[0], player.gold, player.score);
+        save_score();
     }
-
 
     return 4;
 
