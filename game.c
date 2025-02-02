@@ -2342,8 +2342,14 @@ int new_game()
         }
     }
 
+    if (player.line != -1)
+    {
+        FILE * file_score = fopen("score.txt", "a");
+        fprintf(file_score, "%s %d %d\n", user[0], player.gold, player.score);
+    }
 
-        return 4;
+
+    return 4;
 
 
 }
