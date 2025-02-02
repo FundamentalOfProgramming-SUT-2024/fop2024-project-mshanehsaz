@@ -145,6 +145,72 @@ typedef struct {
     fclose(file);
 }
 
+void save_maps()
+{
+    char file_name[1000];
+    strcpy(file_name, "maps/");
+    strcat(file_name, user[0]);
+    strcat(file_name, ".txt");
+
+    FILE *file = fopen(file_name, "w");
+
+    for (int i = 0; i < LINES - 10; i++)
+    {
+        for (int j = 0; j < COLS - 2; j++)
+        {
+            fprintf(file, "%c", all_map[i][j]);
+        }
+        fprintf(file, "\n");
+    }
+
+    for (int i = 0; i < LINES - 10; i++)
+    {
+        for (int j = 0; j < COLS - 2; j++)
+        {
+            fprintf(file, "%c", map_that_shown[i][j]);
+        }
+        fprintf(file, "\n");
+    }
+
+    fprintf(file, "%d %d %d %d %f ", player.line, player.score, player.gold, player.color, player.life_time);
+    fprintf(file, "%f %d %d %d ", player.hungry_amount, player.telesm[0], player.telesm[1], player.telesm[2]);
+    fprintf(file, "%d %d %d %d %d %d %d %d ", player.foods[0].count, player.foods[0].time, player.foods[1].count, player.foods[1].time, player.foods[2].count, player.foods[2].time, player.foods[3].count, player.foods[3].time);
+    fprintf(file, "%d %d %d %d %d ", player.count_selahs[0], player.count_selahs[1], player.count_selahs[2], player.count_selahs[3], player.count_selahs[4]);
+    fprintf(file, "%d %d %d %d %d ", player.hardness, player.level, player.room_i, player.x, player.y);
+    fprintf(file, "%d %d %d %d %d %d %d %d", rooms[0].type, rooms[1].type, rooms[2].type, rooms[3].type, rooms[4].type, rooms[5].type, rooms[6].type, rooms[7].type);
+
+    fclose(file);
+}
+
+void load_map()
+{
+    char file_name[1000];
+    strcpy(file_name, "maps/");
+    strcat(file_name, user[0]);
+    strcat(file_name, ".txt");
+
+    FILE *file = fopen(file_name, "r");
+
+for (int i = 0; i < LINES - 10; i++)
+{
+    fgets(all_map[i], COLS - 1, file);
+}
+
+for (int i = 0; i < LINES - 10; i++)
+{
+    fgets(map_that_shown[i], COLS - 1, file);
+}
+
+    fscanf(file, "%d %d %d %d %f ", &player.line, &player.score, &player.gold, &player.color, &player.life_time);
+    fscanf(file, "%f %d %d %d ", &player.hungry_amount, &player.telesm[0], &player.telesm[1], &player.telesm[2]);
+    fscanf(file, "%d %d %d %d %d %d %d %d ", &player.foods[0].count, &player.foods[0].time, &player.foods[1].count, &player.foods[1].time, &player.foods[2].count, &player.foods[2].time, &player.foods[3].count, &player.foods[3].time);
+    fscanf(file, "%d %d %d %d %d ", &player.hardness, &player.level, &player.room_i, &player.x, &player.y);
+    fscanf(file, "%d %d %d %d %d %d %d %d", &rooms[0].type, &rooms[1].type, &rooms[2].type, &rooms[3].type, &rooms[4].type, &rooms[5].type, &rooms[6].type, &rooms[7].type);
+
+    fclose(file);
+}
+
+
 void alert(char *message1, char *message2, int number)
 {
     for (int i = 2; i < COLS - 1; i++)
@@ -920,35 +986,6 @@ void connect_room()
     
     }
          
-        //connect_plus(rooms[0].doors[1].x, rooms[0].doors[1].y, 1,
-        //             rooms[1].doors[2].x, rooms[1].doors[2].y, 2);
-
-        // connect_plus(rooms[0].doors[3].x, rooms[0].doors[3].y, 3,
-        //             rooms[4].doors[0].x, rooms[4].doors[0].y, 0);  
-
-        // connect_plus(rooms[1].doors[3].x, rooms[1].doors[3].y, 3,
-        //             rooms[5].doors[0].x, rooms[5].doors[0].y, 0);
-        
-        // connect_plus(rooms[1].doors[1].x, rooms[1].doors[1].y, 1,
-        //             rooms[2].doors[2].x, rooms[2].doors[2].y, 2);
-        
-        // connect_plus(rooms[2].doors[1].x, rooms[2].doors[1].y, 1,
-        //             rooms[3].doors[2].x, rooms[3].doors[2].y, 2);
-        
-        // connect_plus(rooms[2].doors[3].x, rooms[2].doors[3].y, 3,
-        //             rooms[6].doors[0].x, rooms[6].doors[0].y, 0);
-        
-        // connect_plus(rooms[3].doors[3].x, rooms[3].doors[3].y, 3,
-        //             rooms[7].doors[0].x, rooms[7].doors[0].y, 0);
-        
-        // connect_plus(rooms[4].doors[1].x, rooms[4].doors[1].y, 1,
-        //             rooms[5].doors[2].x, rooms[5].doors[2].y, 2);
-        
-        // connect_plus(rooms[5].doors[1].x, rooms[5].doors[1].y, 1,
-        //             rooms[6].doors[2].x, rooms[6].doors[2].y, 2);
-        
-        // connect_plus(rooms[6].doors[1].x, rooms[6].doors[1].y, 1,
-        //             rooms[7].doors[2].x, rooms[7].doors[2].y, 2); 
 }
 
 void clear_and_border2()
@@ -1610,16 +1647,6 @@ void score_table()
     
     for (int ch = 'e'; ch != 'q'; ch = getch())
     {
-        if (ch == KEY_UP)
-        { 
-            which_page --;
-            if (which_page == 0)
-            {
-                which_page = max_which_page;
-            }
-
-        }
-        
         if (ch == KEY_DOWN)
         { 
             which_page ++;
@@ -1644,6 +1671,8 @@ void score_table()
             attroff(COLOR_PAIR(101));
             count_copy --;
             }
+
+
             if (count_copy > 0)
             {
             wchar_t emoji1[] = L"🥈";
@@ -1653,6 +1682,8 @@ void score_table()
             attroff(COLOR_PAIR(102));
             count_copy --;
             }
+
+
             if (count_copy > 0)
             {
             wchar_t emoji2[] = L"🥉";
@@ -1662,14 +1693,21 @@ void score_table()
             attroff(COLOR_PAIR(103));
             count_copy --;
             }
+
+
             refresh();
         }
         if (i != 1)
         {
-            attron(COLOR_PAIR(101));
-            mvprintw((LINES/2) - 4, (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d ", 3*(i - 1) + 1, play[3*(i - 1)].name, play[3*(i - 1)].gold, play[3*(i - 1)].score, play[3*(i - 1)].games);
-            attroff(COLOR_PAIR(101));
-            count_copy --;
+            if (count_copy > 0)
+            {
+                attron(COLOR_PAIR(101));
+                mvprintw((LINES/2) - 4, (COLS/4) + 7, " %d- %s GOLD: %d SCORE: %d GAME: %d ", 3*(i - 1) + 1, play[3*(i - 1)].name, play[3*(i - 1)].gold, play[3*(i - 1)].score, play[3*(i - 1)].games);
+                attroff(COLOR_PAIR(101));
+                count_copy --;
+            }
+
+
             if (count_copy > 0)
             {
             attron(COLOR_PAIR(102));
@@ -1677,6 +1715,8 @@ void score_table()
             attroff(COLOR_PAIR(102));
             count_copy --;
             }
+
+
             if (count_copy > 0)
             {
             attron(COLOR_PAIR(103));
@@ -1684,6 +1724,8 @@ void score_table()
             attroff(COLOR_PAIR(103));
             count_copy --;
             }
+
+
             refresh();
         }
 
@@ -2443,7 +2485,7 @@ int new_game()
     {
         if (player.hungry_amount < 10 && player.life_time < 25)
         {
-            player.life_time += 0.25;
+            player.life_time += 0.125;
         }
 
         if (player.hungry_amount > 15)
@@ -2558,6 +2600,193 @@ int new_game()
     {
         save_score();
     }
+
+    if (player.line == -1 || (player.room_i == 2 && player.level == 4))
+    {
+        return 4;
+    }
+
+    save_maps();
+
+    return 4;
+
+
+
+}
+
+int resume()
+{
+    which_user(which_line_user);
+    map_whithout_tale = (char **) malloc ((LINES - 10)*sizeof(char *));
+    for (int i = 0; i < (LINES - 10); i++)
+    {
+        map_whithout_tale[i] = (char *) malloc((COLS - 2) * sizeof(char));
+        for (int j = 0; j < (COLS - 2); j++)
+        {
+            map_whithout_tale[i][j] = ' ';
+        }
+    }  
+
+    map_that_shown = (char **) malloc ((LINES - 10)*sizeof(char *));
+    for (int i = 0; i < (LINES - 10); i++)
+    {
+        map_that_shown[i] = (char *) malloc((COLS - 2) * sizeof(char));
+        for (int j = 0; j < (COLS - 2); j++)
+        {
+            map_that_shown[i][j] = ' ';
+        }
+    }  
+
+    all_map = (char **) malloc ((LINES - 10)*sizeof(char *));
+    for (int i = 0; i < (LINES - 10); i++)
+    {
+        all_map[i] = (char *) malloc((COLS - 2) * sizeof(char));
+        for (int j = 0; j < (COLS - 2); j++)
+        {
+            all_map[i][j] = ' ';
+        }
+    }  
+    rooms = (room *) malloc(9 * sizeof(room));
+
+
+
+    load_map();
+    clear_and_border2();
+    elemnts_under_board();
+    print_map();
+    sleep(2);
+    copy_map();
+    print_all_map();
+    sleep(2);
+
+    // map();
+    // connect_room();
+    // elements_on_map();
+    // copy_map();
+    // random_first_map();
+    // player_move(0, 0, 0);
+
+    // int m_on_off = 0;
+    // int g_on_off = 0;
+    // for(int ch = getch(); ch != 'q'; ch = getch())
+    // {
+    //     if (player.hungry_amount < 10 && player.life_time < 25)
+    //     {
+    //         player.life_time += 0.125;
+    //     }
+
+    //     if (player.hungry_amount > 15)
+    //     {
+    //         player.life_time -= 0.125;
+    //     }
+
+    //     if (player.life_time <= 0)
+    //     {
+    //         attron(COLOR_PAIR(5));
+    //         mvprintw((LINES/2) - 2, (COLS/2) - 8, "               ");
+    //         mvprintw((LINES/2) - 1 , (COLS/2) - 8, "   YOU DIED!   ");
+    //         mvprintw((LINES/2), (COLS/2) - 8, "               ");
+    //         mvprintw((LINES/2) + 1, (COLS/2) - 8, " GAME IS OVER! ");
+    //         mvprintw((LINES/2) + 2, (COLS/2) - 8, "               ");
+    //         attroff(COLOR_PAIR(5));
+    //         refresh();
+    //         sleep(3);
+    //         break;
+    //     }
+    //     switch(ch)
+    //     {
+    //         case (56):
+    //             player.x --;
+    //             player_move(player.x + 1, player.y, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case (54):
+    //             player.y ++;
+    //             player_move(player.x, player.y - 1, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case (52):
+    //             player.y --;
+    //             player_move(player.x, player.y + 1, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case (50):
+    //             player.x ++;
+    //             player_move(player.x - 1, player.y, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case (51):
+    //             player.x ++;
+    //             player.y ++;
+    //             player_move(player.x - 1, player.y - 1, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case (49):
+    //             player.x ++;
+    //             player.y --;
+    //             player_move(player.x - 1, player.y + 1, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case (55):
+    //             player.x --;
+    //             player.y --;
+    //             player_move(player.x + 1, player.y + 1, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case (57):
+    //             player.x --;
+    //             player.y ++;
+    //             player_move(player.x + 1, player.y - 1, g_on_off);
+    //             g_on_off = 0;
+    //             break;
+
+    //         case ('m'):
+    //             if (m_on_off == 0)
+    //             {
+    //                 print_all_map();
+    //                 m_on_off = 1;
+    //             }
+    //             else
+    //             {
+    //                 clear_and_border2();
+    //                 elemnts_under_board();
+    //                 m_on_off = 0; 
+    //                 player_move(player.x, player.y, g_on_off);
+    //             }
+    //             break;
+
+
+    //         case ('g'):
+    //             g_on_off = 1;
+    //             break;
+
+    //         case ('f'):
+    //             food_manu();
+    //             clear_and_border2();
+    //             elemnts_under_board();
+    //             player_move(player.y, player.y, 0);
+    //             break;
+
+    //         case ('i'):
+    //             // weapon_manu();
+    //             clear_and_border2();
+    //             elemnts_under_board();
+    //             player_move(player.y, player.y, 0);
+    //             break;
+    //     }
+    // }
+
+    // if (player.line != -1)
+    // {
+    //     save_score();
+    // }
 
     return 4;
 

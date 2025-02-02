@@ -113,6 +113,10 @@ int main()
                 score_table();
                 which_menu = 4;
             }
+            else if (which_case == 10)
+            {
+                which_menu = 10;
+            }
 
         }
 
@@ -128,10 +132,15 @@ int main()
         else if(which_menu == 9)
         {
             int which_case = new_game();
-            if (which_case == 0)
+            if (which_case == 4)
             {
-                which_menu = 0;
+                which_menu = 4;
             }
+        }
+
+        else if (which_menu == 10)
+        {
+            int which_case = resume();
             if (which_case == 4)
             {
                 which_menu = 4;
