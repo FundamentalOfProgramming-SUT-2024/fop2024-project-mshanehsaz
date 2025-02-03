@@ -55,6 +55,21 @@ void clear_and_border()
         init_color(24, 900, 900, 1100);
         init_color(81, 764, 764, 764);
         init_color(82, 700, 560, 348);
+        //enemy
+        init_color(70, 1000, 850, 0);
+        init_color(71, 1000, 780, 200);
+        init_color(72, 1000, 560, 200);
+        init_color(73, 1000, 360, 200);
+        init_color(74, 800, 200, 200);
+        //food
+        init_color(60, 600, 800, 300);
+        init_color(61, 500, 900, 500);
+        init_color(62, 300, 900, 600);
+        //telesm
+        init_color(50, 1000, 260, 800);
+        init_color(51, 800, 244, 900);
+        init_color(52, 600, 200, 900);
+
         init_pair(1, COLOR_GREEN, COLOR_BLACK);
         init_pair(2, COLOR_WHITE, 5);
         init_pair(3, COLOR_WHITE, COLOR_BLACK);
@@ -73,6 +88,20 @@ void clear_and_border()
         init_pair(103,COLOR_BLACK, 82);
         init_pair(41, 24, 24);
         init_pair(42, COLOR_WHITE, COLOR_WHITE);
+
+        init_pair(75, COLOR_BLACK, 70);
+        init_pair(76, COLOR_BLACK, 71);
+        init_pair(77, COLOR_BLACK, 72);
+        init_pair(78, COLOR_WHITE, 73);
+        init_pair(79, COLOR_WHITE, 74);
+
+        init_pair(63, COLOR_BLACK, 60);
+        init_pair(64, COLOR_BLACK, 61);
+        init_pair(65, COLOR_BLACK, 62);
+
+        init_pair(53, COLOR_WHITE, 50);
+        init_pair(54, COLOR_WHITE, 51);
+        init_pair(55, COLOR_WHITE, 52);
     }
     clear();
 
