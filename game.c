@@ -22,6 +22,14 @@ which food 4 = fased
 
 typedef struct
 {
+    int x;
+    int y;
+    int room_i;
+    int life_time;
+}enemy;
+
+typedef struct
+{
     int time;
     int count;
 }food;
@@ -1355,8 +1363,6 @@ void map()
         }
     }   
 }
-
-// درست بشود...
 
 void print_all_map()
 {

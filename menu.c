@@ -590,6 +590,150 @@ int is_correct(char *user , char *pass)
     return 0;
 }
 
+int forgot_pass()
+{
+    char name[100];
+    char password[100];
+    int user1 = 0;
+    int pass = 0;
+
+    int which_case = 1;
+    while (1)
+    {
+        clear_and_border();
+        attron(COLOR_PAIR(3));
+        mvprintw(((LINES/2) - 4), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+        mvprintw(((LINES/2)), ((COLS/2) - 8) ," YOUR PASS IS ");
+        mvprintw(((LINES/2) + 4), ((COLS/2) - 4) ," BACK ");
+        attroff(COLOR_PAIR(3));
+        refresh();
+        if (user1 == 1)
+        {
+            mvprintw(((LINES/2) - 4), (COLS/2) + 12, "%s", name); 
+            refresh();
+        }
+        if (pass == 1)
+        {
+            attron(COLOR_PAIR(11));
+            mvprintw(((LINES/2)), ((COLS/2) + 7) ," %s ", password);
+            attroff(COLOR_PAIR(11));
+            refresh();
+        }     
+
+        for(int ch = getch(); ch != 10; ch = getch())
+        {
+            if (ch == KEY_UP)
+            {
+                which_case --;
+                if (which_case == 0)
+                {
+                    which_case = 3;
+                }
+            }
+            if ((ch == KEY_DOWN))
+            {
+                which_case ++;
+                if (which_case == 4)
+                {
+                    which_case = 1;
+                }
+            }
+            switch (which_case)
+            {
+                case 1:
+                    attron(COLOR_PAIR(3));
+                    mvprintw(((LINES/2)), ((COLS/2) - 8) ," YOUR PASS IS ");
+                    mvprintw(((LINES/2) + 4), ((COLS/2) - 4) ," BACK ");
+                    attroff(COLOR_PAIR(3));
+                    attron(COLOR_PAIR(4));
+                    mvprintw(((LINES/2) - 4), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                    attroff(COLOR_PAIR(4));
+                    refresh();
+                    break;
+
+                case 2:
+                    attron(COLOR_PAIR(3));
+                    mvprintw(((LINES/2) - 4), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                    mvprintw(((LINES/2) + 4), ((COLS/2) - 4) ," BACK ");
+                    attroff(COLOR_PAIR(3));
+                    attron(COLOR_PAIR(4));
+                    mvprintw(((LINES/2)), ((COLS/2) - 8) ," YOUR PASS IS ");
+                    attroff(COLOR_PAIR(4));
+                    refresh();
+                    break;
+
+                case 3:
+                    attron(COLOR_PAIR(3));
+                    mvprintw(((LINES/2) - 4), (COLS/2) - 11 ," ENTER YOUR USERNAME ");
+                    mvprintw(((LINES/2)), ((COLS/2) - 8) ," YOUR PASS IS ");
+                    attroff(COLOR_PAIR(3));
+                    attron(COLOR_PAIR(4));
+                    mvprintw(((LINES/2) + 4), ((COLS/2) - 4) ," BACK ");
+                    attroff(COLOR_PAIR(4));
+                    refresh();
+                    break;
+            }
+        }
+        switch (which_case)
+        {
+            case 1:
+                move(((LINES/2) - 4), (COLS/2) + 12);
+                curs_set(true);
+                echo();
+                refresh();
+
+                    scanw("%s", name);
+                    move(0, 0);
+                    if (!is_exist(name))
+                    {
+                        user1 = 0;
+                        curs_set(false);
+                        noecho(); 
+                        attron(COLOR_PAIR(5));
+                        mvprintw(((LINES/8) - 1), (COLS/2 - 17), "                                      " );
+                        mvprintw(((LINES/8)), (COLS/2 - 17), " I'M AFRAID, WE DON'T HAVE THIS USER! " );
+                        mvprintw(((LINES/8) + 1), (COLS/2 - 17), "                                      " );
+                        attroff(COLOR_PAIR(5));
+                        refresh();
+                        sleep(2);
+                        continue;
+                    }
+                    else
+                    {
+                        FILE *file_account_password;
+                        file_account_password = fopen("accounts_passwords.txt", "r");
+
+                        char line[300];
+                        char user_name[100], password1[100], email[100];
+
+                        while (fgets(line, sizeof(line), file_account_password) != NULL)
+                        {
+                            line[strcspn(line, "\n")] = '\0';
+
+                            sscanf(line, "%s %s %s", user_name, password1, email);
+
+                            if (strcmp(name, user_name) == 0)
+                            {
+                                fclose(file_account_password);
+                                strcpy(password, password1);
+                                break; 
+                            }
+                        }
+
+                        pass = 1;
+                        user1 = 1;
+                        curs_set(false);
+                        noecho();
+                        continue;
+                    }    
+                break;
+
+            case 3:
+                return 2;
+        }
+    }
+}
+
 int email_is_correct(char *email)
 {
 
@@ -879,7 +1023,7 @@ int sign_in_menu()
                 }
 
             case 4:
-                
+                return 5;
                 break;
                 
             case 5:

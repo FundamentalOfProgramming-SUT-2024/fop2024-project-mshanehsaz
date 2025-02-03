@@ -76,6 +76,10 @@ int main()
             {
                 which_menu = 0;
             }
+            else if(which_case == 5)
+            {
+                which_menu = 5;
+            }
             else if (which_case == 4)
             {
                 which_menu = 4;
@@ -118,6 +122,15 @@ int main()
                 which_menu = 10;
             }
 
+        }
+        
+        else if (which_menu == 5)
+        {
+            int which_case = forgot_pass();
+            if (which_case == 2)
+            {
+                which_menu = 2;
+            }
         }
 
         else if (which_menu == 6)
