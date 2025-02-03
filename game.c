@@ -87,8 +87,7 @@ int first_life;
 
 Player player;
 
-
-void save_score()
+void save_score(int makoos)
 {
 typedef struct {
     char name[100];
@@ -118,11 +117,18 @@ typedef struct {
     {
         if (strcmp(play[i].name, user[0]) == 0) 
         {
+            if (makoos)
+            {
+                play[i].gold -= player.gold;
+                play[i].score -= player.score;
+                play[i].games -= 1;
+                found = 1;
+                break;
+            }
             play[i].gold += player.gold;
             play[i].score += player.score;
             play[i].games += 1;
             found = 1;
-            break;
         }
     }
 
@@ -172,14 +178,7 @@ void save_maps()
         fprintf(file, "\n");
     }
 
-
-    fprintf(file, "%d %d %d %d %f ", player.line, player.score, player.gold, player.color, player.life_time);
-    fprintf(file, "%f %d %d %d ", player.hungry_amount, player.telesm[0], player.telesm[1], player.telesm[2]);
-    fprintf(file, "%d %d %d %d %d %d %d %d ", player.foods[0].count, player.foods[0].time, player.foods[1].count, player.foods[1].time, player.foods[2].count, player.foods[2].time, player.foods[3].count, player.foods[3].time);
-    fprintf(file, "%d %d %d %d %d ", player.count_selahs[0], player.count_selahs[1], player.count_selahs[2], player.count_selahs[3], player.count_selahs[4]);
-    fprintf(file, "%d %d %d %d %d ", player.hardness, player.level, player.room_i, player.x, player.y);
-    fprintf(file, "%d %d %d %d %d %d %d %d", rooms[0].type, rooms[1].type, rooms[2].type, rooms[3].type, rooms[4].type, rooms[5].type, rooms[6].type, rooms[7].type);
-
+    fprintf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",  player.line,  player.score,  player.gold,  player.color,  player.life_time,  player.hungry_amount, player.telesm[0],  player.telesm[1],  player.telesm[2],  player.foods[0].count,  player.foods[0].time,  player.foods[1].count,  player.foods[1].time,  player.foods[2].count,  player.foods[2].time,  player.foods[3].count,  player.foods[3].time, player.hardness,  player.level,  player.room_i,  player.x,  player.y,  rooms[0].type,  rooms[1].type,  rooms[2].type,  rooms[3].type,  rooms[4].type,  rooms[5].type,  rooms[6].type,  rooms[7].type);
     fclose(file);
 }
 
@@ -205,11 +204,7 @@ void load_map()
         fscanf(file, "%c", &salam);
     }
 
-    fscanf(file, "%d %d %d %d %f ", &player.line, &player.score, &player.gold, &player.color, &player.life_time);
-    fscanf(file, "%f %d %d %d ", &player.hungry_amount, &player.telesm[0], &player.telesm[1], &player.telesm[2]);
-    fscanf(file, "%d %d %d %d %d %d %d %d ", &player.foods[0].count, &player.foods[0].time, &player.foods[1].count, &player.foods[1].time, &player.foods[2].count, &player.foods[2].time, &player.foods[3].count, &player.foods[3].time);
-    fscanf(file, "%d %d %d %d %d ", &player.hardness, &player.level, &player.room_i, &player.x, &player.y);
-    fscanf(file, "%d %d %d %d %d %d %d %d", &rooms[0].type, &rooms[1].type, &rooms[2].type, &rooms[3].type, &rooms[4].type, &rooms[5].type, &rooms[6].type, &rooms[7].type);
+    fscanf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &player.line, &player.score, &player.gold, &player.color, &player.life_time, &player.hungry_amount,&player.telesm[0], &player.telesm[1], &player.telesm[2], &player.foods[0].count, &player.foods[0].time, &player.foods[1].count, &player.foods[1].time, &player.foods[2].count, &player.foods[2].time, &player.foods[3].count, &player.foods[3].time, &player.hardness, &player.level, &player.room_i, &player.x, &player.y, &rooms[0].type, &rooms[1].type, &rooms[2].type, &rooms[3].type, &rooms[4].type, &rooms[5].type, &rooms[6].type, &rooms[7].type);
 
     fclose(file);
 }
@@ -2429,58 +2424,61 @@ void player_move(int x_pa, int y_pa, int g_on_off)
 
 }
 
-int new_game()
+int new_game(int new)
 {
-    if (player.color > 3 || player.color < 1)
+    if (new)
     {
-        player.color = 1;
-    }
-    if (player.hardness > 3 || player.hardness < 1)
-    {
-        player.hardness = 1;
-    }
-    if (player.hardness == 1)
-    {
-        player.life_time = 25;
-        player.hungry_amount = 0;
-    }
-    else if (player.hardness == 2)
-    {
-        player.life_time = 21;
-        player.hungry_amount = 2;
-    }
-    else if (player.hardness == 3)
-    {
-        player.life_time = 17; 
-        player.hungry_amount = 4;  
-    }
-    first_life = player.life_time;
-    player.level = 1;
-    player.gold = 0;
-    player.score = 0;
-    player.main_selah = 1;
+        if (player.color > 3 || player.color < 1)
+        {
+            player.color = 1;
+        }
+        if (player.hardness > 3 || player.hardness < 1)
+        {
+            player.hardness = 1;
+        }
+        if (player.hardness == 1)
+        {
+            player.life_time = 25;
+            player.hungry_amount = 0;
+        }
+        else if (player.hardness == 2)
+        {
+            player.life_time = 21;
+            player.hungry_amount = 2;
+        }
+        else if (player.hardness == 3)
+        {
+            player.life_time = 17; 
+            player.hungry_amount = 4;  
+        }
+        first_life = player.life_time;
+        player.level = 1;
+        player.gold = 0;
+        player.score = 0;
+        player.main_selah = 1;
 
-    for (int j = 0; j < 4; j++)
-    {
-        player.foods[j].count = 0;
-        player.foods[j].time = 20;
-        player.count_selahs[j+1] = 0;
+        for (int j = 0; j < 4; j++)
+        {
+            player.foods[j].count = 0;
+            player.foods[j].time = 20;
+            player.count_selahs[j+1] = 0;
 
-    }
+        }
 
-    for (int j = 0; j < 3; j++)
-    {
-        player.telesm[j] = 0;
-    }
+        for (int j = 0; j < 3; j++)
+        {
+            player.telesm[j] = 0;
+        }
 
-    clear_and_border2();
-    elemnts_under_board();
-    map();
-    connect_room();
-    elements_on_map();
-    copy_map();
-    random_first_map();
-    player_move(0, 0, 0);
+        clear_and_border2();
+        elemnts_under_board();
+        map();
+        connect_room();
+        elements_on_map();
+        copy_map();
+        random_first_map();
+        player_move(0, 0, 0);
+    }   
 
     int m_on_off = 0;
     int g_on_off = 0;
@@ -2601,7 +2599,7 @@ int new_game()
 
     if (player.line != -1)
     {
-        save_score();
+        save_score(0);
     }
 
     if (player.line == -1 || (player.room_i == 2 && player.level == 4))
@@ -2613,11 +2611,9 @@ int new_game()
 
     return 4;
 
-
-
 }
 
-int resume()
+void resume()
 {
     which_user(which_line_user);
     map_whithout_tale = (char **) malloc ((LINES - 10)*sizeof(char *));
@@ -2654,144 +2650,17 @@ int resume()
 
 
     load_map();
-    clear_and_border2();
-    elemnts_under_board();
-    print_map();
-    sleep(2);
+
+    save_score(1);
+
     copy_map();
-    print_all_map();
-    sleep(2);
 
-    // map();
-    // connect_room();
-    // elements_on_map();
-    // copy_map();
-    // random_first_map();
-    // player_move(0, 0, 0);
+    clear_and_border2();
 
-    // int m_on_off = 0;
-    // int g_on_off = 0;
-    // for(int ch = getch(); ch != 'q'; ch = getch())
-    // {
-    //     if (player.hungry_amount < 10 && player.life_time < 25)
-    //     {
-    //         player.life_time += 0.125;
-    //     }
+    elemnts_under_board();
 
-    //     if (player.hungry_amount > 15)
-    //     {
-    //         player.life_time -= 0.125;
-    //     }
+    player_move(0, 0, 0);
 
-    //     if (player.life_time <= 0)
-    //     {
-    //         attron(COLOR_PAIR(5));
-    //         mvprintw((LINES/2) - 2, (COLS/2) - 8, "               ");
-    //         mvprintw((LINES/2) - 1 , (COLS/2) - 8, "   YOU DIED!   ");
-    //         mvprintw((LINES/2), (COLS/2) - 8, "               ");
-    //         mvprintw((LINES/2) + 1, (COLS/2) - 8, " GAME IS OVER! ");
-    //         mvprintw((LINES/2) + 2, (COLS/2) - 8, "               ");
-    //         attroff(COLOR_PAIR(5));
-    //         refresh();
-    //         sleep(3);
-    //         break;
-    //     }
-    //     switch(ch)
-    //     {
-    //         case (56):
-    //             player.x --;
-    //             player_move(player.x + 1, player.y, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case (54):
-    //             player.y ++;
-    //             player_move(player.x, player.y - 1, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case (52):
-    //             player.y --;
-    //             player_move(player.x, player.y + 1, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case (50):
-    //             player.x ++;
-    //             player_move(player.x - 1, player.y, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case (51):
-    //             player.x ++;
-    //             player.y ++;
-    //             player_move(player.x - 1, player.y - 1, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case (49):
-    //             player.x ++;
-    //             player.y --;
-    //             player_move(player.x - 1, player.y + 1, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case (55):
-    //             player.x --;
-    //             player.y --;
-    //             player_move(player.x + 1, player.y + 1, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case (57):
-    //             player.x --;
-    //             player.y ++;
-    //             player_move(player.x + 1, player.y - 1, g_on_off);
-    //             g_on_off = 0;
-    //             break;
-
-    //         case ('m'):
-    //             if (m_on_off == 0)
-    //             {
-    //                 print_all_map();
-    //                 m_on_off = 1;
-    //             }
-    //             else
-    //             {
-    //                 clear_and_border2();
-    //                 elemnts_under_board();
-    //                 m_on_off = 0; 
-    //                 player_move(player.x, player.y, g_on_off);
-    //             }
-    //             break;
-
-
-    //         case ('g'):
-    //             g_on_off = 1;
-    //             break;
-
-    //         case ('f'):
-    //             food_manu();
-    //             clear_and_border2();
-    //             elemnts_under_board();
-    //             player_move(player.y, player.y, 0);
-    //             break;
-
-    //         case ('i'):
-    //             // weapon_manu();
-    //             clear_and_border2();
-    //             elemnts_under_board();
-    //             player_move(player.y, player.y, 0);
-    //             break;
-    //     }
-    // }
-
-    // if (player.line != -1)
-    // {
-    //     save_score();
-    // }
-
-    return 4;
-
+    new_game(0);
 
 }

@@ -131,7 +131,7 @@ int main()
         
         else if(which_menu == 9)
         {
-            int which_case = new_game();
+            int which_case = new_game(1);
             if (which_case == 4)
             {
                 which_menu = 4;
@@ -140,11 +140,8 @@ int main()
 
         else if (which_menu == 10)
         {
-            int which_case = resume();
-            if (which_case == 4)
-            {
-                which_menu = 4;
-            }
+            resume();
+            which_menu = 4;
         }
     }
     refresh();
