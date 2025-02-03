@@ -23,6 +23,7 @@ int main()
     which_menu = 7   account page
     which_menu = 8   score table
     which_menu = 9   new game
+    which_menu = 11   uplevel
     which_menu = 10  resume
     ...
     */
@@ -148,6 +149,23 @@ int main()
             if (which_case == 4)
             {
                 which_menu = 4;
+            }
+            else if (which_case == 11)
+            {
+                which_menu = 11;
+            }
+        }
+
+        else if(which_menu == 11)
+        {
+            int which_case = new_game(2);
+            if (which_case == 4)
+            {
+                which_menu = 4;
+            }
+            else if (which_case == 11)
+            {
+                which_menu = 11;
             }
         }
 

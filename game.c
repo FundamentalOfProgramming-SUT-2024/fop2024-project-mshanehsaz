@@ -585,7 +585,7 @@ void updating_room_that_shown(int which_dir)
             int j = y;
             map_that_shown[x][j] = map_whithout_tale[x][j];
             j++;
-            while (map_whithout_tale[x][j] != '|' && map_whithout_tale[x][j] != '+')
+            while (map_whithout_tale[x][j] != '|' && map_whithout_tale[x][j] != '+' && map_whithout_tale[x][j] != '>')
             {
                 map_that_shown[x][j] = map_whithout_tale[x][j];
                 j++;
@@ -626,7 +626,7 @@ void updating_room_that_shown(int which_dir)
             int i = x;
             map_that_shown[i][y] = map_whithout_tale[i][y];
             i++;
-            while (map_whithout_tale[i][y] != '-' && map_whithout_tale[i][y] != '+')
+            while (map_whithout_tale[i][y] != '-' && map_whithout_tale[i][y] != '+'&& map_whithout_tale[i][y] != '>')
             {
                 map_that_shown[i][y] = map_whithout_tale[i][y];
                 i++;
@@ -667,7 +667,7 @@ void updating_room_that_shown(int which_dir)
             int j = y;
             map_that_shown[x][j] = map_whithout_tale[x][j];
             j++;
-            while (map_whithout_tale[x][j] != '|' && map_whithout_tale[x][j] != '+')
+            while (map_whithout_tale[x][j] != '|' && map_whithout_tale[x][j] != '+' && map_whithout_tale[x][j] != '>')
             {
                 map_that_shown[x][j] = map_whithout_tale[x][j];
                 j++;
@@ -708,7 +708,7 @@ void updating_room_that_shown(int which_dir)
             int i = x;
             map_that_shown[i][y] = map_whithout_tale[i][y];
             i++;
-            while (map_whithout_tale[i][y] != '-' && map_whithout_tale[i][y] != '+')
+            while (map_whithout_tale[i][y] != '-' && map_whithout_tale[i][y] != '+' && map_whithout_tale[i][y] != '>')
             {
                 map_that_shown[i][y] = map_whithout_tale[i][y];
                 i++;
@@ -1120,6 +1120,192 @@ void adding_doors(int i, int firstx, int firsty, int width, int height)
     }
 }
 
+void adding_stairs()
+{
+    if (player.level == 4)
+    {
+        return;
+    }
+    srand(time(0));
+    int room_stair = rand()%8;
+    while (room_stair == player.room_i)
+    {
+        room_stair = rand()%8;
+    }
+
+    switch (room_stair)
+    {
+    case 0:
+        for (int i = 0; i < (LINES - 10)/2; i++)
+        {
+            for (int j = 0; j < (COLS - 2)/4; j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k >= 0; k--)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == 0)
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+    
+    case 1:
+        for (int i = 0; i < (LINES - 10)/2; i++)
+        {
+            for (int j = (COLS - 2)/4; j < 2*(COLS - 2)/4; j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k >= 0; k--)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == 0)
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+
+    case 2:
+        for (int i = 0; i < (LINES - 10)/2; i++)
+        {
+            for (int j = 2*(COLS - 2)/4; j < 3*(COLS - 2)/4; j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k >= 0; k--)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == 0)
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+
+    case 3:
+        for (int i = 0; i < (LINES - 10)/2; i++)
+        {
+            for (int j = 3*(COLS - 2)/4; j < (COLS - 2); j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k >= 0; k--)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == 0)
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+
+    case 4:
+        for (int i = (LINES - 10) - 1; i > (LINES - 10)/2; i--)
+        {
+            for (int j = 0; j < (COLS - 2)/4; j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k < (LINES - 10); k++)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == ((LINES - 10) - 1))
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+
+    case 5:
+        for (int i = (LINES - 10) - 1; i > (LINES - 10)/2; i--)
+        {
+            for (int j = (COLS - 2)/4; j < 2*(COLS - 2)/4; j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k < (LINES - 10); k++)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == ((LINES - 10) - 1))
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+    case 6:
+        for (int i = (LINES - 10) - 1; i > (LINES - 10)/2; i--)
+        {
+            for (int j = 2*(COLS - 2)/4; j < 3*(COLS - 2)/4; j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k < (LINES - 10); k++)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == ((LINES - 10) - 1))
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+    case 7:
+        for (int i = (LINES - 10) - 1; i > (LINES - 10)/2; i--)
+        {
+            for (int j = 3*(COLS - 2)/4; j < (COLS - 2); j++)
+            {
+                if (all_map[i][j] == '-' && all_map[i][j + 2] == '-')
+                {
+                    for (int k = i; k < (LINES - 10); k++)
+                    {
+                        all_map[k][j + 2] = '>';
+                        if (k == ((LINES - 10) - 1))
+                        {
+                            all_map[k][j + 2] = '?';
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        break;
+    
+    }
+
+    
+}
+
 void map()
 {
     map_whithout_tale = (char **) malloc ((LINES - 10)*sizeof(char *));
@@ -1379,6 +1565,14 @@ void print_all_map()
                 refresh();
                 continue;
             }
+            if (map_whithout_tale[i][j] == '>' || map_whithout_tale[i][j] == '?')
+            {
+                attron(COLOR_PAIR(42));
+                printw("%c", map_whithout_tale[i][j]);
+                attroff(COLOR_PAIR(42));
+                refresh();
+                continue;
+            }
 
             if (map_whithout_tale[i][j] == '#')
             {
@@ -1566,7 +1760,21 @@ int before_play_menu(int line)
                 return 9;
 
             case 2:
-                return 10;
+                if (player.line == -1 || (player.room_i == 2 && player.level == 4) || player.life_time == 0)
+                {
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 13), "                        " );
+                    mvprintw(((LINES/8)), (COLS/2 - 13), " YOU HAVEN'T SAVED GAME " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 13), "                        " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(2);
+                    continue;
+                }
+                else 
+                {
+                    return 10;
+                }
 
             case 3:
                 return 6;
@@ -2209,6 +2417,15 @@ void print_map()
                 continue;
             }
 
+            if (map_that_shown[i][j] == '>' || map_that_shown[i][j] == '?')
+            {
+                attron(COLOR_PAIR(42));
+                printw("%c", map_that_shown[i][j]);
+                attroff(COLOR_PAIR(42));
+                refresh();
+                continue;
+            }
+
             if (map_that_shown[i][j] == 'C')
             {
                 attron(COLOR_PAIR(16));
@@ -2230,7 +2447,7 @@ void print_map()
     refresh(); 
 }
 
-void player_move(int x_pa, int y_pa, int g_on_off)
+int player_move(int x_pa, int y_pa, int g_on_off)
 {
     player.hungry_amount += 0.0675;
     print_map();
@@ -2375,6 +2592,17 @@ void player_move(int x_pa, int y_pa, int g_on_off)
             print_map();
     }
 
+    if (all_map[player.x - 6][player.y - 2] == '>')
+    {
+        map_that_shown[player.x - 6][player.y - 2] = all_map[player.x - 6][player.y - 2];
+        print_map;
+    }
+
+    if (all_map[player.x - 6][player.y - 2] == '?')
+    {
+        player.level += 1;
+        return 2;
+    }
 
 
 
@@ -2427,12 +2655,29 @@ void player_move(int x_pa, int y_pa, int g_on_off)
     mvprintw(player.x, player.y, "@");
     attroff(COLOR_PAIR(color));
     refresh();
+    return 1;
 
 }
 
 int new_game(int new)
 {
-    if (new)
+    if (new == 2)
+    {
+        clear_and_border2();
+        elemnts_under_board();
+        map();
+        connect_room();
+        elements_on_map();
+        copy_map();
+        alert("LEVEL UPS! YOU ARE NOW IN LEVEL", "", player.level);
+        sleep(3);
+        random_first_map();
+        adding_stairs();
+        copy_map();
+        player_move(0, 0, 0);
+    }
+
+    if (new == 1)
     {
         if (player.color > 3 || player.color < 1)
         {
@@ -2483,6 +2728,8 @@ int new_game(int new)
         elements_on_map();
         copy_map();
         random_first_map();
+        adding_stairs();
+        copy_map();
         player_move(0, 0, 0);
     }   
 
@@ -2513,57 +2760,90 @@ int new_game(int new)
             sleep(3);
             break;
         }
+        int up;
         switch(ch)
         {
             case (56):
                 player.x --;
-                player_move(player.x + 1, player.y, g_on_off);
+                up = player_move(player.x + 1, player.y, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (54):
                 player.y ++;
-                player_move(player.x, player.y - 1, g_on_off);
+                up = player_move(player.x, player.y - 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (52):
                 player.y --;
-                player_move(player.x, player.y + 1, g_on_off);
+                up = player_move(player.x, player.y + 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (50):
                 player.x ++;
-                player_move(player.x - 1, player.y, g_on_off);
+                up = player_move(player.x - 1, player.y, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (51):
                 player.x ++;
                 player.y ++;
-                player_move(player.x - 1, player.y - 1, g_on_off);
+                up = player_move(player.x - 1, player.y - 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (49):
                 player.x ++;
                 player.y --;
-                player_move(player.x - 1, player.y + 1, g_on_off);
+                up = player_move(player.x - 1, player.y + 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (55):
                 player.x --;
                 player.y --;
-                player_move(player.x + 1, player.y + 1, g_on_off);
+                up = player_move(player.x + 1, player.y + 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (57):
                 player.x --;
                 player.y ++;
-                player_move(player.x + 1, player.y - 1, g_on_off);
+                up = player_move(player.x + 1, player.y - 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
@@ -2578,7 +2858,11 @@ int new_game(int new)
                     clear_and_border2();
                     elemnts_under_board();
                     m_on_off = 0; 
-                    player_move(player.x, player.y, g_on_off);
+                    up = player_move(player.x, player.y, g_on_off);
+                    if (up == 2)
+                    {
+                        return 11;
+                    }
                 }
                 break;
 
@@ -2591,14 +2875,14 @@ int new_game(int new)
                 food_manu();
                 clear_and_border2();
                 elemnts_under_board();
-                player_move(player.y, player.y, 0);
+                up = player_move(player.y, player.y, 0);
                 break;
 
             case ('i'):
                 // weapon_manu();
                 clear_and_border2();
                 elemnts_under_board();
-                player_move(player.y, player.y, 0);
+                up = player_move(player.y, player.y, 0);
                 break;
         }
     }
@@ -2608,7 +2892,7 @@ int new_game(int new)
         save_score(0);
     }
 
-    if (player.line == -1 || (player.room_i == 2 && player.level == 4))
+    if (player.line == -1 || (player.room_i == 2 && player.level == 4) || player.life_time == 0)
     {
         return 4;
     }

@@ -72,6 +72,7 @@ void clear_and_border()
         init_pair(102,COLOR_BLACK, 81);
         init_pair(103,COLOR_BLACK, 82);
         init_pair(41, 24, 24);
+        init_pair(42, COLOR_WHITE, COLOR_WHITE);
     }
     clear();
 
