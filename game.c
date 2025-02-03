@@ -172,6 +172,7 @@ void save_maps()
         fprintf(file, "\n");
     }
 
+
     fprintf(file, "%d %d %d %d %f ", player.line, player.score, player.gold, player.color, player.life_time);
     fprintf(file, "%f %d %d %d ", player.hungry_amount, player.telesm[0], player.telesm[1], player.telesm[2]);
     fprintf(file, "%d %d %d %d %d %d %d %d ", player.foods[0].count, player.foods[0].time, player.foods[1].count, player.foods[1].time, player.foods[2].count, player.foods[2].time, player.foods[3].count, player.foods[3].time);
@@ -185,21 +186,24 @@ void save_maps()
 void load_map()
 {
     char file_name[1000];
+    char salam;
     strcpy(file_name, "maps/");
     strcat(file_name, user[0]);
     strcat(file_name, ".txt");
 
     FILE *file = fopen(file_name, "r");
 
-for (int i = 0; i < LINES - 10; i++)
-{
-    fgets(all_map[i], COLS - 1, file);
-}
+    for (int i = 0; i < LINES - 10; i++)
+    {
+        fgets(all_map[i], COLS - 1, file);
+        fscanf(file, "%c", &salam);
+    }
 
-for (int i = 0; i < LINES - 10; i++)
-{
-    fgets(map_that_shown[i], COLS - 1, file);
-}
+    for (int i = 0; i < LINES - 10; i++)
+    {
+        fgets(map_that_shown[i], COLS - 1, file);
+        fscanf(file, "%c", &salam);
+    }
 
     fscanf(file, "%d %d %d %d %f ", &player.line, &player.score, &player.gold, &player.color, &player.life_time);
     fscanf(file, "%f %d %d %d ", &player.hungry_amount, &player.telesm[0], &player.telesm[1], &player.telesm[2]);
@@ -209,7 +213,6 @@ for (int i = 0; i < LINES - 10; i++)
 
     fclose(file);
 }
-
 
 void alert(char *message1, char *message2, int number)
 {
