@@ -453,7 +453,199 @@ void food_menu()
 
 void weapon_menu()
 {
+    int which_case = 1;
+    while (1)
+    {
+        wchar_t emoji1[] = L"🪓";
+        wchar_t emoji2[] = L"🗡️";
+        wchar_t emoji3[] = L"🪄";
+        wchar_t emoji4[] = L"🏹";
+        wchar_t emoji5[] = L"⚔️";
+        clear_and_border();
+        mvaddwstr((LINES/2) - 6, (COLS/2) - 15, emoji1);
+        mvaddwstr((LINES/2) - 4, (COLS/2) - 21, emoji2);
+        mvaddwstr((LINES/2) - 2, (COLS/2) - 24, emoji3);
+        mvaddwstr((LINES/2), (COLS/2) - 24, emoji4);
+        mvaddwstr((LINES/2) + 2, (COLS/2) - 15, emoji5);
+        attron(COLOR_PAIR(77));
+        mvprintw(((LINES/2)) - 6, ((COLS/2) - 12) ," 1- MACE (CLOSE-RANGE)");
+        mvprintw(((LINES/2)) - 4, ((COLS/2) - 18) ," 2- YOU HAVE %d DAGGER (LONG-RANGE)", player.count_selahs[1]);
+        mvprintw(((LINES/2)) - 2, (COLS/2) - 21 ," 3- YOU HAVE %d MAGIC WAND  (LONG-RANGE)", player.count_selahs[2]);
+        mvprintw(((LINES/2)), (COLS/2) - 21 ," 4- YOU HAVE %d NORMAL ARROW (LONG-RANGE)", player.count_selahs[3]);
+        mvprintw(((LINES/2)) + 2, (COLS/2) - 12 ," 5- SWORD (CLOSE-RANGE)");
+        attron(COLOR_PAIR(77));
+        attron(COLOR_PAIR(3));
+        mvprintw(((LINES/2)) + 4, ((COLS/2) - 18) ," CHOOSE THE WEAPON: (1, 2, 3, 4, 5)");
+        mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+        attroff(COLOR_PAIR(3));
+        refresh();
+        for(int ch = getch(); ch != 10; ch = getch())
+        {
+            if (ch == KEY_UP)
+            {
+                which_case --;
+                if (which_case == 0)
+                {
+                    which_case = 2;
+                }
+            }
+            if ((ch == KEY_DOWN))
+            {
+                which_case ++;
+                if (which_case == 3)
+                {
+                    which_case = 1;
+                }
+            }
 
+            switch (which_case)
+            {
+            
+            case 1:
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(79));
+                mvprintw(((LINES/2)) + 4, ((COLS/2) - 18) ," CHOOSE THE WEAPON: (1, 2, 3, 4, 5)");
+                attroff(COLOR_PAIR(79));
+
+                break;
+
+            case 2:
+                attron(COLOR_PAIR(3));
+                mvprintw(((LINES/2)) + 4, ((COLS/2) - 18) ," CHOOSE THE WEAPON: (1, 2, 3, 4, 5)");
+                attroff(COLOR_PAIR(3));
+                attron(COLOR_PAIR(79));
+                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
+                attroff(COLOR_PAIR(79));
+                break;
+
+            }
+        }
+        refresh();
+        switch (which_case)
+        {
+            int which;
+            case 1:
+                int count;
+                move(((LINES/2)) + 4, ((COLS/2) + 18));
+                curs_set(true);
+                echo();
+                refresh();
+                if (scanw("%d", &which) == 1 && which >= 1 && which <= 5)
+                {
+                    if (which != 1)
+                    {
+                        count = player.count_selahs[which - 1];
+                        if (count == 0)
+                        {
+
+                            curs_set(false);
+                            noecho(); 
+                            attron(COLOR_PAIR(5));
+                            mvprintw(((LINES/8) - 1), (COLS/2 - 11), "                     " );
+                            mvprintw(((LINES/8)), (COLS/2 - 11), " YOU HAVEN'T ENOUGH! " );
+                            mvprintw(((LINES/8) + 1), (COLS/2 - 11), "                     " );
+                            attroff(COLOR_PAIR(5));
+                            refresh();    
+                            sleep(3);
+                            continue;
+                        }
+                    }
+
+                        if (which == 1)
+                        {
+                            curs_set(false);
+                            noecho(); 
+                            attron(COLOR_PAIR(11));
+                            mvprintw(((LINES/8) - 1), (COLS/2 - 4), "       " );
+                            mvprintw(((LINES/8)), (COLS/2 - 4), " MACE! " );
+                            mvprintw(((LINES/8) + 1), (COLS/2 - 4), "       " );
+                            attroff(COLOR_PAIR(11));
+                            refresh();
+                            player.main_selah = 1;
+                            sleep(3);
+                        }
+
+                        if (which == 2)
+                        {
+                            curs_set(false);
+                            noecho(); 
+                            attron(COLOR_PAIR(11));
+                            mvprintw(((LINES/8) - 1), (COLS/2 - 5), "         " );
+                            mvprintw(((LINES/8)), (COLS/2 - 5), " DAGGER! " );
+                            mvprintw(((LINES/8) + 1), (COLS/2 - 5), "         " );
+                            attroff(COLOR_PAIR(11));
+                            refresh();
+                            player.main_selah = 2;
+                            sleep(3);
+                        }
+
+                        if (which == 3)
+                        {
+                            curs_set(false);
+                            noecho(); 
+                            attron(COLOR_PAIR(11));
+                            mvprintw(((LINES/8) - 1), (COLS/2 - 7), "             " );
+                            mvprintw(((LINES/8)), (COLS/2 - 7), " MAGIC WAND! " );
+                            mvprintw(((LINES/8) + 1), (COLS/2 - 7), "             " );
+                            attroff(COLOR_PAIR(11));
+                            refresh();
+                            player.main_selah = 3;
+                            sleep(3);
+                        }
+
+                        if (which == 4)
+                        {
+                            curs_set(false);
+                            noecho(); 
+                            attron(COLOR_PAIR(11));
+                            mvprintw(((LINES/8) - 1), (COLS/2 - 8), "               " );
+                            mvprintw(((LINES/8)), (COLS/2 - 5), " NORMAL ARROW! " );
+                            mvprintw(((LINES/8) + 1), (COLS/2 - 8), "               " );
+                            attroff(COLOR_PAIR(11));
+                            refresh();
+                            player.main_selah = 4;
+                            sleep(3);
+                        }
+
+                        if (which == 5)
+                        {
+                            curs_set(false);
+                            noecho(); 
+                            attron(COLOR_PAIR(11));
+                            mvprintw(((LINES/8) - 1), (COLS/2 - 5), "        " );
+                            mvprintw(((LINES/8)), (COLS/2 - 5), " SWORD! " );
+                            mvprintw(((LINES/8) + 1), (COLS/2 - 5), "        " );
+                            attroff(COLOR_PAIR(11));
+                            refresh();
+                            player.main_selah = 5;
+                            sleep(3);
+                        }
+
+                    move(0, 0);
+                    curs_set(false);
+                    noecho();
+                    continue; 
+                }
+                else
+                {
+                    curs_set(false);
+                    noecho(); 
+                    attron(COLOR_PAIR(5));
+                    mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                            " );
+                    mvprintw(((LINES/8)), (COLS/2 - 15), " PLEASE ENTER CORRECT ITEM! " );
+                    mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
+                    attroff(COLOR_PAIR(5));
+                    refresh();
+                    sleep(3);
+                    continue;
+                }
+
+            case 2:
+                return;
+        }
+    }
 }
 
 void telesm_menu()
@@ -1721,6 +1913,39 @@ void print_all_map()
                 refresh();
                 continue;
             }
+
+            if (map_whithout_tale[i][j] == '2')
+            {
+                attron(COLOR_PAIR(76));
+                printw("%c", map_whithout_tale[i][j]);
+                attroff(COLOR_PAIR(76));
+                refresh();
+                continue;
+            }
+            if (map_whithout_tale[i][j] == '3')
+            {
+                attron(COLOR_PAIR(77));
+                printw("%c", map_whithout_tale[i][j]);
+                attroff(COLOR_PAIR(77));
+                refresh();
+                continue;
+            }
+            if (map_whithout_tale[i][j] == '4')
+            {
+                attron(COLOR_PAIR(78));
+                printw("%c", map_whithout_tale[i][j]);
+                attroff(COLOR_PAIR(78));
+                refresh();
+                continue;
+            }
+            if (map_whithout_tale[i][j] == '5')
+            {
+                attron(COLOR_PAIR(79));
+                printw("%c", map_whithout_tale[i][j]);
+                attroff(COLOR_PAIR(79));
+                refresh();
+                continue;
+            }
             if (map_whithout_tale[i][j] == 'H')
             {
                 attron(COLOR_PAIR(53));
@@ -2553,24 +2778,29 @@ void elements_on_map()
             if (all_map[i][j] == '.' && !selah)
             {
                 //dagger 0
-                //fased 1
-                //aala 3
-                //magic 4
-                int which_food = rand()%5;
+                //Magic 1
+                //arrow 3
+                //sword 4
+                int which_food = rand()%4;
                 
-                if (which_food == 0 || which_food == 1 || which_food == 2)
+                if (which_food == 0)
                 {
-                    all_map[i][j] = 'O';
+                    all_map[i][j] = '2';
                 }
                 
-                if (which_food == 3)
+                if (which_food == 1)
                 {
-                    all_map[i][j] = 'A';
+                    all_map[i][j] = '3';
                 }
 
-                if (which_food == 4)
+                if (which_food == 2)
                 {
-                    all_map[i][j] = 'M';
+                    all_map[i][j] = '4';
+                }
+
+                if (which_food == 3)
+                {
+                    all_map[i][j] = '5';
                 }
             }
 
@@ -2818,6 +3048,40 @@ void print_map()
                 continue;
             }
             if (map_that_shown[i][j] == 'U')
+            {
+                attron(COLOR_PAIR(79));
+                printw("%c", map_that_shown[i][j]);
+                attroff(COLOR_PAIR(79));
+                refresh();
+                continue;
+            }
+
+
+            if (map_that_shown[i][j] == '2')
+            {
+                attron(COLOR_PAIR(76));
+                printw("%c", map_that_shown[i][j]);
+                attroff(COLOR_PAIR(76));
+                refresh();
+                continue;
+            }
+            if (map_that_shown[i][j] == '3')
+            {
+                attron(COLOR_PAIR(77));
+                printw("%c", map_that_shown[i][j]);
+                attroff(COLOR_PAIR(77));
+                refresh();
+                continue;
+            }
+            if (map_that_shown[i][j] == '4')
+            {
+                attron(COLOR_PAIR(78));
+                printw("%c", map_that_shown[i][j]);
+                attroff(COLOR_PAIR(78));
+                refresh();
+                continue;
+            }
+            if (map_that_shown[i][j] == '5')
             {
                 attron(COLOR_PAIR(79));
                 printw("%c", map_that_shown[i][j]);
@@ -3144,7 +3408,45 @@ int player_move(int x_pa, int y_pa, int g_on_off)
             print_map();
     }
 
+    if (all_map[player.x - 6][player.y - 2] == '2')
+    {
+        player.count_selahs[1] += 10;
+        alert("You've got 10 Dragger!", "", -1);
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
 
+    if (all_map[player.x - 6][player.y - 2] == '3')
+    {
+        player.count_selahs[2] += 8;
+        alert("You've got 8 Magic Wand!", "", -1);
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
+
+    if (all_map[player.x - 6][player.y - 2] == '4')
+    {
+        player.count_selahs[3] += 20;
+        alert("You've got 20 Normal Arrow!", "", -1);
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
+
+    if (all_map[player.x - 6][player.y - 2] == '5')
+    {
+        player.count_selahs[4] = 1;
+        alert("You've got Sword!", "", -1);
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
 
 
 
