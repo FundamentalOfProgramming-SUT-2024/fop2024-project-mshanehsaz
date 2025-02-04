@@ -95,9 +95,13 @@ char **map_that_shown;
 int speed = 0;
 
 
+
+
 int first_life;
 
 Player player;
+
+
 
 void save_score(int makoos)
 {
@@ -231,15 +235,21 @@ void alert(char *message1, char *message2, int number)
     }
 
     attron(A_BOLD);
-    attron(COLOR_PAIR(11));
 
     char buffer[256];
     if (number == -1)
     {
+        attron(COLOR_PAIR(11));
+        snprintf(buffer, sizeof(buffer), "%s", message1);
+    }
+    else if (number == -2)
+    {
+        attron(COLOR_PAIR(5));
         snprintf(buffer, sizeof(buffer), "%s", message1);
     }
     else
     {
+        attron(COLOR_PAIR(11));
         snprintf(buffer, sizeof(buffer), "%s %d %s", message1, number, message2);
     }
 
@@ -254,6 +264,7 @@ void alert(char *message1, char *message2, int number)
     }
 
     attroff(COLOR_PAIR(11));
+    attroff(COLOR_PAIR(5));
     attroff(A_BOLD);
 
     refresh();
@@ -2820,8 +2831,8 @@ void elements_on_map()
                     {
                         all_map[i][j] = 'D';
                         enemies[count_enemy].life_time = 5;
-                        enemies[count_enemy].x = i;
-                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
                     }
@@ -2830,8 +2841,8 @@ void elements_on_map()
                     {
                         all_map[i][j] = 'F';
                         enemies[count_enemy].life_time = 10;
-                        enemies[count_enemy].x = i;
-                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
                     }
@@ -2840,8 +2851,8 @@ void elements_on_map()
                     {
                         all_map[i][j] = 'G';
                         enemies[count_enemy].life_time = 15;
-                        enemies[count_enemy].x = i;
-                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
                     }
@@ -2850,8 +2861,8 @@ void elements_on_map()
                     {
                         all_map[i][j] = 'S';
                         enemies[count_enemy].life_time = 20;
-                        enemies[count_enemy].x = i;
-                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
                     }
@@ -2860,8 +2871,8 @@ void elements_on_map()
                     {
                         all_map[i][j] = 'U';
                         enemies[count_enemy].life_time = 30;
-                        enemies[count_enemy].x = i;
-                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
                     }
@@ -3177,6 +3188,98 @@ void print_map()
     refresh(); 
 }
 
+void enemies_move()
+{
+    srand(time(0));
+    int pa_x;
+    int pa_y;
+    for (int i = 0; i < count_enemy; i++)
+    {
+        if (enemies[i].room_i == player.room_i && map_that_shown[enemies[i].x - 6][enemies[i].y - 2] != ' ' && (enemies[i].life_time == 15 || enemies[i].life_time == 20 || enemies[i].life_time == 30))
+        {
+            if (abs(enemies[i].x - player.x) <= 1 && abs(enemies[i].y - player.y) <= 1) 
+            {
+                player.life_time -= 1;
+                alert("An Enemy Damaged You!","", -2 );
+                elemnts_under_board();
+            }
+            else 
+            {
+                int random = rand()%2;
+                pa_x = enemies[i].x;
+                pa_y = enemies[i].y;
+
+                if (random)
+                {
+                    if (player.x > enemies[i].x && all_map[enemies[i].x - 5][enemies[i].y - 2] == '.')
+                    {
+                        enemies[i].x += 1;
+                    }
+                    else if (player.x < enemies[i].x && all_map[enemies[i].x - 7][enemies[i].y - 2] == '.')
+                    {
+                        enemies[i].x -= 1;
+                    }
+                }
+
+                else 
+                {
+                    if (player.y > enemies[i].y && all_map[enemies[i].x - 6][enemies[i].y - 1] == '.')
+                    {
+                        enemies[i].y += 1;
+                    }
+                    else if (player.y < enemies[i].y && all_map[enemies[i].x - 6][enemies[i].y - 3] == '.')
+                    {
+                        enemies[i].y -= 1;
+                    }
+                }
+                if (enemies[i].life_time == 15)
+                {
+                    all_map[enemies[i].x - 6][enemies[i].y - 2] = 'G';
+                    map_that_shown[enemies[i].x - 6][enemies[i].y - 2] = 'G';
+                    map_whithout_tale[enemies[i].x - 6][enemies[i].y - 2] = 'G';
+
+
+                }
+
+                else if (enemies[i].life_time == 20)
+                {
+                    all_map[enemies[i].x - 6][enemies[i].y - 2] = 'S';
+                    map_whithout_tale[enemies[i].x - 6][enemies[i].y - 2] = 'S';
+                    map_that_shown[enemies[i].x - 6][enemies[i].y - 2] = 'S';
+                }
+
+                else
+                {
+                    all_map[enemies[i].x - 6][enemies[i].y - 2] = 'U';
+                    map_whithout_tale[enemies[i].x - 6][enemies[i].y - 2] = 'U';
+                    map_that_shown[enemies[i].x - 6][enemies[i].y - 2] = 'U';
+                }
+
+
+
+                if (pa_x != enemies[i].x || pa_y != enemies[i].y)
+                {
+                    all_map[pa_x - 6][pa_y - 2] = '.';
+                    map_whithout_tale[pa_x - 6][pa_y - 2] = '.';
+                    map_that_shown[pa_x - 6][pa_y - 2] = '.';
+                }
+                print_map();
+                refresh();
+            }
+
+        }
+        else if (enemies[i].room_i == player.room_i && map_that_shown[enemies[i].x - 6][enemies[i].y - 2] != ' ')
+        {
+            if (abs(enemies[i].x - player.x) <= 1 && abs(enemies[i].y - player.y) <= 1) 
+            {
+                player.life_time -= 1;
+                alert("An Enemy Damaged You!","", -2 );
+                elemnts_under_board();
+            } 
+        }
+    }
+}
+
 int player_move(int x_pa, int y_pa, int g_on_off)
 {
     player.hungry_amount += 0.0675;
@@ -3467,7 +3570,7 @@ int player_move(int x_pa, int y_pa, int g_on_off)
 
     whith_g_key:
 
-    if (all_map[player.x - 6][player.y - 2] == '$' || all_map[player.x - 6][player.y - 2] == '|' || all_map[player.x - 6][player.y - 2] == '-' || all_map[player.x - 6][player.y - 2] == 'D' ||  all_map[player.x - 6][player.y - 2] == 'F'||  all_map[player.x - 6][player.y - 2] == 'G'||  all_map[player.x - 6][player.y - 2] == 'S'||  all_map[player.x - 6][player.y - 2] == 'U'||  all_map[player.x - 6][player.y - 2] == ' ')
+    if (all_map[player.x - 6][player.y - 2] == '$' || all_map[player.x - 6][player.y - 2] == '|' || all_map[player.x - 6][player.y - 2] == '-' || all_map[player.x - 6][player.y - 2] == ' ')
     {
         player.x = x_pa;
         player.y = y_pa;
@@ -3549,19 +3652,24 @@ int new_game(int new)
         for (int j = 0; j < 4; j++)
         {
             player.foods[j].count = 0;
-            player.foods[j].time = 20;
+            player.foods[j].time = 30;
             player.count_selahs[j+1] = 0;
-
         }
 
         for (int j = 0; j < 3; j++)
         {
             player.telesm[j] = 0;
         }
-
         clear_and_border2();
         elemnts_under_board();
         map();
+        for (int i = 0; i < 6; i++)
+        {
+            enemies[i].life_time = 0;
+            enemies[i].x = 0;
+            enemies[i].y = 0;
+            enemies[i].room_i = 0;
+        }
         connect_room();
         elements_on_map();
         copy_map();
@@ -3569,20 +3677,16 @@ int new_game(int new)
         adding_stairs();
         copy_map();
         player_move(0, 0, 0);
+        refresh();
     }   
 
-    for (int i = 0; i < 6; i++)
-    {
-        enemies[i].life_time = 0;
-        enemies[i].x = 0;
-        enemies[i].y = 0;
-        enemies[i].room_i = 0;
-    }
     int ganj_room = 0;
     int m_on_off = 0;
     int g_on_off = 0;
     for(int ch = getch(); ch != 'q'; ch = getch())
     {
+        player.room_i = which_room_is_the_player(player.x, player.y);
+        enemies_move();
         if (speed)
         {
             speed --;
@@ -3830,6 +3934,13 @@ int new_game(int new)
 
             case ('t'):
                 telesm_menu();
+                clear_and_border2();
+                elemnts_under_board();
+                up = player_move(player.y, player.y, 0);
+                break;
+
+            case (32):
+                damage();
                 clear_and_border2();
                 elemnts_under_board();
                 up = player_move(player.y, player.y, 0);
