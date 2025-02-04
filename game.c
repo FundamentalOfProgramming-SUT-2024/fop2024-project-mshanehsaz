@@ -26,6 +26,7 @@ typedef struct
     int y;
     int room_i;
     int life_time;
+    int type;
 }enemy;
 
 typedef struct
@@ -194,7 +195,7 @@ void save_maps()
         fprintf(file, "\n");
     }
 
-    fprintf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",  player.line,  player.score,  player.gold,  player.color,  player.life_time,  player.hungry_amount, player.telesm[0],  player.telesm[1],  player.telesm[2],  player.foods[0].count,  player.foods[0].time,  player.foods[1].count,  player.foods[1].time,  player.foods[2].count,  player.foods[2].time,  player.foods[3].count,  player.foods[3].time, player.hardness,  player.level,  player.room_i,  player.x,  player.y,  rooms[0].type,  rooms[1].type,  rooms[2].type,  rooms[3].type,  rooms[4].type,  rooms[5].type,  rooms[6].type,  rooms[7].type, enemies[0].life_time, enemies[0].room_i, enemies[0].x, enemies[0].y, enemies[1].life_time, enemies[1].room_i, enemies[1].x, enemies[1].y, enemies[2].life_time, enemies[2].room_i, enemies[2].x, enemies[2].y, enemies[3].life_time, enemies[3].room_i, enemies[3].x, enemies[3].y, enemies[4].life_time, enemies[4].room_i, enemies[4].x, enemies[4].y, enemies[5].life_time, enemies[5].room_i, enemies[5].x, enemies[5].y, count_enemy);
+    fprintf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",  player.line,  player.score,  player.gold,  player.color,  player.life_time,  player.hungry_amount, player.telesm[0],  player.telesm[1],  player.telesm[2],  player.foods[0].count,  player.foods[0].time,  player.foods[1].count,  player.foods[1].time,  player.foods[2].count,  player.foods[2].time,  player.foods[3].count,  player.foods[3].time, player.hardness,  player.level,  player.room_i,  player.x,  player.y,  rooms[0].type,  rooms[1].type,  rooms[2].type,  rooms[3].type,  rooms[4].type,  rooms[5].type,  rooms[6].type,  rooms[7].type, enemies[0].life_time, enemies[0].room_i, enemies[0].x, enemies[0].y, enemies[1].life_time, enemies[1].room_i, enemies[1].x, enemies[1].y, enemies[2].life_time, enemies[2].room_i, enemies[2].x, enemies[2].y, enemies[3].life_time, enemies[3].room_i, enemies[3].x, enemies[3].y, enemies[4].life_time, enemies[4].room_i, enemies[4].x, enemies[4].y, enemies[5].life_time, enemies[5].room_i, enemies[5].x, enemies[5].y, count_enemy, enemies[0].type, enemies[1].type, enemies[2].type, enemies[3].type, enemies[4].type, enemies[5].type);
     fclose(file);
 }
 
@@ -220,7 +221,7 @@ void load_map()
         fscanf(file, "%c", &salam);
     }
 
-    fscanf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &player.line, &player.score, &player.gold, &player.color, &player.life_time, &player.hungry_amount,&player.telesm[0], &player.telesm[1], &player.telesm[2], &player.foods[0].count, &player.foods[0].time, &player.foods[1].count, &player.foods[1].time, &player.foods[2].count, &player.foods[2].time, &player.foods[3].count, &player.foods[3].time, &player.hardness, &player.level, &player.room_i, &player.x, &player.y, &rooms[0].type, &rooms[1].type, &rooms[2].type, &rooms[3].type, &rooms[4].type, &rooms[5].type, &rooms[6].type, &rooms[7].type, &enemies[0].life_time, &enemies[0].room_i, &enemies[0].x, &enemies[0].y, &enemies[1].life_time, &enemies[1].room_i, &enemies[1].x, &enemies[1].y, &enemies[2].life_time, &enemies[2].room_i, &enemies[2].x, &enemies[2].y, &enemies[3].life_time, &enemies[3].room_i, &enemies[3].x, &enemies[3].y, &enemies[4].life_time, &enemies[4].room_i, &enemies[4].x, &enemies[4].y, &enemies[5].life_time, &enemies[5].room_i, &enemies[5].x, &enemies[5].y, &count_enemy);
+    fscanf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &player.line, &player.score, &player.gold, &player.color, &player.life_time, &player.hungry_amount,&player.telesm[0], &player.telesm[1], &player.telesm[2], &player.foods[0].count, &player.foods[0].time, &player.foods[1].count, &player.foods[1].time, &player.foods[2].count, &player.foods[2].time, &player.foods[3].count, &player.foods[3].time, &player.hardness, &player.level, &player.room_i, &player.x, &player.y, &rooms[0].type, &rooms[1].type, &rooms[2].type, &rooms[3].type, &rooms[4].type, &rooms[5].type, &rooms[6].type, &rooms[7].type, &enemies[0].life_time, &enemies[0].room_i, &enemies[0].x, &enemies[0].y, &enemies[1].life_time, &enemies[1].room_i, &enemies[1].x, &enemies[1].y, &enemies[2].life_time, &enemies[2].room_i, &enemies[2].x, &enemies[2].y, &enemies[3].life_time, &enemies[3].room_i, &enemies[3].x, &enemies[3].y, &enemies[4].life_time, &enemies[4].room_i, &enemies[4].x, &enemies[4].y, &enemies[5].life_time, &enemies[5].room_i, &enemies[5].x, &enemies[5].y, &count_enemy, &enemies[0].type, &enemies[1].type, &enemies[2].type, &enemies[3].type, &enemies[4].type, &enemies[5].type);
 
     fclose(file);
 }
@@ -2741,7 +2742,7 @@ void elements_on_map()
                 gold = rand()%40;
                 black_gold = rand()%160;
                 telesm = rand()%120;
-                enemy = rand()%80;
+                enemy = rand()%50;
             }
 
             sotoon = rand()%40;
@@ -2833,6 +2834,7 @@ void elements_on_map()
                         enemies[count_enemy].life_time = 5;
                         enemies[count_enemy].x = i + 6;
                         enemies[count_enemy].y = j + 2;
+                        enemies[count_enemy].type = 1;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
                     }
@@ -2843,6 +2845,7 @@ void elements_on_map()
                         enemies[count_enemy].life_time = 10;
                         enemies[count_enemy].x = i + 6;
                         enemies[count_enemy].y = j + 2;
+                        enemies[count_enemy].type = 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
                     }
@@ -2852,6 +2855,7 @@ void elements_on_map()
                         all_map[i][j] = 'G';
                         enemies[count_enemy].life_time = 15;
                         enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].type = 3;
                         enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
@@ -2862,6 +2866,7 @@ void elements_on_map()
                         all_map[i][j] = 'S';
                         enemies[count_enemy].life_time = 20;
                         enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].type = 4;
                         enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
@@ -2872,6 +2877,7 @@ void elements_on_map()
                         all_map[i][j] = 'U';
                         enemies[count_enemy].life_time = 30;
                         enemies[count_enemy].x = i + 6;
+                        enemies[count_enemy].type = 5;
                         enemies[count_enemy].y = j + 2;
                         enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
                         count_enemy ++;
@@ -3195,7 +3201,7 @@ void enemies_move()
     int pa_y;
     for (int i = 0; i < count_enemy; i++)
     {
-        if (enemies[i].room_i == player.room_i && map_that_shown[enemies[i].x - 6][enemies[i].y - 2] != ' ' && (enemies[i].life_time == 15 || enemies[i].life_time == 20 || enemies[i].life_time == 30))
+        if (enemies[i].room_i == player.room_i && map_that_shown[enemies[i].x - 6][enemies[i].y - 2] != ' ' && (enemies[i].type == 3 || enemies[i].type == 4 || enemies[i].type == 5))
         {
             if (abs(enemies[i].x - player.x) <= 1 && abs(enemies[i].y - player.y) <= 1) 
             {
@@ -3232,7 +3238,7 @@ void enemies_move()
                         enemies[i].y -= 1;
                     }
                 }
-                if (enemies[i].life_time == 15)
+                if (enemies[i].type == 3)
                 {
                     all_map[enemies[i].x - 6][enemies[i].y - 2] = 'G';
                     map_that_shown[enemies[i].x - 6][enemies[i].y - 2] = 'G';
@@ -3241,7 +3247,7 @@ void enemies_move()
 
                 }
 
-                else if (enemies[i].life_time == 20)
+                else if (enemies[i].type == 4)
                 {
                     all_map[enemies[i].x - 6][enemies[i].y - 2] = 'S';
                     map_whithout_tale[enemies[i].x - 6][enemies[i].y - 2] = 'S';
@@ -3276,6 +3282,58 @@ void enemies_move()
                 alert("An Enemy Damaged You!","", -2 );
                 elemnts_under_board();
             } 
+        }
+    }
+}
+
+void damage()
+{
+    for (int i = 0; i < count_enemy; i++)
+    {
+        if (abs(enemies[i].x - player.x) <= 1 && abs(enemies[i].y - player.y) <= 1) 
+        {
+            switch (player.main_selah)
+            {
+            case 1:
+                enemies[i].life_time -= 5;
+                break;
+            
+            case 2:
+                enemies[i].life_time -= 12;
+                player.count_selahs[1] -= 1;
+                break;
+
+            case 3:
+                enemies[i].life_time -= 15;
+                player.count_selahs[2] -= 1;
+                break;
+
+            case 4:
+                enemies[i].life_time -= 5;
+                player.count_selahs[3] -= 1;
+                break;
+
+            case 5:
+                enemies[i].life_time -= 10;
+                break;
+            }
+            alert("YOU Damaged An Enemy!","", -1 );
+            elemnts_under_board();
+            if (enemies[i].life_time <= 0)
+            {
+                alert("YOU Killed An Enemy!","", -1 );
+                all_map[enemies[i].x - 6][enemies[i].y - 2] = '.';
+                map_that_shown[enemies[i].x - 6][enemies[i].y - 2] = '.';
+                map_whithout_tale[enemies[i].x - 6][enemies[i].y - 2] = '.';
+                for (int j = i; j < count_enemy - 1; j++)
+                {
+                    enemies[j] = enemies[j + 1];
+                }
+                count_enemy --;
+                player.score += 2;
+                print_map();
+                refresh();
+            }
         }
     }
 }
@@ -3941,7 +3999,6 @@ int new_game(int new)
 
             case (32):
                 damage();
-                clear_and_border2();
                 elemnts_under_board();
                 up = player_move(player.y, player.y, 0);
                 break;
