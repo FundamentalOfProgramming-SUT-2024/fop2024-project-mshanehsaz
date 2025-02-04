@@ -190,7 +190,7 @@ void save_maps()
         fprintf(file, "\n");
     }
 
-    fprintf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",  player.line,  player.score,  player.gold,  player.color,  player.life_time,  player.hungry_amount, player.telesm[0],  player.telesm[1],  player.telesm[2],  player.foods[0].count,  player.foods[0].time,  player.foods[1].count,  player.foods[1].time,  player.foods[2].count,  player.foods[2].time,  player.foods[3].count,  player.foods[3].time, player.hardness,  player.level,  player.room_i,  player.x,  player.y,  rooms[0].type,  rooms[1].type,  rooms[2].type,  rooms[3].type,  rooms[4].type,  rooms[5].type,  rooms[6].type,  rooms[7].type, enemies[0].life_time, enemies[0].room_i, enemies[0].x, enemies[0].y, enemies[1].life_time, enemies[1].room_i, enemies[1].x, enemies[1].y, enemies[2].life_time, enemies[2].room_i, enemies[2].x, enemies[2].y, enemies[3].life_time, enemies[3].room_i, enemies[3].x, enemies[3].y, enemies[4].life_time, enemies[4].room_i, enemies[4].x, enemies[4].y, enemies[5].life_time, enemies[5].room_i, enemies[5].x, enemies[5].y);
+    fprintf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",  player.line,  player.score,  player.gold,  player.color,  player.life_time,  player.hungry_amount, player.telesm[0],  player.telesm[1],  player.telesm[2],  player.foods[0].count,  player.foods[0].time,  player.foods[1].count,  player.foods[1].time,  player.foods[2].count,  player.foods[2].time,  player.foods[3].count,  player.foods[3].time, player.hardness,  player.level,  player.room_i,  player.x,  player.y,  rooms[0].type,  rooms[1].type,  rooms[2].type,  rooms[3].type,  rooms[4].type,  rooms[5].type,  rooms[6].type,  rooms[7].type, enemies[0].life_time, enemies[0].room_i, enemies[0].x, enemies[0].y, enemies[1].life_time, enemies[1].room_i, enemies[1].x, enemies[1].y, enemies[2].life_time, enemies[2].room_i, enemies[2].x, enemies[2].y, enemies[3].life_time, enemies[3].room_i, enemies[3].x, enemies[3].y, enemies[4].life_time, enemies[4].room_i, enemies[4].x, enemies[4].y, enemies[5].life_time, enemies[5].room_i, enemies[5].x, enemies[5].y, count_enemy);
     fclose(file);
 }
 
@@ -216,7 +216,7 @@ void load_map()
         fscanf(file, "%c", &salam);
     }
 
-    fscanf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &player.line, &player.score, &player.gold, &player.color, &player.life_time, &player.hungry_amount,&player.telesm[0], &player.telesm[1], &player.telesm[2], &player.foods[0].count, &player.foods[0].time, &player.foods[1].count, &player.foods[1].time, &player.foods[2].count, &player.foods[2].time, &player.foods[3].count, &player.foods[3].time, &player.hardness, &player.level, &player.room_i, &player.x, &player.y, &rooms[0].type, &rooms[1].type, &rooms[2].type, &rooms[3].type, &rooms[4].type, &rooms[5].type, &rooms[6].type, &rooms[7].type, &enemies[0].life_time, &enemies[0].room_i, &enemies[0].x, &enemies[0].y, &enemies[1].life_time, &enemies[1].room_i, &enemies[1].x, &enemies[1].y, &enemies[2].life_time, &enemies[2].room_i, &enemies[2].x, &enemies[2].y, &enemies[3].life_time, &enemies[3].room_i, &enemies[3].x, &enemies[3].y, &enemies[4].life_time, &enemies[4].room_i, &enemies[4].x, &enemies[4].y, &enemies[5].life_time, &enemies[5].room_i, &enemies[5].x, &enemies[5].y);
+    fscanf(file, "%d %d %d %d %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &player.line, &player.score, &player.gold, &player.color, &player.life_time, &player.hungry_amount,&player.telesm[0], &player.telesm[1], &player.telesm[2], &player.foods[0].count, &player.foods[0].time, &player.foods[1].count, &player.foods[1].time, &player.foods[2].count, &player.foods[2].time, &player.foods[3].count, &player.foods[3].time, &player.hardness, &player.level, &player.room_i, &player.x, &player.y, &rooms[0].type, &rooms[1].type, &rooms[2].type, &rooms[3].type, &rooms[4].type, &rooms[5].type, &rooms[6].type, &rooms[7].type, &enemies[0].life_time, &enemies[0].room_i, &enemies[0].x, &enemies[0].y, &enemies[1].life_time, &enemies[1].room_i, &enemies[1].x, &enemies[1].y, &enemies[2].life_time, &enemies[2].room_i, &enemies[2].x, &enemies[2].y, &enemies[3].life_time, &enemies[3].room_i, &enemies[3].x, &enemies[3].y, &enemies[4].life_time, &enemies[4].room_i, &enemies[4].x, &enemies[4].y, &enemies[5].life_time, &enemies[5].room_i, &enemies[5].x, &enemies[5].y, &count_enemy);
 
     fclose(file);
 }
@@ -259,7 +259,7 @@ void alert(char *message1, char *message2, int number)
     refresh();
 }
 
-void food_manu()
+void food_menu()
 {
     int which_case = 1;
     while (1)
@@ -268,13 +268,15 @@ void food_manu()
         wchar_t emoji2[] = L"🪄🍗";
         wchar_t emoji3[] = L"👑🍗";
         clear_and_border();
-        attron(COLOR_PAIR(3));
         mvaddwstr((LINES/2) - 6, (COLS/2) - 30, emoji1);
         mvaddwstr((LINES/2) - 3, (COLS/2) - 13, emoji2);
         mvaddwstr((LINES/2), (COLS/2) - 13, emoji3);
-        mvprintw(((LINES/2)) - 6, ((COLS/2) - 27) ,"* %d  1- ORDINARY FOOD (MAY BE MIXED WITH SPOILED FOOD!)", (player.foods[0].count + player.foods[1].count));
-        mvprintw(((LINES/2)) - 3, ((COLS/2) - 8) ,"* %d  2- MAGIC FOOD", player.foods[1].count);
-        mvprintw(((LINES/2)), (COLS/2) - 8 ,"* %d  3- GREAT FOOD", player.foods[1].count);
+        attron(COLOR_PAIR(77));
+        mvprintw(((LINES/2)) - 6, ((COLS/2) - 27) ," 1- YOU HAVE %d ORDINARY FOOD (MAY BE MIXED WITH SPOILED FOOD!) ", (player.foods[0].count + player.foods[3].count));
+        mvprintw(((LINES/2)) - 3, ((COLS/2) - 8) ," 2- YOU HAVE %d MAGIC FOOD ", player.foods[1].count);
+        mvprintw(((LINES/2)), (COLS/2) - 8 ," 3- YOU HAVE %d GREAT FOOD ", player.foods[2].count);
+        attroff(COLOR_PAIR(77));
+        attron(COLOR_PAIR(3));
         mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
         mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
         attroff(COLOR_PAIR(3));
@@ -305,9 +307,9 @@ void food_manu()
                 attron(COLOR_PAIR(3));
                 mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
                 attroff(COLOR_PAIR(3));
-                attron(COLOR_PAIR(4));
+                attron(COLOR_PAIR(79));
                 mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
-                attroff(COLOR_PAIR(4));
+                attroff(COLOR_PAIR(79));
 
                 break;
 
@@ -315,9 +317,9 @@ void food_manu()
                 attron(COLOR_PAIR(3));
                 mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
                 attroff(COLOR_PAIR(3));
-                attron(COLOR_PAIR(4));
+                attron(COLOR_PAIR(79));
                 mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
-                attroff(COLOR_PAIR(4));
+                attroff(COLOR_PAIR(79));
                 break;
 
             }
@@ -343,6 +345,7 @@ void food_manu()
                         count = player.foods[which - 1].count;
                     }
 
+
                     if (count == 0)
                     {
                         curs_set(false);
@@ -356,6 +359,73 @@ void food_manu()
                         sleep(3);
                         continue;
                     }
+                    else
+                    {
+                        if (which == 1)
+                        {
+                            int which_ord_fas = rand()%2;
+                            if (which_ord_fas == 0)
+                            {
+                                player.hungry_amount = 0;
+                                player.foods[0].count -= 1;
+                                curs_set(false);
+                                noecho(); 
+                                attron(COLOR_PAIR(11));
+                                mvprintw(((LINES/8) - 1), (COLS/2 - 19), "                                     " );
+                                mvprintw(((LINES/8)), (COLS/2 - 19), " YOU ARE LUCKY IT WAS ORDINARY FOOD! " );
+                                mvprintw(((LINES/8) + 1), (COLS/2 - 19), "                                     " );
+                                attroff(COLOR_PAIR(11));
+                                refresh();
+                                sleep(3);
+                            }
+                            if (which_ord_fas == 1)
+                            {
+                                curs_set(false);
+                                noecho(); 
+                                attron(COLOR_PAIR(5));
+                                mvprintw(((LINES/8) - 1), (COLS/2 - 12), "                      " );
+                                mvprintw(((LINES/8)), (COLS/2 - 12), " OH! IT WAS DESTROID! " );
+                                mvprintw(((LINES/8) + 1), (COLS/2 - 12), "                      " );
+                                attroff(COLOR_PAIR(5));
+                                refresh();
+                                player.life_time -= 1;
+                                player.foods[3].count -= 1;
+                                sleep(3);
+                            }
+
+                        }
+
+                        if (which == 2)
+                        {
+                                player.hungry_amount = 0;
+                                player.foods[1].count -= 1;
+                                speed = 25;
+                                curs_set(false);
+                                noecho(); 
+                                attron(COLOR_PAIR(11));
+                                mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                            " );
+                                mvprintw(((LINES/8)), (COLS/2 - 15), " YUM! MAGIC FOOD! SPEED UP! " );
+                                mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
+                                attroff(COLOR_PAIR(11));
+                                refresh();
+                                sleep(3);
+                        }
+
+                        if (which == 3)
+                        {
+                                player.hungry_amount = 0;
+                                player.foods[2].count -= 1;
+                                curs_set(false);
+                                noecho(); 
+                                attron(COLOR_PAIR(11));
+                                mvprintw(((LINES/8) - 1), (COLS/2 - 10), "                  " );
+                                mvprintw(((LINES/8)), (COLS/2 - 10), " YUM! GREAT FOOD! " );
+                                mvprintw(((LINES/8) + 1), (COLS/2 - 10), "                  " );
+                                attroff(COLOR_PAIR(11));
+                                refresh();
+                                sleep(3);
+                        }
+                    }
                     move(0, 0);
                     curs_set(false);
                     noecho();
@@ -363,7 +433,6 @@ void food_manu()
                 }
                 else
                 {
-                    player.color = 0;
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
@@ -377,10 +446,6 @@ void food_manu()
                 }
 
             case 2:
-                if (which == 1)
-                {
-
-                }
                 return;
         }
     }
@@ -388,129 +453,7 @@ void food_manu()
 
 void weapon_menu()
 {
-    int which_case = 1;
-    while (1)
-    {
-        wchar_t emoji1[] = L"🍗";
-        wchar_t emoji2[] = L"🪄🍗";
-        wchar_t emoji3[] = L"👑🍗";
-        clear_and_border();
-        attron(COLOR_PAIR(3));
-        mvaddwstr((LINES/2) - 6, (COLS/2) - 30, emoji1);
-        mvaddwstr((LINES/2) - 3, (COLS/2) - 13, emoji2);
-        mvaddwstr((LINES/2), (COLS/2) - 13, emoji3);
-        mvprintw(((LINES/2)) - 6, ((COLS/2) - 27) ,"* %d  1- ORDINARY FOOD (MAY BE MIXED WITH SPOILED FOOD!)", (player.foods[0].count + player.foods[1].count));
-        mvprintw(((LINES/2)) - 3, ((COLS/2) - 8) ,"* %d  2- MAGIC FOOD", player.foods[1].count);
-        mvprintw(((LINES/2)), (COLS/2) - 8 ,"* %d  3- GREAT FOOD", player.foods[1].count);
-        mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
-        mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
-        attroff(COLOR_PAIR(3));
-        refresh();
-        for(int ch = getch(); ch != 10; ch = getch())
-        {
-            if (ch == KEY_UP)
-            {
-                which_case --;
-                if (which_case == 0)
-                {
-                    which_case = 2;
-                }
-            }
-            if ((ch == KEY_DOWN))
-            {
-                which_case ++;
-                if (which_case == 3)
-                {
-                    which_case = 1;
-                }
-            }
 
-            switch (which_case)
-            {
-            
-            case 1:
-                attron(COLOR_PAIR(3));
-                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
-                attroff(COLOR_PAIR(3));
-                attron(COLOR_PAIR(4));
-                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
-                attroff(COLOR_PAIR(4));
-
-                break;
-
-            case 2:
-                attron(COLOR_PAIR(3));
-                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
-                attroff(COLOR_PAIR(3));
-                attron(COLOR_PAIR(4));
-                mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
-                attroff(COLOR_PAIR(4));
-                break;
-
-            }
-        }
-        refresh();
-        switch (which_case)
-        {
-            case 1:
-                int which;
-                int count;
-                move(((LINES/2)) + 3, ((COLS/2) + 16));
-                curs_set(true);
-                echo();
-                refresh();
-                if (scanw("%d", &which) == 1 && which >= 1 && which <= 3)
-                {
-                    if (which == 1)
-                    {
-                        count = player.foods[0].count + player.foods[3].count;
-                    }
-                    else 
-                    {
-                        count = player.foods[which - 1].count;
-                    }
-
-                    if (count == 0)
-                    {
-                        curs_set(false);
-                        noecho(); 
-                        attron(COLOR_PAIR(5));
-                        mvprintw(((LINES/8) - 1), (COLS/2 - 11), "                     " );
-                        mvprintw(((LINES/8)), (COLS/2 - 11), " YOU HAVEN'T ENOUGH! " );
-                        mvprintw(((LINES/8) + 1), (COLS/2 - 11), "                     " );
-                        attroff(COLOR_PAIR(5));
-                        refresh();    
-                        sleep(3);
-                        continue;
-                    }
-                    move(0, 0);
-                    curs_set(false);
-                    noecho();
-                    continue; 
-                }
-                else
-                {
-                    player.color = 0;
-                    curs_set(false);
-                    noecho(); 
-                    attron(COLOR_PAIR(5));
-                    mvprintw(((LINES/8) - 1), (COLS/2 - 15), "                            " );
-                    mvprintw(((LINES/8)), (COLS/2 - 15), " PLEASE ENTER CORRECT ITEM! " );
-                    mvprintw(((LINES/8) + 1), (COLS/2 - 15), "                            " );
-                    attroff(COLOR_PAIR(5));
-                    refresh();
-                    sleep(3);
-                    continue;
-                }
-
-            case 2:
-                if (which == 1)
-                {
-
-                }
-                return;
-        }
-    }
 }
 
 void telesm_menu()
@@ -518,18 +461,20 @@ void telesm_menu()
     int which_case = 1;
     while (1)
     {
-        wchar_t emoji1[] = L"🍗";
-        wchar_t emoji2[] = L"🪄🍗";
-        wchar_t emoji3[] = L"👑🍗";
+        wchar_t emoji1[] = L"💖";
+        wchar_t emoji2[] = L"💥";
+        wchar_t emoji3[] = L"⚡";
         clear_and_border();
+        mvaddwstr((LINES/2) - 6, (COLS/2) - 17, emoji1);
+        mvaddwstr((LINES/2) - 3, (COLS/2) - 17, emoji2);
+        mvaddwstr((LINES/2), (COLS/2) - 17, emoji3);
+        attron(COLOR_PAIR(77));
+        mvprintw(((LINES/2)) - 6, ((COLS/2) - 14) ," 1- YOU HAVE %d HEALTH ENCHANT ", player.telesm[0]);
+        mvprintw(((LINES/2)) - 3, ((COLS/2) - 14) ," 2- YOU HAVE %d DAMAGE ENCHANT ", player.telesm[1]);
+        mvprintw(((LINES/2)), (COLS/2) - 14 ," 3- YOU HAVE %d SPEED ENCHANT ", player.telesm[2]);
+        attron(COLOR_PAIR(77));
         attron(COLOR_PAIR(3));
-        mvaddwstr((LINES/2) - 6, (COLS/2) - 30, emoji1);
-        mvaddwstr((LINES/2) - 3, (COLS/2) - 13, emoji2);
-        mvaddwstr((LINES/2), (COLS/2) - 13, emoji3);
-        mvprintw(((LINES/2)) - 6, ((COLS/2) - 27) ,"* %d  1- ORDINARY FOOD (MAY BE MIXED WITH SPOILED FOOD!)", (player.foods[0].count + player.foods[1].count));
-        mvprintw(((LINES/2)) - 3, ((COLS/2) - 8) ,"* %d  2- MAGIC FOOD", player.foods[1].count);
-        mvprintw(((LINES/2)), (COLS/2) - 8 ,"* %d  3- GREAT FOOD", player.foods[1].count);
-        mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+        mvprintw(((LINES/2)) + 3, ((COLS/2) - 15) ," CHOOSE THE ENCHANT: (1, 2, 3)");
         mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
         attroff(COLOR_PAIR(3));
         refresh();
@@ -559,19 +504,19 @@ void telesm_menu()
                 attron(COLOR_PAIR(3));
                 mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
                 attroff(COLOR_PAIR(3));
-                attron(COLOR_PAIR(4));
-                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
-                attroff(COLOR_PAIR(4));
+                attron(COLOR_PAIR(79));
+                mvprintw(((LINES/2)) + 3, ((COLS/2) - 15) ," CHOOSE THE ENCHANT: (1, 2, 3)");
+                attroff(COLOR_PAIR(79));
 
                 break;
 
             case 2:
                 attron(COLOR_PAIR(3));
-                mvprintw(((LINES/2)) + 3, ((COLS/2) - 14) ," CHOOSE THE FOOD: (1, 2, 3)");
+                mvprintw(((LINES/2)) + 3, ((COLS/2) - 15) ," CHOOSE THE ENCHANT: (1, 2, 3)");
                 attroff(COLOR_PAIR(3));
-                attron(COLOR_PAIR(4));
+                attron(COLOR_PAIR(79));
                 mvprintw(((LINES/2)) + 6, ((COLS/2) - 4) ," BACK ");
-                attroff(COLOR_PAIR(4));
+                attroff(COLOR_PAIR(79));
                 break;
 
             }
@@ -588,14 +533,8 @@ void telesm_menu()
                 refresh();
                 if (scanw("%d", &which) == 1 && which >= 1 && which <= 3)
                 {
-                    if (which == 1)
-                    {
-                        count = player.foods[0].count + player.foods[3].count;
-                    }
-                    else 
-                    {
-                        count = player.foods[which - 1].count;
-                    }
+                    count = player.telesm[which - 1];
+
 
                     if (count == 0)
                     {
@@ -610,6 +549,52 @@ void telesm_menu()
                         sleep(3);
                         continue;
                     }
+                    else
+                    {
+                        if (which == 1)
+                        {
+                                curs_set(false);
+                                noecho(); 
+                                attron(COLOR_PAIR(11));
+                                mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                   " );
+                                mvprintw(((LINES/8)), (COLS/2 - 18), " THE ENCHANT RESTORES YOUR HEALTH! " );
+                                mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                   " );
+                                attroff(COLOR_PAIR(11));
+                                refresh();
+                                player.life_time += 10;
+                                player.telesm[0] -= 1;
+                                sleep(3);
+                        }
+
+                        if (which == 2)
+                        {
+                                curs_set(false);
+                                noecho(); 
+                                attron(COLOR_PAIR(11));
+                                mvprintw(((LINES/8) - 1), (COLS/2 - 19), "                                     " );
+                                mvprintw(((LINES/8)), (COLS/2 - 19), " THE ENCHANT INCREASES YOUR STRENGHT " );
+                                mvprintw(((LINES/8) + 1), (COLS/2 - 19), "                                     " );
+                                attroff(COLOR_PAIR(11));
+                                refresh();
+                                player.telesm[1] -= 1;
+                                sleep(3);
+                        }
+
+                        if (which == 3)
+                        {
+                            curs_set(false);
+                            noecho(); 
+                            attron(COLOR_PAIR(11));
+                            mvprintw(((LINES/8) - 1), (COLS/2 - 18), "                                  " );
+                            mvprintw(((LINES/8)), (COLS/2 - 18), " THE ENCHANT INCREASES YOUR SPEED " );
+                            mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                  " );
+                            attroff(COLOR_PAIR(11));
+                            refresh();
+                            speed = 30;
+                            player.telesm[2] -= 1;
+                            sleep(3);
+                        }
+                    }
                     move(0, 0);
                     curs_set(false);
                     noecho();
@@ -617,7 +602,6 @@ void telesm_menu()
                 }
                 else
                 {
-                    player.color = 0;
                     curs_set(false);
                     noecho(); 
                     attron(COLOR_PAIR(5));
@@ -631,10 +615,6 @@ void telesm_menu()
                 }
 
             case 2:
-                if (which == 1)
-                {
-
-                }
                 return;
         }
     }
@@ -1985,7 +1965,7 @@ int before_play_menu(int line)
                 return 9;
 
             case 2:
-                if (player.line == -1 || (player.room_i == 2 && player.level == 4) || player.life_time == 0)
+                if (player.line == -1)
                 {
                     attron(COLOR_PAIR(5));
                     mvprintw(((LINES/8) - 1), (COLS/2 - 13), "                        " );
@@ -2569,6 +2549,32 @@ void elements_on_map()
             {
                 all_map[i][j] = 'B';
             }
+
+            if (all_map[i][j] == '.' && !selah)
+            {
+                //dagger 0
+                //fased 1
+                //aala 3
+                //magic 4
+                int which_food = rand()%5;
+                
+                if (which_food == 0 || which_food == 1 || which_food == 2)
+                {
+                    all_map[i][j] = 'O';
+                }
+                
+                if (which_food == 3)
+                {
+                    all_map[i][j] = 'A';
+                }
+
+                if (which_food == 4)
+                {
+                    all_map[i][j] = 'M';
+                }
+            }
+
+
             if (count_enemy < 6)
             {
                 if (all_map[i][j] == '.' && !enemy)
@@ -2583,26 +2589,51 @@ void elements_on_map()
                     if (which_food == 0)
                     {
                         all_map[i][j] = 'D';
+                        enemies[count_enemy].life_time = 5;
+                        enemies[count_enemy].x = i;
+                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
+                        count_enemy ++;
                     }
                     
                     if (which_food == 1)
                     {
                         all_map[i][j] = 'F';
+                        enemies[count_enemy].life_time = 10;
+                        enemies[count_enemy].x = i;
+                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
+                        count_enemy ++;
                     }
 
                     if (which_food == 2)
                     {
                         all_map[i][j] = 'G';
+                        enemies[count_enemy].life_time = 15;
+                        enemies[count_enemy].x = i;
+                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
+                        count_enemy ++;
                     }
 
                     if (which_food == 3)
                     {
                         all_map[i][j] = 'S';
+                        enemies[count_enemy].life_time = 20;
+                        enemies[count_enemy].x = i;
+                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
+                        count_enemy ++;
                     }
 
                     if (which_food == 4)
                     {
                         all_map[i][j] = 'U';
+                        enemies[count_enemy].life_time = 30;
+                        enemies[count_enemy].x = i;
+                        enemies[count_enemy].y = j;
+                        enemies[count_enemy].room_i = which_room_is_the_player(i + 5, j + 1);
+                        count_enemy ++;
                     }
                     count_enemy ++;
                 }
@@ -2892,12 +2923,6 @@ int player_move(int x_pa, int y_pa, int g_on_off)
         goto whith_g_key;
     }
 
-    if (all_map[player.x - 6][player.y - 2] == 'o' || all_map[player.x - 6][player.y - 2] == '$' || all_map[player.x - 6][player.y - 2] == '|' || all_map[player.x - 6][player.y - 2] == '-' || all_map[player.x - 6][player.y - 2] == ' ')
-    {
-        player.x = x_pa;
-        player.y = y_pa;
-    }
-    
     if (all_map[player.x - 6][player.y - 2] == '^')
     {
         map_that_shown[player.x - 6][player.y - 2] = '^';
@@ -2942,7 +2967,7 @@ int player_move(int x_pa, int y_pa, int g_on_off)
         // }
 
         int gold = rand()%random;
-        alert("You'v got", "Gold!", gold);
+        alert("You've got", "Gold!", gold);
         player.gold += gold;
         player.score += gold;
         map_that_shown[player.x - 6][player.y - 2] = '.';
@@ -2986,7 +3011,7 @@ int player_move(int x_pa, int y_pa, int g_on_off)
         // }
 
         int gold = rand()%random + 20;
-        alert("You'v got", "Black Gold!", gold);
+        alert("You've got", "Black Gold!", gold);
         player.gold += gold;
         player.score += gold;
         map_that_shown[player.x - 6][player.y - 2] = '.';        
@@ -3039,13 +3064,85 @@ int player_move(int x_pa, int y_pa, int g_on_off)
         return 2;
     }
 
+    if (all_map[player.x - 6][player.y - 2] == 'o')
+    {
+        player.x = x_pa;
+        player.y = y_pa;
+    } 
 
+    if (all_map[player.x - 6][player.y - 2] == 'H')
+    {
+        player.telesm[0] += 1;
+        alert("You've got A Health Enchant!", "", -1);
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
 
+    if (all_map[player.x - 6][player.y - 2] == 'J')
+    {
+        player.telesm[1] += 1;
+        alert("You've got A Damage Enchant!", "", -1);
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
 
+    if (all_map[player.x - 6][player.y - 2] == 'V')
+    {
+        player.telesm[2] += 1;
+        alert("You've got A Speed Enchant!", "", -1);
+        map_that_shown[player.x - 6][player.y - 2] = '.';
+        map_whithout_tale[player.x - 6][player.y - 2] = '.';
+        all_map[player.x - 6][player.y - 2] = '.';
+        print_map();
+    }
 
+    if (all_map[player.x - 6][player.y - 2] == 'O')
+    {
+        int what = rand()%2;
+        if (what == 0)
+        {
+            player.foods[0].count += 1;
+            alert("You've got Some Ordinary Food! (But It Could Be A Lie!)", "", -1);
+            map_that_shown[player.x - 6][player.y - 2] = '.';
+            map_whithout_tale[player.x - 6][player.y - 2] = '.';
+            all_map[player.x - 6][player.y - 2] = '.';
+            print_map();
+        }
 
+        else if (what == 1)
+        {
+            player.foods[3].count += 1;
+            alert("You've got Some Ordinary Food! (But It Could Be A Lie!)", "", -1);
+            map_that_shown[player.x - 6][player.y - 2] = '.';
+            map_whithout_tale[player.x - 6][player.y - 2] = '.';
+            all_map[player.x - 6][player.y - 2] = '.';
+            print_map();
+        }
+    }
 
+    if (all_map[player.x - 6][player.y - 2] == 'M')
+    {
+            player.foods[1].count += 1;
+            alert("You've got Some Magic Food!", "", -1);
+            map_that_shown[player.x - 6][player.y - 2] = '.';
+            map_whithout_tale[player.x - 6][player.y - 2] = '.';
+            all_map[player.x - 6][player.y - 2] = '.';
+            print_map();
+    }
 
+    if (all_map[player.x - 6][player.y - 2] == 'A')
+    {
+            player.foods[2].count += 1;
+            alert("You've got Some Great Food!", "", -1);
+            map_that_shown[player.x - 6][player.y - 2] = '.';
+            map_whithout_tale[player.x - 6][player.y - 2] = '.';
+            all_map[player.x - 6][player.y - 2] = '.';
+            print_map();
+    }
 
 
 
@@ -3068,6 +3165,12 @@ int player_move(int x_pa, int y_pa, int g_on_off)
 
     whith_g_key:
 
+    if (all_map[player.x - 6][player.y - 2] == '$' || all_map[player.x - 6][player.y - 2] == '|' || all_map[player.x - 6][player.y - 2] == '-' || all_map[player.x - 6][player.y - 2] == 'D' ||  all_map[player.x - 6][player.y - 2] == 'F'||  all_map[player.x - 6][player.y - 2] == 'G'||  all_map[player.x - 6][player.y - 2] == 'S'||  all_map[player.x - 6][player.y - 2] == 'U'||  all_map[player.x - 6][player.y - 2] == ' ')
+    {
+        player.x = x_pa;
+        player.y = y_pa;
+    }
+    
     int color;
     switch (player.color)
     {
@@ -3165,6 +3268,14 @@ int new_game(int new)
         copy_map();
         player_move(0, 0, 0);
     }   
+
+    for (int i = 0; i < 6; i++)
+    {
+        enemies[i].life_time = 0;
+        enemies[i].x = 0;
+        enemies[i].y = 0;
+        enemies[i].room_i = 0;
+    }
     int ganj_room = 0;
     int m_on_off = 0;
     int g_on_off = 0;
@@ -3402,7 +3513,7 @@ int new_game(int new)
                 break;
 
             case ('f'):
-                food_manu();
+                food_menu();
                 clear_and_border2();
                 elemnts_under_board();
                 up = player_move(player.y, player.y, 0);
