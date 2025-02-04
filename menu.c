@@ -502,7 +502,48 @@ int sign_up_menu()
                 break;
 
             case 4:
-                move(0,0);
+                pass = 1;
+                int count_char = 3;
+                char upp[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ;
+                char low[] = "abcdefghijklmnopqrstuvwxyz";
+                char num[] = "0123456789";
+
+                int which1 = rand()%26;
+                password[0] = upp[which1];
+                
+                which1 = rand()%26;
+                password[2] = low[which1];
+
+                which1 = rand()%10;
+                password[1] = num[which1];
+
+                while (count_char != 7)
+                {
+                    int which = rand()%3;
+
+                    if (which == 0)
+                    {
+                        which1 = rand()%26;
+                        password[count_char] = upp[which1];
+                        count_char ++;
+                    }
+
+                    if (which == 1)
+                    {
+                        which1 = rand()%26;
+                        password[count_char] = low[which1];
+                        count_char ++;
+                    }
+
+                    if (which == 2)
+                    {
+                        which1 = rand()%10;
+                        password[count_char] = num[which1];
+                        count_char ++;
+                    }
+                }
+
+                password[7] = '\0';
                 break;
                 
             case 5:

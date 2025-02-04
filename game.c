@@ -92,6 +92,8 @@ char **map_whithout_tale;
 
 char **map_that_shown;
 
+int speed = 0;
+
 
 int first_life;
 
@@ -3064,8 +3066,6 @@ int player_move(int x_pa, int y_pa, int g_on_off)
 
 
 
-
-
     whith_g_key:
 
     int color;
@@ -3165,12 +3165,15 @@ int new_game(int new)
         copy_map();
         player_move(0, 0, 0);
     }   
-
     int ganj_room = 0;
     int m_on_off = 0;
     int g_on_off = 0;
     for(int ch = getch(); ch != 'q'; ch = getch())
     {
+        if (speed)
+        {
+            speed --;
+        }
         if (ganj_room == 10)
         {
             attron(COLOR_PAIR(11));
@@ -3221,11 +3224,29 @@ int new_game(int new)
                 {
                     return 11;
                 }
+                if(speed)
+                {
+                    player.x --;
+                }
+                up = player_move(player.x + 1, player.y, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (54):
                 player.y ++;
+                up = player_move(player.x, player.y - 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
+                if(speed)
+                {
+                    player.y ++;
+                }
                 up = player_move(player.x, player.y - 1, g_on_off);
                 if (up == 2)
                 {
@@ -3241,11 +3262,29 @@ int new_game(int new)
                 {
                     return 11;
                 }
+                if(speed)
+                {
+                    player.y --;
+                }
+                up = player_move(player.x, player.y + 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (50):
                 player.x ++;
+                up = player_move(player.x - 1, player.y, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
+                if(speed)
+                {
+                    player.x ++;
+                }
                 up = player_move(player.x - 1, player.y, g_on_off);
                 if (up == 2)
                 {
@@ -3262,12 +3301,32 @@ int new_game(int new)
                 {
                     return 11;
                 }
+                if(speed)
+                {
+                    player.y ++;
+                    player.x ++;
+                }
+                up = player_move(player.x - 1, player.y - 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (49):
                 player.x ++;
                 player.y --;
+                up = player_move(player.x - 1, player.y + 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
+                if(speed)
+                {
+                    player.y --;
+                    player.x ++;
+                }
                 up = player_move(player.x - 1, player.y + 1, g_on_off);
                 if (up == 2)
                 {
@@ -3284,12 +3343,32 @@ int new_game(int new)
                 {
                     return 11;
                 }
+                if(speed)
+                {
+                    player.y --;
+                    player.x --;
+                }
+                up = player_move(player.x + 1, player.y + 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
                 g_on_off = 0;
                 break;
 
             case (57):
                 player.x --;
                 player.y ++;
+                up = player_move(player.x + 1, player.y - 1, g_on_off);
+                if (up == 2)
+                {
+                    return 11;
+                }
+                if(speed)
+                {
+                    player.y ++;
+                    player.x --;
+                }
                 up = player_move(player.x + 1, player.y - 1, g_on_off);
                 if (up == 2)
                 {
