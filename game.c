@@ -561,7 +561,7 @@ void telesm_menu()
                                 mvprintw(((LINES/8) + 1), (COLS/2 - 18), "                                   " );
                                 attroff(COLOR_PAIR(11));
                                 refresh();
-                                player.life_time += 10;
+                                player.life_time += 5;
                                 player.telesm[0] -= 1;
                                 sleep(3);
                         }
